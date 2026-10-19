@@ -11,7 +11,7 @@ namespace IronThrone.Core.Game
     /// </summary>
     public static class PoliticsSystem
     {
-        public const int CoronationRecognition = 12;
+        public const int CoronationRecognition = 10;
 
         public static int SeatsOf(GameState state, string factionId) =>
             state.Council.seats.Count(kv => kv.Value == factionId);
@@ -210,7 +210,7 @@ namespace IronThrone.Core.Game
             if (sponsor != null)
             {
                 sponsor.passedLaws.Add(law.id);
-                sponsor.recognition = Math.Min(100, sponsor.recognition + 6f * (1f + sponsor.Mod(ModKeys.RecognitionGain)));
+                sponsor.recognition = Math.Min(100, sponsor.recognition + 3.5f * (1f + sponsor.Mod(ModKeys.RecognitionGain)));
                 sponsor.lawsProposed++;
                 sponsor.influence += 4;
             }
@@ -294,7 +294,7 @@ namespace IronThrone.Core.Game
             foreach (var f in state.Factions.Values.Where(x => x.alive))
             {
                 if (state.Council.throneHolder == f.id)
-                    f.recognition = Math.Min(100, f.recognition + 0.9f * (1f + f.Mod(ModKeys.RecognitionGain)));
+                    f.recognition = Math.Min(100, f.recognition + 0.55f * (1f + f.Mod(ModKeys.RecognitionGain)));
                 else
                     f.recognition = Math.Max(0, f.recognition - 0.35f);
                 f.recognition = Math.Min(100, f.recognition + SeatsOf(state, f.id) * 0.12f);

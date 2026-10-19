@@ -110,6 +110,46 @@ namespace IronThrone.Headless
                 Console.WriteLine("Карта выгружена: " + mapPath);
             }
 
+            if (args.Contains("--debug-ai"))
+            {
+                int aiIdx = Array.IndexOf(args, "--debug-ai");
+                string debugFaction = aiIdx + 1 < args.Length && !args[aiIdx + 1].StartsWith("--")
+                    ? args[aiIdx + 1] : "five_stannis";
+                var st = GameSetup.CreateNewGame(db, "fivekings", debugFaction, seed: 1337, mapMode: "canonical");
+                TurnEngine.StartGame(st);
+                var f = st.Faction(debugFaction);
+                Console.WriteLine($"\n[debug] {f.def.name}: провинций {st.ControlledBy(f.id).Count()}, армий {f.armies.Count}");
+                foreach (var aid in f.armies)
+                {
+                    var a = st.Armies[aid];
+                    Console.WriteLine($"  армия {a.name} в {a.province}, движение {a.movementLeft}/{a.maxMovement}, юнитов {a.units.Count}");
+                    var prov = st.Province(a.province);
+                    foreach (var nid in prov.def.neighbors)
+                        Console.WriteLine($"    суша {nid}: можно={MilitarySystem.CanMove(st, a, nid, out var why)} {why}");
+                    foreach (var route in st.Map.seaRoutes.Where(r => r.Contains(a.province)))
+                    {
+                        var other = route[0] == a.province ? route[1] : route[0];
+                        Console.WriteLine($"    море {other}: можно={MilitarySystem.CanMove(st, a, other, out var why2)} {why2}");
+                    }
+                }
+            }
+
+            if (args.Contains("--debug-pol"))
+            {
+                int pi = Array.IndexOf(args, "--debug-pol");
+                string polFaction = pi + 1 < args.Length && !args[pi + 1].StartsWith("--") ? args[pi + 1] : "five_lannister";
+                var st = GameSetup.CreateNewGame(db, "fivekings", polFaction, seed: 1337, mapMode: "canonical");
+                TurnEngine.StartGame(st);
+                for (int turnNo = 1; turnNo <= 60; turnNo++)
+                {
+                    TurnEngine.EndTurn(st);
+                    if (turnNo % 10 != 0) continue;
+                    var f = st.Faction(polFaction);
+                    var seats = st.Council.seats.Where(kv => kv.Value == f.id).Select(kv => kv.Key).ToList();
+                    Console.WriteLine($"  [полит {turnNo}] трон: {st.FactionName(st.Council.throneHolder)}, признание: {f.recognition:0.#}, мест: {seats.Count}/{VictorySystem.PoliticalSeatsRequired} ({string.Join(",", seats)}), влияния: {f.influence:0}, законов: {f.passedLaws.Count}");
+                }
+            }
+
             if (mapCheck)
             {
                 int okMaps = 0;

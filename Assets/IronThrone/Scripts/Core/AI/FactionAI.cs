@@ -108,12 +108,14 @@ namespace IronThrone.Core.AI
             EconomySystem.StartBuild(state, f, best.p, best.b.id, out _);
         }
 
+        /// <summary>
+        /// Найм войск. Дом набирает до нескольких отрядов за ход, пока есть золото и еда,
+        /// поэтому казна не копится мёртвым грузом, а армии восстанавливаются после потерь.
+        /// </summary>
         private static void Recruit(GameState state, FactionState f)
         {
-            var army = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null)
-                .Where(a => a != null && a.alive).OrderByDescending(a => a.units.Count).FirstOrDefault();
-            int totalUnits = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a.UnitCount : 0).Sum();
-            if (totalUnits >= state.Settings.armyMaxUnits + 2) return;
+            var owned = state.Provinces.Values.Where(p => p.controller == f.id).ToList();
+            if (owned.Count == 0) return;
 
             var options = state.Content.Units
                 .Where(u => (u.faction == "shared" || u.faction == f.house) &&
@@ -121,18 +123,40 @@ namespace IronThrone.Core.AI
                 .OrderByDescending(u => u.stats.attack + u.stats.defense)
                 .ToList();
             if (options.Count == 0) return;
-            var pick = options[Math.Min(options.Count - 1, state.Rng.Next(0, Math.Min(3, options.Count)))];
-            var cost = pick.cost;
-            if (f.gold < cost.gold * 1.4f || f.food < cost.food * 1.4f) return;
-            string provinceId = army?.province;
-            if (provinceId == null || state.Province(provinceId)?.controller != f.id)
+
+            int maxUnits = state.Settings.armyMaxUnits * Math.Max(1, state.Settings.maxArmies);
+            int recruits = 0;
+            for (int round = 0; round < 3; round++)
             {
-                provinceId = state.Provinces.Values.Where(p => p.controller == f.id)
-                    .OrderByDescending(p => p.def.level).Select(p => p.id).FirstOrDefault();
+                int totalUnits = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a.UnitCount : 0).Sum();
+                if (totalUnits >= maxUnits) return;
+                if (f.armies.Count >= state.Settings.maxArmies && totalUnits >= state.Settings.armyMaxUnits * f.armies.Count) return;
+
+                var army = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null)
+                    .Where(a => a != null && a.alive && a.UnitCount < state.Settings.armyMaxUnits)
+                    .OrderByDescending(a => a.UnitCount).FirstOrDefault();
+
+                string provinceId = army?.province;
+                if (provinceId == null || state.Province(provinceId)?.controller != f.id)
+                {
+                    provinceId = owned.OrderByDescending(p => p.def.isCapital)
+                        .ThenByDescending(p => p.def.level).Select(p => p.id).FirstOrDefault();
+                }
+                if (provinceId == null) return;
+
+                // берём самый сильный отряд, который дом может себе позволить
+                UnitDef pick = null;
+                foreach (var u in options)
+                    if (f.gold >= u.cost.gold * 1.25f && f.food >= u.cost.food * 1.25f &&
+                        f.materials >= u.cost.materials * 1.25f)
+                    { pick = u; break; }
+                if (pick == null) return;
+
+                if (!MilitarySystem.Recruit(state, f, pick.id, 1, provinceId, out _)) return;
+                recruits++;
+                if (f.gold < 120 && f.food < 120) return;
             }
-            if (provinceId == null) return;
-            if (army == null || army.units.Count < state.Settings.armyMaxUnits)
-                MilitarySystem.Recruit(state, f, pick.id, 1, provinceId, out _);
+            if (recruits > 0 && f.isPlayer == false) { /* журнал уже пишет MilitarySystem */ }
         }
 
         private static void MoveArmies(GameState state, FactionState f)
@@ -265,6 +289,28 @@ namespace IronThrone.Core.AI
                 var improv = TerritorySystem.Improvements(state, f, prov).FirstOrDefault();
                 if (improv == null) continue;
                 if (TerritorySystem.AddImprovement(state, f, prov, improv.id, false, out _)) bought++;
+            }
+
+            // столичный ансамбль: достраиваем слоты столицы, чтобы собирать комплекты построек
+            var cap = state.Province(f.capital);
+            if (cap != null && cap.controller == f.id && f.gold >= 500)
+            {
+                int built = 0;
+                var candidates = state.Content.Buildings
+                    .Where(b => b.slot != TerritorySystem.ImprovementSlot && !string.IsNullOrEmpty(b.slot))
+                    .Where(b => string.IsNullOrEmpty(b.uniqueToFaction) || b.uniqueToFaction == f.house)
+                    .Where(b => string.IsNullOrEmpty(b.requiresTech) || f.HasTech(b.requiresTech))
+                    .Where(b => !cap.buildings.Contains(b.id) && !cap.buildQueue.ContainsKey(b.id))
+                    .OrderByDescending(b => cap.buildings.Count(id =>
+                        state.Content.BuildingById.TryGetValue(id, out var bd) && bd.slot == b.slot))
+                    .ThenBy(b => b.cost.gold)
+                    .ToList();
+                foreach (var b in candidates)
+                {
+                    if (built >= 2) break;
+                    if (f.gold < b.cost.gold * 1.5f) continue;
+                    if (EconomySystem.StartBuild(state, f, cap, b.id, out _)) built++;
+                }
             }
         }
 

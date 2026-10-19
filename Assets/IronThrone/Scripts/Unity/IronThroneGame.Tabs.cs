@@ -367,8 +367,19 @@ namespace IronThrone.Unity
                 GUILayout.Label("Столица потеряна — ансамбль не действует.", _small);
             else
             {
+                var slots = EconomySystem.SlotsFor(_state, capProv);
+                foreach (var group in slots.GroupBy(s => s).OrderBy(g => g.Key))
+                {
+                    int used = EconomySystem.UsedSlots(_state, capProv, group.Key);
+                    GUILayout.Label($"{EconomySystem.SlotName(group.Key)}: {used}/{group.Count()}", _small);
+                }
                 var bonus = EconomySystem.CapitalSetBonus(_state, f, out _, out _, out _, out _);
                 GUILayout.Label(bonus ?? "Заполните однотипные слоты столицы, чтобы получить бонус (3 экономики, 3 военных, 2 храма, 2 порта, 2 особых).", _small);
+                if (GUILayout.Button("Открыть столицу для строительства", _button))
+                {
+                    _selectedProvince = capProv.id;
+                    _tab = 0;
+                }
             }
 
             GUILayout.Space(8);

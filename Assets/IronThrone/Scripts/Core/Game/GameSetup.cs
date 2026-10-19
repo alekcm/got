@@ -372,11 +372,18 @@ namespace IronThrone.Core.Game
                 });
             }
 
-            // пираты и железнорождённые: побережье и острова
+            // железнорождённые: островные порты
+            var islandPorts = state.Provinces.Values
+                .Where(p => p.def.port && p.def.region == "islands")
+                .OrderBy(_ => state.Rng.Next()).Take(1).ToList();
+            foreach (var p in islandPorts)
+                AddCamp(p, "reavers", 45 + state.Rng.Next(0, 20));
+
+            // пираты: прочие морские порты
             foreach (var p in state.Provinces.Values
-                         .Where(p => p.def.port && p.def.region != "wall")
-                         .OrderBy(_ => state.Rng.Next()).Take(4))
-                AddCamp(p, p.def.region == "islands" ? "reavers" : "pirates", 40 + state.Rng.Next(0, 30));
+                         .Where(p => p.def.port && p.def.region != "wall" && p.def.region != "islands")
+                         .OrderBy(_ => state.Rng.Next()).Take(3))
+                AddCamp(p, "pirates", 40 + state.Rng.Next(0, 30));
 
             // горные кланы: Долина и Запад
             foreach (var p in state.Provinces.Values

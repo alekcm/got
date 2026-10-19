@@ -163,6 +163,30 @@ namespace IronThrone.UnitySmoke
                                   $"{prov.buildings.Count(id => state.Content.BuildingById.TryGetValue(id, out var b) && b.slot == TerritorySystem.ImprovementSlot)}");
             });
 
+            Step("столичный ансамбль", () =>
+            {
+                var state = (GameState)Get(game, "_state");
+                var player = state.Faction(state.PlayerFaction);
+                var capital = state.Province(player.capital);
+                if (capital == null || capital.controller != player.id) throw new Exception("столица потеряна");
+                player.gold += 2000; player.materials += 2000;
+                var eco = state.Content.Buildings
+                    .Where(b => b.slot == "economy" && !capital.buildings.Contains(b.id) && !capital.buildQueue.ContainsKey(b.id))
+                    .Take(3).ToList();
+                foreach (var b in eco)
+                {
+                    if (!EconomySystem.StartBuild(state, player, capital, b.id, out var err))
+                        throw new Exception("не удалось начать стройку: " + err);
+                }
+                for (int i = 0; i < 8; i++) EconomySystem.ProcessBuildQueues(state);
+                var text = EconomySystem.CapitalSetBonus(state, player, out var gold, out _, out _, out _);
+                if (text == null || gold <= 0) throw new Exception("бонус ансамбля не сработал: " + (text ?? "нет бонуса"));
+                Set(game, "_selectedProvince", capital.id);
+                Set(game, "_tab", 2);
+                Call(game, "OnGUI");
+                Console.WriteLine($"    {capital.def.name}: построек {capital.buildings.Count}, бонус: {text}");
+            });
+
             Step("сохранение/загрузка", () =>
             {
                 Call(game, "SaveGame", false);
