@@ -1687,5 +1687,435 @@
         ]
       }
     ]
+  },
+  {
+    "id": "chain_wall_1",
+    "type": "random",
+    "name": "Тень над Стеной",
+    "weight": 2,
+    "minTurn": 8,
+    "oncePerGame": true,
+    "text": "Разведчики доносят: за Стеной собирается войско одичалых. Дозор просит помощи, а лорды Севера спорят, чья это забота.",
+    "choices": [
+      {
+        "text": "Укрепить Стену и послать припасы",
+        "aiWeight": 2,
+        "resultText": "Стена усилена",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "siegeDefense",
+            "value": 1
+          },
+          {
+            "op": "unrest",
+            "amount": -5
+          }
+        ],
+        "cost": {
+          "gold": 120
+        },
+        "followUpEvent": "chain_wall_2",
+        "followUpDelay": 4
+      },
+      {
+        "text": "Оплатить наёмников для Дозора",
+        "aiWeight": 1,
+        "resultText": "Дозор получил людей",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 4
+          }
+        ],
+        "cost": {
+          "gold": 80
+        },
+        "followUpEvent": "chain_wall_2",
+        "followUpDelay": 4
+      }
+    ]
+  },
+  {
+    "id": "chain_wall_2",
+    "type": "chain",
+    "name": "Прорыв у Восточного Дозора",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Одичалые перешли Стену у Восточного Дозора. Деревни горят, беженцы идут на юг.",
+    "choices": [
+      {
+        "text": "Послать войска и очистить проходы",
+        "aiWeight": 2,
+        "resultText": "Прорыв остановлен",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -10
+          },
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 2
+          }
+        ],
+        "cost": {
+          "materials": 80
+        },
+        "followUpEvent": "chain_wall_3",
+        "followUpDelay": 4
+      },
+      {
+        "text": "Закрыть ворота и ждать",
+        "aiWeight": 1,
+        "resultText": "Дозор справился сам",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 8
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ],
+        "followUpEvent": "chain_wall_3",
+        "followUpDelay": 5
+      }
+    ]
+  },
+  {
+    "id": "chain_wall_3",
+    "type": "chain",
+    "name": "Король за Стеной",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Вождь одичалых предлагает переговоры. За Стеной — сотни тысяч голодных, и они не уйдут.",
+    "choices": [
+      {
+        "text": "Заключить договор и расселить их",
+        "aiWeight": 2,
+        "resultText": "Договор подписан",
+        "effects": [
+          {
+            "op": "relation",
+            "id": "all",
+            "amount": 6
+          },
+          {
+            "op": "recognition",
+            "amount": 8
+          }
+        ]
+      },
+      {
+        "text": "Ударить, пока они не собрались с силами",
+        "aiWeight": 1,
+        "resultText": "Одичалые рассеяны",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          },
+          {
+            "op": "unrest",
+            "amount": 5
+          }
+        ],
+        "cost": {
+          "gold": 100
+        }
+      }
+    ]
+  },
+  {
+    "id": "chain_oldtown_1",
+    "type": "random",
+    "name": "Спор в Звёздной септе",
+    "weight": 2,
+    "minTurn": 10,
+    "oncePerGame": true,
+    "text": "Верховный септон умер, и в Староместе спорят о том, кто поведёт Веру. Каждый претендент ищет светских покровителей.",
+    "choices": [
+      {
+        "text": "Поддержать Веру деньгами и людьми",
+        "aiWeight": 2,
+        "resultText": "Вера благодарна",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "pietyIncome",
+            "value": 2
+          },
+          {
+            "op": "recognition",
+            "amount": 5
+          }
+        ],
+        "cost": {
+          "gold": 150
+        },
+        "followUpEvent": "chain_oldtown_2",
+        "followUpDelay": 4
+      },
+      {
+        "text": "Держаться в стороне",
+        "aiWeight": 1,
+        "resultText": "Дворы оценили сдержанность",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "recognitionGain",
+            "value": 0.05
+          }
+        ],
+        "followUpEvent": "chain_oldtown_2",
+        "followUpDelay": 5
+      }
+    ]
+  },
+  {
+    "id": "chain_oldtown_2",
+    "type": "chain",
+    "name": "Собор в Староместе",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Собор собрал иерархов со всего Вестероса. Они готовы признать вашего кандидата — за поддержку их реформ.",
+    "choices": [
+      {
+        "text": "Созвать собор и провести своих",
+        "aiWeight": 2,
+        "resultText": "Собор на вашей стороне",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "faithSpread",
+            "value": 0.1
+          },
+          {
+            "op": "recognition",
+            "amount": 10
+          }
+        ],
+        "cost": {
+          "piety": 40
+        },
+        "followUpEvent": "chain_oldtown_3",
+        "followUpDelay": 4
+      },
+      {
+        "text": "Запретить собор",
+        "aiWeight": 1,
+        "resultText": "Собор разогнан",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 6
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          }
+        ],
+        "followUpEvent": "chain_oldtown_3",
+        "followUpDelay": 5
+      }
+    ]
+  },
+  {
+    "id": "chain_oldtown_3",
+    "type": "chain",
+    "name": "Новый первосвященник",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Новый глава Веры готов занять престол. Вопрос лишь в том, кому он будет обязан.",
+    "choices": [
+      {
+        "text": "Посадить своего человека",
+        "aiWeight": 2,
+        "resultText": "Вера под вашим влиянием",
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 15
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 1
+          }
+        ],
+        "cost": {
+          "influence": 15
+        }
+      },
+      {
+        "text": "Оставить Веру независимой",
+        "aiWeight": 1,
+        "resultText": "Дворы одобряют",
+        "effects": [
+          {
+            "op": "relation",
+            "id": "all",
+            "amount": 5
+          },
+          {
+            "op": "modifier",
+            "key": "faithSpread",
+            "value": 0.15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chain_bank_1",
+    "type": "random",
+    "name": "Предложение Железного банка",
+    "weight": 2,
+    "minTurn": 12,
+    "oncePerGame": true,
+    "text": "Посланник из Браавоса предлагает заём под скромный процент. Золото нужно сейчас — но долги имеют обыкновение возвращаться.",
+    "choices": [
+      {
+        "text": "Взять заём",
+        "aiWeight": 2,
+        "resultText": "Золото получено",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 400
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": -1
+          }
+        ],
+        "followUpEvent": "chain_bank_2",
+        "followUpDelay": 5
+      },
+      {
+        "text": "Отказаться от займа",
+        "aiWeight": 1,
+        "resultText": "Банк оценил осторожность",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 3
+          }
+        ],
+        "followUpEvent": "chain_bank_2",
+        "followUpDelay": 6
+      }
+    ]
+  },
+  {
+    "id": "chain_bank_2",
+    "type": "chain",
+    "name": "Срок платежа",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Браавос напоминает о долге. Проценты растут, а вежливость посланников тает.",
+    "choices": [
+      {
+        "text": "Заплатить сполна",
+        "aiWeight": 2,
+        "resultText": "Долг закрыт, репутация крепка",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 4
+          }
+        ],
+        "cost": {
+          "gold": 300
+        },
+        "followUpEvent": "chain_bank_3",
+        "followUpDelay": 4
+      },
+      {
+        "text": "Отсрочить платёж",
+        "aiWeight": 1,
+        "resultText": "Банк недоволен",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 8
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": -1
+          }
+        ],
+        "followUpEvent": "chain_bank_3",
+        "followUpDelay": 5
+      }
+    ]
+  },
+  {
+    "id": "chain_bank_3",
+    "type": "chain",
+    "name": "Железный банк выбирает сторону",
+    "weight": 2,
+    "minTurn": 0,
+    "oncePerGame": true,
+    "text": "Банк открыто предлагает союз: золото в обмен на влияние в Вестеросе. Отказ тоже будет услышан.",
+    "choices": [
+      {
+        "text": "Заключить союз с банком",
+        "aiWeight": 2,
+        "resultText": "Союз с Браавосом",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 5
+          }
+        ],
+        "cost": {
+          "influence": 10
+        }
+      },
+      {
+        "text": "Разорвать отношения",
+        "aiWeight": 1,
+        "resultText": "Банк отвергнут",
+        "effects": [
+          {
+            "op": "relation",
+            "id": "all",
+            "amount": -5
+          },
+          {
+            "op": "recognition",
+            "amount": 6
+          }
+        ]
+      }
+    ]
   }
 ]

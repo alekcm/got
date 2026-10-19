@@ -1,5 +1,6 @@
 [
   { "id": "law_royal_decrees", "name": "Королевские указы", "voteCost": 10,
+    "common": true,
     "description": "Корона получает право издавать указы без согласия лордов. Влияние трона растёт.",
     "effects": [
       { "op": "modifier", "key": "influenceIncome", "value": 2 },
@@ -7,6 +8,7 @@
     ] },
 
   { "id": "law_golden_treasury", "name": "Золотая казна", "voteCost": 12,
+    "common": true,
     "description": "Налоговая реформа: каждый лорд платит в казну часть доходов.",
     "effects": [
       { "op": "modifier", "key": "goldIncome", "value": 5 },
@@ -14,6 +16,7 @@
     ] },
 
   { "id": "law_mercenary_contracts", "name": "Наёмные контракты", "voteCost": 12,
+    "common": true,
     "description": "Наёмники получают королевские патенты. Их услуги дешевле.",
     "effects": [
       { "op": "modifier", "key": "recruitCost.pct", "value": -0.12 },
@@ -21,6 +24,7 @@
     ] },
 
   { "id": "law_standing_army", "name": "Постоянная армия", "voteCost": 15,
+    "common": true,
     "description": "Лорды содержат профессиональные гарнизоны вместо ополчения.",
     "effects": [
       { "op": "modifier", "key": "armyDefense", "value": 1 },
@@ -29,6 +33,7 @@
     ] },
 
   { "id": "law_harvest_levy", "name": "Урожайный сбор", "voteCost": 8,
+    "common": true,
     "description": "Повышенный налог зерном: больше еды, больше недовольства.",
     "effects": [
       { "op": "modifier", "key": "foodIncome", "value": 5 },
@@ -44,6 +49,7 @@
     ] },
 
   { "id": "law_faith_militant", "name": "Воинствующая вера", "voteCost": 16,
+    "common": true,
     "description": "Церковь благословляет меч. Воины сражаются с новой яростью, но растёт вражда.",
     "effects": [
       { "op": "modifier", "key": "armyAttack", "value": 2 },
@@ -90,6 +96,7 @@
     ] },
 
   { "id": "law_chivalry", "name": "Кодекс рыцарства", "voteCost": 12,
+    "common": true,
     "description": "Поединки, турниры и защита слабых. Знать довольна.",
     "effects": [
       { "op": "modifier", "key": "armyMorale", "value": 5 },
@@ -98,6 +105,7 @@
     ] },
 
   { "id": "law_great_alliance", "name": "Великий союз", "voteCost": 14,
+    "common": true,
     "description": "Лорды обязуются защищать друг друга. Голос каждого в совете усиливается.",
     "effects": [
       { "op": "modifier", "key": "votePower", "value": 1 },
@@ -174,6 +182,7 @@
     ] },
 
   { "id": "law_iron_conviction", "name": "Железная воля", "voteCost": 10,
+    "common": true,
     "description": "Дисциплина и вера важнее золота.",
     "effects": [
       { "op": "modifier", "key": "armyMorale", "value": 8 },
@@ -188,9 +197,23 @@
     ] },
 
   { "id": "law_feudal_contract", "name": "Феодальный договор", "voteCost": 6,
+    "common": true,
     "description": "Базовые права лордов: их земли и люди защищены законом.",
     "effects": [
       { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.1 },
       { "op": "modifier", "key": "influenceIncome", "value": 1 }
+    ] },
+  { "id": "law_lion_gold", "name": "Львиная казна", "voteCost": 14,
+    "description": "Западные лорды платят золотом, а не кровью: налоги и торговля приносят больше.",
+    "effects": [
+      { "op": "modifier", "key": "goldIncome", "value": 3 },
+      { "op": "modifier", "key": "tradeDominance", "value": 2 }
+    ] },
+
+  { "id": "law_wall_vigil", "name": "Обет Дозора", "voteCost": 8,
+    "description": "Каждый дом присылает людей и припасы на Стену. Гарнизоны и оборона крепнут.",
+    "effects": [
+      { "op": "modifier", "key": "armyDefense", "value": 1 },
+      { "op": "modifier", "key": "garrisonBonus", "value": 3 }
     ] }
 ]

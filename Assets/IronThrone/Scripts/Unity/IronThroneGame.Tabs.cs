@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IronThrone.Core.Battle;
 using IronThrone.Core.Content;
 using IronThrone.Core.Game;
 using UnityEngine;
@@ -217,6 +218,49 @@ namespace IronThrone.Unity
             GUILayout.Label(army.name, _h2);
             GUILayout.Label($"Движение: {army.movementLeft}/{army.maxMovement} · припасы {army.supply}% · строй: {StanceName(army.stance)}", _small);
 
+            // герой армии
+            GUILayout.Space(4);
+            var hero = MilitarySystem.Hero(_state, army.heroId);
+            if (hero != null)
+            {
+                string sig = MilitarySystem.HeroSignature(_state, hero);
+                var hdef = MilitarySystem.HeroDef(_state, hero);
+                GUILayout.Label($"<b>Герой: {hero.name}</b> — ур. {hero.level}" +
+                                (sig != null ? $" · в бою: «{BattleEngine.HeroAbilityName(sig)}»" : ""), _body);
+                if (hdef != null && !string.IsNullOrEmpty(hdef.traitText)) GUILayout.Label(hdef.traitText, _small);
+                if (GUILayout.Button("Отозвать героя ко двору", _button, GUILayout.Width(240)))
+                {
+                    if (MilitarySystem.ReleaseHeroFromArmy(_state, f, hero.defId, out var herr)) Toast(hero.name + " вернулся ко двору");
+                    else Toast(herr);
+                }
+            }
+            else GUILayout.Label("Герой не назначен: в бою армия теряет способность героя и его бонусы.", _small);
+
+            var freeHeroes = f.heroes
+                .Select(id => MilitarySystem.Hero(_state, id))
+                .Where(h => h != null && h.alive && h.defId != army.heroId)
+                .ToList();
+            if (freeHeroes.Count > 0)
+            {
+                GUILayout.Label("Назначить героя (один на армию):", _small);
+                foreach (var h in freeHeroes)
+                {
+                    string where = h.armyId != null
+                        ? "в " + (_state.Armies.TryGetValue(h.armyId, out var ha) ? ha.name : "другой армии")
+                        : h.wounded ? $"ранен ({Math.Max(1, h.woundedTurns)})"
+                        : h.reassignCooldown > 0 ? $"перестроение {h.reassignCooldown}" : "при дворе";
+                    bool can = !h.wounded && h.reassignCooldown <= 0;
+                    GUI.enabled = can;
+                    if (GUILayout.Button($"{h.name} — {where}", _button))
+                    {
+                        if (MilitarySystem.AssignHero(_state, f, h.defId, army.id, out var aerr))
+                            Toast(h.name + " возглавил " + army.name);
+                        else Toast(aerr);
+                    }
+                    GUI.enabled = true;
+                }
+            }
+
             foreach (var u in army.units.Where(u => u.alive))
             {
                 GUILayout.BeginHorizontal();
@@ -251,16 +295,74 @@ namespace IronThrone.Unity
             foreach (var u in army.units.Where(u => !u.alive))
                 GUILayout.Label($"✝ {u.name} — уничтожен", _small);
 
+            GUILayout.Space(8);
+            GUILayout.Label("Перестроения", _h2);
+            var samePlace = armies.Where(x => x.id != army.id && x.alive && x.province == army.province).ToList();
+            foreach (var other in samePlace)
+            {
+                if (!other.alive) continue;
+                if (GUILayout.Button($"Влить «{other.name}» ({MilitarySystem.AliveUnits(other)} отр.) в эту армию", _button))
+                {
+                    if (MilitarySystem.MergeArmies(_state, f, army.id, other.id, out var merr)) Toast("Армии объединены");
+                    else Toast(merr);
+                }
+            }
+            int aliveUnits = MilitarySystem.AliveUnits(army);
+            bool canSplit = aliveUnits >= 2 && f.armies.Count < _state.Settings.maxArmies;
+            GUILayout.BeginHorizontal();
+            GUI.enabled = canSplit;
+            if (GUILayout.Button("Отделить 1 отряд", _button))
+            {
+                var split = MilitarySystem.SplitArmy(_state, f, army, 1, out var serr);
+                Toast(split != null ? "Создана армия " + split.name + " (без движения в этот ход)" : serr);
+            }
+            if (aliveUnits >= 4 && GUILayout.Button($"Отделить половину ({aliveUnits / 2})", _button))
+            {
+                var split = MilitarySystem.SplitArmy(_state, f, army, aliveUnits / 2, out var serr);
+                Toast(split != null ? "Создана армия " + split.name : serr);
+            }
+            GUI.enabled = true;
+            GUILayout.EndHorizontal();
+            if (aliveUnits < 2)
+                GUILayout.Label("Для разделения нужно хотя бы два отряда в армии.", _small);
+
             GUILayout.Space(6);
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(army.stance == "defend" ? "Перейти к наступлению" : "Занять оборону", _button))
-                army.stance = army.stance == "defend" ? "move" : "defend";
+            {
+                if (army.stance == "ambush") army.stance = "defend";
+                else army.stance = army.stance == "defend" ? "move" : "defend";
+            }
             if (GUILayout.Button("Двигаться (клик по карте)", _button))
             {
                 _moveMode = true;
                 Toast("Выберите соседнюю провинцию на карте.");
             }
             GUILayout.EndHorizontal();
+
+            // засада: скрытая позиция в лесу, горах, холмах, болотах или снегах
+            GUILayout.Space(4);
+            if (army.stance == "ambush")
+            {
+                GUILayout.Label("Армия в засаде: враг не увидит её, пока не войдёт в провинцию. Свежая разведка противника раскрывает засаду.", _small);
+                if (GUILayout.Button("Снять засаду", _button, GUILayout.Width(200)))
+                {
+                    MilitarySystem.LeaveAmbush(army);
+                    Toast("Армия вышла из засады");
+                }
+            }
+            else
+            {
+                bool canAmbush = MilitarySystem.CanAmbush(_state, f, army, out var ambErr);
+                GUI.enabled = canAmbush;
+                if (GUILayout.Button("Устроить засаду", _button, GUILayout.Width(200)))
+                {
+                    if (MilitarySystem.SetAmbush(_state, f, army, out var serr2)) Toast("Армия укрылась: засада готова");
+                    else Toast(serr2);
+                }
+                GUI.enabled = true;
+                if (!canAmbush) GUILayout.Label(ambErr, _small);
+            }
 
             GUILayout.Space(6);
             GUILayout.Label("Соседние провинции", _h2);
@@ -304,12 +406,15 @@ namespace IronThrone.Unity
             "defend" => "оборона",
             "raid" => "набег",
             "siege" => "осада",
+            "ambush" => "засада",
             _ => "поход",
         };
 
         // ------------------------------------------------------------------ двор
         private void DrawCourtTab(FactionState f)
         {
+            if (f.def.passive != null && !string.IsNullOrEmpty(f.def.passive.name))
+                GUILayout.Label($"<b>Пассивка дома: {f.def.passive.name}</b> — {f.def.passive.text}", _body);
             GUILayout.Label("Малый совет", _h1);
             foreach (var title in _state.Content.Titles)
             {
@@ -384,6 +489,28 @@ namespace IronThrone.Unity
                 {
                     _selectedProvince = capProv.id;
                     _tab = 0;
+                }
+            }
+
+            GUILayout.Space(8);
+            GUILayout.Label("Действующие законы", _h2);
+            if (_state.ActiveLaws.Count == 0) GUILayout.Label("Совет пока ничего не принял.", _small);
+            foreach (var ls in _state.ActiveLaws.ToList())
+            {
+                if (!_state.Content.LawById.TryGetValue(ls.id, out var activeLaw)) continue;
+                GUILayout.Label($"<b>{activeLaw.name}</b> — {activeLaw.description}", _body);
+                GUILayout.Label($"Спонсор: {_state.FactionName(ls.sponsor)}" +
+                                (activeLaw.repealable ? "" : " · отмена невозможна"), _small);
+                if (activeLaw.repealable)
+                {
+                    GUI.enabled = PoliticsSystem.CanRepeal(_state, f, activeLaw, out _);
+                    if (GUILayout.Button($"Отменить закон ({PoliticsSystem.RepealCost(activeLaw)} влияния)", _button))
+                    {
+                        var rv = PoliticsSystem.RepealLaw(_state, f, activeLaw.id, out var rerr);
+                        if (rv != null) Toast(_state.PendingVote != null ? "Голосование об отмене началось" : rerr ?? "Голосование началось");
+                        else Toast(rerr);
+                    }
+                    GUI.enabled = true;
                 }
             }
 
@@ -470,12 +597,23 @@ namespace IronThrone.Unity
         private void DrawHousesTab(FactionState f)
         {
             GUILayout.Label("Великие дома", _h1);
+            if (_state.CoalitionTarget != null)
+            {
+                var target = _state.Faction(_state.CoalitionTarget);
+                string role = target != null && target.id == f.id ? "против вас" : "против " + (target?.def.name ?? _state.CoalitionTarget);
+                GUILayout.Label($"<color=#d0a050>Коалиция {role}</color> — до хода {_state.CoalitionUntil}", _body);
+            }
             foreach (var other in _state.Factions.Values.Where(x => x.id != f.id && x.alive))
             {
                 int rel = (int)DiplomacySystem.Relation(_state, f.id, other.id);
                 bool war = DiplomacySystem.WarBetween(_state, f.id, other.id) != null;
+                int pact = DiplomacySystem.PactLeft(_state, f.id, other.id);
+                bool married = f.marriages.Contains(other.id);
+                string tags = (war ? " <color=#c05050>· война</color>" : "") +
+                              (pact > 0 ? $" <color=#70a0d0>· пакт {pact}</color>" : "") +
+                              (married ? " <color=#c090c0>· брак</color>" : "");
                 GUILayout.BeginHorizontal();
-                GUILayout.Label($"<b>{other.def.name}</b> — отношение {rel}" + (war ? " <color=#c05050>· война</color>" : ""), _body);
+                GUILayout.Label($"<b>{other.def.name}</b> — отношение {rel}" + tags, _body);
                 GUILayout.FlexibleSpace();
                 if (war)
                 {
@@ -491,6 +629,24 @@ namespace IronThrone.Unity
                     {
                         if (DiplomacySystem.SendGift(_state, f, other.id, out var gerr)) Toast("Дары отправлены: +10 отношений");
                         else Toast(gerr);
+                    }
+                    if (pact > 0)
+                    {
+                        if (GUILayout.Button("Разорвать пакт", _button, GUILayout.Width(110)))
+                        {
+                            if (DiplomacySystem.BreakPact(_state, f, other.id, out var berr)) Toast("Пакт разорван");
+                            else Toast(berr);
+                        }
+                    }
+                    else if (GUILayout.Button("Пакт 6", _button, GUILayout.Width(80)))
+                    {
+                        if (DiplomacySystem.MakePact(_state, f, other.id, out var perr)) Toast("Пакт о ненападении на 10 ходов");
+                        else Toast(perr);
+                    }
+                    if (!married && GUILayout.Button("Брак 300+8", _button, GUILayout.Width(100)))
+                    {
+                        if (DiplomacySystem.Marry(_state, f, other.id, out var merr)) Toast("Династический брак заключён");
+                        else Toast(merr);
                     }
                     if (GUILayout.Button("Война", _button, GUILayout.Width(70)))
                     {
@@ -548,6 +704,32 @@ namespace IronThrone.Unity
                 GUILayout.EndHorizontal();
             }
             if (houses.Count == 0) GUILayout.Label("Все малые дома аннексированы или отсутствуют.", _small);
+
+            var myRequests = _state.MinorRequests.Where(r => r.faction == f.id).ToList();
+            GUILayout.Space(8);
+            GUILayout.Label("Просьбы малых домов", _h2);
+            if (myRequests.Count == 0)
+                GUILayout.Label("Пока никто не просит помощи. Просьбы появляются по мере роста отношений.", _small);
+            foreach (var req in myRequests)
+            {
+                var cost = MinorHouseSystem.RequestCost(req.type);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"<b>{_state.HouseName(req.house)}</b> {MinorHouseSystem.RequestTitle(req.type)} · " +
+                                $"{cost.ToRu()} · осталось {req.turnsLeft} х.", _body);
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Помочь", _button, GUILayout.Width(80)))
+                {
+                    if (MinorHouseSystem.AcceptRequest(_state, f, req, out var rerr))
+                        Toast($"+{MinorHouseSystem.RequestReward(req.type)} отношений с домом {_state.HouseName(req.house)}");
+                    else Toast(rerr);
+                }
+                if (GUILayout.Button("Отказать", _button, GUILayout.Width(80)))
+                {
+                    if (MinorHouseSystem.DeclineRequest(_state, f, req, out var rerr)) Toast("Отказ: −6 отношений");
+                    else Toast(rerr);
+                }
+                GUILayout.EndHorizontal();
+            }
         }
 
         private static string ActionName(string action) => action switch
@@ -593,6 +775,28 @@ namespace IronThrone.Unity
             }
             GUI.enabled = true;
 
+            if (f.HasFlag("faith_reformed"))
+            {
+                GUILayout.Space(6);
+                var chosen = FaithSystem.Dogma(f.dogma);
+                if (chosen != null)
+                {
+                    GUILayout.Label($"Догмат: <b>{chosen.name}</b> — {chosen.description}", _body);
+                }
+                else
+                {
+                    GUILayout.Label("Выберите догмат веры (один раз, навсегда):", _h2);
+                    foreach (var d in FaithSystem.Dogmas)
+                    {
+                        if (GUILayout.Button($"{d.name} — {d.description}", _button))
+                        {
+                            if (FaithSystem.ChooseDogma(_state, f, d.id, out var derr)) Toast("Догмат: " + d.name);
+                            else Toast(derr);
+                        }
+                    }
+                }
+            }
+
             GUILayout.Space(8);
             GUILayout.Label("Распространение", _h2);
             foreach (var (fid, sh, isPlayer) in FaithSystem.FaithBreakdown(_state, f).OrderByDescending(x => x.share).Take(8))
@@ -634,6 +838,20 @@ namespace IronThrone.Unity
             }
             var target = _state.Faction(_spyTarget);
             if (target == null) return;
+
+            GUILayout.Space(6);
+            GUILayout.Label("Донесения", _h2);
+            var intel = EspionageSystem.Intel(_state, f.id, _spyTarget);
+            if (intel == null)
+                GUILayout.Label("Сведений нет. Отправьте миссию «Разведка» — донесение живёт 20 ходов.", _small);
+            else
+            {
+                bool fresh = EspionageSystem.HasFreshIntel(_state, f.id, _spyTarget);
+                GUILayout.Label(fresh
+                    ? $"Свежие данные (ход {intel.turn}): +1 к атаке в бою против этого дома."
+                    : $"Донесение устарело (ход {intel.turn}) — бонуса в бою нет, нужна новая разведка.", _small);
+                GUILayout.Label(EspionageSystem.IntelReport(_state, intel), _small);
+            }
 
             GUILayout.Space(6);
             foreach (var mission in EspionageSystem.Missions)

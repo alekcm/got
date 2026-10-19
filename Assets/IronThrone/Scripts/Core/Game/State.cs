@@ -34,7 +34,23 @@ namespace IronThrone.Core.Game
         public int woundedTurns;
         public string armyId;
         public int abilityCooldown;
+        /// <summary>Ходов до того, как героя можно будет перевести в другую армию.</summary>
+        public int reassignCooldown;
         public Dictionary<string, int> cooldowns = new Dictionary<string, int>();
+    }
+
+    /// <summary>Донесение о чужом доме, добытое разведкой. Живёт ограниченное число ходов.</summary>
+    public class FactionIntel
+    {
+        public string factionId;
+        public int turn;
+        public int gold, food, materials, influence;
+        public int provinces, armies, units, strength, techs;
+        public float recognition;
+        public string capital;
+        public List<string> armyLines = new List<string>();
+        public List<string> wars = new List<string>();
+        public List<string> lastTechs = new List<string>();
     }
 
     public class ArmyState
@@ -72,8 +88,9 @@ namespace IronThrone.Core.Game
         public Dictionary<string, int> buildQueue = new Dictionary<string, int>(); // buildingId -> turns left
         public float unrest;
         public int garrison;
-        public Dictionary<string, float> faith = new Dictionary<string, float>();
+        public SortedDictionary<string, float> faith = new SortedDictionary<string, float>();
         public string dominantFaith;
+        public string startFaith;     // вера при основании игры: по ней считается число обращённых провинций
         public bool raided;
         public int raidCooldown;
         public int siegeProgress;
@@ -100,6 +117,8 @@ namespace IronThrone.Core.Game
         public string sponsor;
         public int openedTurn;
         public bool resolved;
+        /// <summary>Голосование об отмене действующего закона, а не о принятии нового.</summary>
+        public bool repeal;
         public Dictionary<string, int> votes = new Dictionary<string, int>();      // factionId -> вес голоса
         public Dictionary<string, float> lobby = new Dictionary<string, float>();  // влияние, вложенное игроком
         public Dictionary<string, string> votedFor = new Dictionary<string, string>(); // factionId -> "yes"/"no"
@@ -147,12 +166,12 @@ namespace IronThrone.Core.Game
         public List<string> armies = new List<string>();
         public List<string> heroes = new List<string>();
 
-        public Dictionary<string, float> relations = new Dictionary<string, float>(); // factionId -> -100..100
-        public Dictionary<string, int> minorRelations = new Dictionary<string, int>(); // houseId -> -100..100
-        public Dictionary<string, int> vassals = new Dictionary<string, int>();       // minor house -> turns as vassal
+        public SortedDictionary<string, float> relations = new SortedDictionary<string, float>(); // factionId -> -100..100
+        public SortedDictionary<string, int> minorRelations = new SortedDictionary<string, int>(); // houseId -> -100..100
+        public SortedDictionary<string, int> vassals = new SortedDictionary<string, int>();       // minor house -> turns as vassal
         public HashSet<string> annexed = new HashSet<string>();
 
-        public Dictionary<string, float> permanentMods = new Dictionary<string, float>();
+        public SortedDictionary<string, float> permanentMods = new SortedDictionary<string, float>();
         public List<TimedModifier> timedMods = new List<TimedModifier>();
 
         public float recognition;
@@ -165,7 +184,10 @@ namespace IronThrone.Core.Game
         public int counterspy;
 
         public HashSet<string> flags = new HashSet<string>();
-        public Dictionary<string, float> counters = new Dictionary<string, float>();
+        public SortedDictionary<string, float> counters = new SortedDictionary<string, float>();
+
+        /// <summary>Донесения разведки: id дома-цели -> последний отчёт.</summary>
+        public Dictionary<string, FactionIntel> intel = new Dictionary<string, FactionIntel>();
 
         public string currentFocus;
         public int focusTurnsLeft;
@@ -174,6 +196,12 @@ namespace IronThrone.Core.Game
 
         public HashSet<string> passedLaws = new HashSet<string>();
         public int lawsProposed;
+
+        /// <summary>Династические браки с великими домами: id дома-партнёра (не больше двух).</summary>
+        public HashSet<string> marriages = new HashSet<string>();
+
+        /// <summary>Догмат веры, выбранный при реформации (один из трёх).</summary>
+        public string dogma;
 
         public string faith;
         public float faithPoints;
@@ -220,6 +248,15 @@ namespace IronThrone.Core.Game
         public int sessionsHeld;
         public string lastAgenda;
         public int lastAgendaTurn = -99;
+    }
+
+    /// <summary>Просьба малого дома к великому: три вида, решается в «Домах».</summary>
+    public class MinorRequestState
+    {
+        public string house;
+        public string faction;
+        public string type; // gold, materials, protection
+        public int turnsLeft = 6;
     }
 
     public class MinorHouseState
@@ -278,6 +315,14 @@ namespace IronThrone.Core.Game
         public bool isGlobal;
     }
 
+    /// <summary>Событие, отложенное цепочкой: сработает на указанном ходу.</summary>
+    public class ScheduledEventState
+    {
+        public int turn;
+        public string eventId;
+        public string faction;
+    }
+
     public class LogEntry
     {
         public int turn;
@@ -302,6 +347,8 @@ namespace IronThrone.Core.Game
         public int defenderLosses;
         public string heroAttacker;
         public string heroDefender;
+        /// <summary>Имя героя, раненного в этом бою (для тоста и хроники).</summary>
+        public string heroWounded;
         public List<string> rounds = new List<string>();
         public string Summary =>
             $"{(attackerWon ? "Победа" : "Поражение")} в {province}: потери {attackerLosses} / {defenderLosses}";
@@ -322,22 +369,28 @@ namespace IronThrone.Core.Game
         public int Seed;
         public Random Rng;
 
-        public Dictionary<string, ProvinceState> Provinces = new Dictionary<string, ProvinceState>();
-        public Dictionary<string, FactionState> Factions = new Dictionary<string, FactionState>();
-        public Dictionary<string, ArmyState> Armies = new Dictionary<string, ArmyState>();
-        public Dictionary<string, HeroState> Heroes = new Dictionary<string, HeroState>();
-        public Dictionary<string, MinorHouseState> MinorHouses = new Dictionary<string, MinorHouseState>();
+        public SortedDictionary<string, ProvinceState> Provinces = new SortedDictionary<string, ProvinceState>();
+        public SortedDictionary<string, FactionState> Factions = new SortedDictionary<string, FactionState>();
+        public SortedDictionary<string, ArmyState> Armies = new SortedDictionary<string, ArmyState>();
+        public SortedDictionary<string, HeroState> Heroes = new SortedDictionary<string, HeroState>();
+        public SortedDictionary<string, MinorHouseState> MinorHouses = new SortedDictionary<string, MinorHouseState>();
+        public List<MinorRequestState> MinorRequests = new List<MinorRequestState>();
         public List<RaiderCampState> RaiderCamps = new List<RaiderCampState>();
         public List<QuestState> Quests = new List<QuestState>();
         public CouncilState Council = new CouncilState();
         public List<LawState> ActiveLaws = new List<LawState>();
         public LawVoteState PendingVote;
         public List<WarState> Wars = new List<WarState>();
-        public Dictionary<string, int> Truces = new Dictionary<string, int>(); // "a|b" -> ходы до истечения
+        public SortedDictionary<string, int> Truces = new SortedDictionary<string, int>(); // "a|b" -> ходы до истечения
+        public SortedDictionary<string, int> Pacts = new SortedDictionary<string, int>();  // "a|b" -> ходы пакта о ненападении
+        public Dictionary<string, float> FaithStartShare = new Dictionary<string, float>(); // доля веры на старте (для религиозной победы)
+        public string CoalitionTarget;                                          // дом, против которого собралась коалиция
+        public int CoalitionUntil;                                              // ход, до которого коалиция действует
+        public List<ScheduledEventState> ScheduledEvents = new List<ScheduledEventState>();
         public List<PendingEventState> PendingEvents = new List<PendingEventState>();
         public List<LogEntry> Log = new List<LogEntry>();
         public List<BattleResult> Battles = new List<BattleResult>();
-        public Dictionary<string, int> eventHistory = new Dictionary<string, int>();
+        public SortedDictionary<string, int> eventHistory = new SortedDictionary<string, int>();
         public HashSet<string> firedEvents = new HashSet<string>();
         public List<string> PendingNotifications = new List<string>();
         public int NextArmyId = 1;

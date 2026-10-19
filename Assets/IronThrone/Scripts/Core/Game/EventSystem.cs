@@ -29,6 +29,9 @@ namespace IronThrone.Core.Game
 
         public static void ProcessTurn(GameState state)
         {
+            // 0. отложенные события цепочек
+            FireScheduled(state);
+
             // 1. глобальные ивенты эпохи: разово на пороговом ходу и далее по периоду
             var eraGlobals = state.Era.globalEvents ?? new List<string>();
             foreach (var ev in state.Content.Events.Where(e => e.type == "global"))
@@ -62,6 +65,37 @@ namespace IronThrone.Core.Game
             }
 
             ProcessQuests(state);
+        }
+
+        /// <summary>Цепочка: выбор варианта может назначить продолжение через несколько ходов.</summary>
+        public static void Schedule(GameState state, string eventId, string factionId, int delay)
+        {
+            if (string.IsNullOrEmpty(eventId)) return;
+            state.ScheduledEvents.Add(new ScheduledEventState
+            {
+                turn = state.Turn + Math.Max(1, delay),
+                eventId = eventId,
+                faction = factionId,
+            });
+            string title = state.Content.EventById.TryGetValue(eventId, out var next) ? next.name : eventId;
+            state.AddLog("event", "Слух о грядущем: " + title, factionId);
+        }
+
+        private static void FireScheduled(GameState state)
+        {
+            if (state.ScheduledEvents.Count == 0) return;
+            foreach (var se in state.ScheduledEvents.Where(x => x.turn <= state.Turn).ToList())
+            {
+                state.ScheduledEvents.Remove(se);
+                var f = state.Faction(se.faction);
+                if (f == null || !f.alive) continue;
+                if (!state.Content.EventById.TryGetValue(se.eventId, out var ev)) continue;
+                if (!Fits(state, ev, f)) continue;
+                if (ev.oncePerGame && state.firedEvents.Contains(ev.id)) continue;
+                Fire(state, ev, f);
+                // цепочка может продолжаться и без выбора игрока
+                if (f.isPlayer) continue;
+            }
         }
 
         public static void Fire(GameState state, EventDef ev, FactionState f)
@@ -134,6 +168,8 @@ namespace IronThrone.Core.Game
             var desc = new List<string>();
             EffectEngine.ApplyAll(choice.effects, ctx, desc);
             state.PendingEvents.RemoveAt(pendingIndex);
+            if (!string.IsNullOrEmpty(choice.followUpEvent))
+                Schedule(state, choice.followUpEvent, f.id, choice.followUpDelay);
             state.AddLog("event", $"{f.def.name}: {ev.name} — {choice.text}" +
                 (desc.Count > 0 ? " (" + string.Join(", ", desc) + ")" : ""), f.id);
             if (f.isPlayer)

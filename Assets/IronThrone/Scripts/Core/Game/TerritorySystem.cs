@@ -181,6 +181,8 @@ namespace IronThrone.Core.Game
             if (p.buildings.Contains(improvementId)) { error = "Уже построено"; return false; }
             if (b.unique && state.Provinces.Values.Any(x => x.buildings.Contains(improvementId)))
             { error = "Такое улучшение уже есть в державе"; return false; }
+            if (b.maxPerEmpire < 99 && EconomySystem.CountBuilding(state, f, improvementId) >= b.maxPerEmpire)
+            { error = $"Лимит дома: не больше {b.maxPerEmpire} таких улучшений"; return false; }
             if (p.buildings.Count(x => state.Content.BuildingById.TryGetValue(x, out var bd) && bd.slot == ImprovementSlot) >= ImprovementLimit(state, p))
             { error = $"Лимит улучшений: {ImprovementLimit(state, p)}"; return false; }
             if (!string.IsNullOrEmpty(b.uniqueToFaction) && b.uniqueToFaction != f.house) { error = "Недоступно вашему дому"; return false; }

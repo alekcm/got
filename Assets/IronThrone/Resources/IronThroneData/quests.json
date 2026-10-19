@@ -1,85 +1,1131 @@
 [
-  { "id": "q_stark_vengeance", "name": "Месть Волка", "faction": "five_stark", "eras": ["fivekings"],
+  {
+    "id": "q_stark_vengeance",
+    "name": "Месть Волка",
+    "faction": "five_stark",
+    "eras": [
+      "fivekings"
+    ],
     "description": "Отец казнён, сёстры в руках врага. Север должен дойти до Королевской Гавани — и заплатить за это.",
     "steps": [
-      { "text": "Удержать Риверран как опорную базу", "objective": { "type": "controlProvince", "target": "riverrun" },
-        "reward": [ { "op": "resource", "res": "influence", "amount": 8 }, { "op": "modifier", "key": "armyAttack", "value": 1 } ],
-        "rewardText": "+8 влияния, +1 к атаке" },
-      { "text": "Собрать армию не меньше 600 силы", "objective": { "type": "army", "count": 600 },
-        "reward": [ { "op": "resource", "res": "food", "amount": 100 }, { "op": "recruit", "id": "northern_infantry", "count": 1 } ],
-        "rewardText": "+100 еды, +1 северная пехота" },
-      { "text": "Взять Королевскую Гавань", "objective": { "type": "controlProvince", "target": "kings_landing" },
-        "reward": [ { "op": "recognition", "amount": 25 }, { "op": "modifier", "key": "votePower", "value": 2 }, { "op": "resource", "res": "gold", "amount": 300 } ],
-        "rewardText": "+25 признания, +2 голоса, +300 золота" }
-    ] },
-
-  { "id": "q_lannister_throne", "name": "Долг Железному трону", "faction": "five_lannister", "eras": ["fivekings"],
+      {
+        "text": "Удержать Риверран как опорную базу",
+        "objective": {
+          "type": "controlProvince",
+          "target": "riverrun"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          },
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          }
+        ],
+        "rewardText": "+8 влияния, +1 к атаке"
+      },
+      {
+        "text": "Собрать армию не меньше 600 силы",
+        "objective": {
+          "type": "army",
+          "count": 600
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "recruit",
+            "id": "northern_infantry",
+            "count": 1
+          }
+        ],
+        "rewardText": "+100 еды, +1 северная пехота"
+      },
+      {
+        "text": "Взять Королевскую Гавань",
+        "objective": {
+          "type": "controlProvince",
+          "target": "kings_landing"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 25
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 300
+          }
+        ],
+        "rewardText": "+25 признания, +2 голоса, +300 золота"
+      }
+    ]
+  },
+  {
+    "id": "q_lannister_throne",
+    "name": "Долг Железному трону",
+    "faction": "five_lannister",
+    "eras": [
+      "fivekings"
+    ],
     "description": "Железный трон должен остаться за Ланнистерами — любой ценой.",
     "steps": [
-      { "text": "Удержать Королевскую Гавань", "objective": { "type": "controlProvince", "target": "kings_landing" },
-        "reward": [ { "op": "modifier", "key": "recognitionGain", "value": 0.1 }, { "op": "resource", "res": "gold", "amount": 200 } ],
-        "rewardText": "+10% к признанию, +200 золота" },
-      { "text": "Накопить 1200 золота", "objective": { "type": "gold", "count": 1200 },
-        "reward": [ { "op": "resource", "res": "influence", "amount": 15 }, { "op": "recruit", "id": "westerland_knights", "count": 1 } ],
-        "rewardText": "+15 влияния, +1 западный рыцарь" },
-      { "text": "Назвать наследника и скрепить мир", "objective": { "type": "title", "target": "hand" },
-        "reward": [ { "op": "recognition", "amount": 25 }, { "op": "modifier", "key": "influenceIncome", "value": 3 } ],
-        "rewardText": "+25 признания, +3 влияния за ход" }
-    ] },
-
-  { "id": "q_targ_conquest", "name": "Завоевание", "faction": "conquest_targaryen", "eras": ["conquest"],
+      {
+        "text": "Удержать Королевскую Гавань",
+        "objective": {
+          "type": "controlProvince",
+          "target": "kings_landing"
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "recognitionGain",
+            "value": 0.1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          }
+        ],
+        "rewardText": "+10% к признанию, +200 золота"
+      },
+      {
+        "text": "Накопить 1200 золота",
+        "objective": {
+          "type": "gold",
+          "count": 1200
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 15
+          },
+          {
+            "op": "recruit",
+            "id": "westerland_knights",
+            "count": 1
+          }
+        ],
+        "rewardText": "+15 влияния, +1 западный рыцарь"
+      },
+      {
+        "text": "Назвать наследника и скрепить мир",
+        "objective": {
+          "type": "title",
+          "target": "hand"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 25
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 3
+          }
+        ],
+        "rewardText": "+25 признания, +3 влияния за ход"
+      }
+    ]
+  },
+  {
+    "id": "q_targ_conquest",
+    "name": "Завоевание",
+    "faction": "conquest_targaryen",
+    "eras": [
+      "conquest"
+    ],
     "description": "Три дракона против семи королевств. Начните с Драконьего Камня и закончите Железным троном.",
     "steps": [
-      { "text": "Объединить Королевские земли", "objective": { "type": "controlRegion", "target": "crownlands", "count": 5 },
-        "reward": [ { "op": "resource", "res": "influence", "amount": 10 }, { "op": "resource", "res": "gold", "amount": 150 } ],
-        "rewardText": "+10 влияния, +150 золота" },
-      { "text": "Построить драконье логово", "objective": { "type": "build", "target": "dragonpit" },
-        "reward": [ { "op": "modifier", "key": "dragonPower", "value": 0.2 }, { "op": "recognition", "amount": 10 } ],
-        "rewardText": "+20% к силе драконов, +10 признания" },
-      { "text": "Взять Старомест — сердце Веры", "objective": { "type": "controlProvince", "target": "oldtown" },
-        "reward": [ { "op": "recognition", "amount": 25 }, { "op": "modifier", "key": "votePower", "value": 2 } ],
-        "rewardText": "+25 признания, +2 голоса" }
-    ] },
-
-  { "id": "q_martell_patience", "name": "Долгая игра", "faction": "five_martell", "eras": ["fivekings"],
+      {
+        "text": "Объединить Королевские земли",
+        "objective": {
+          "type": "controlRegion",
+          "target": "crownlands",
+          "count": 5
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 150
+          }
+        ],
+        "rewardText": "+10 влияния, +150 золота"
+      },
+      {
+        "text": "Построить драконье логово",
+        "objective": {
+          "type": "build",
+          "target": "dragonpit"
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "dragonPower",
+            "value": 0.2
+          },
+          {
+            "op": "recognition",
+            "amount": 10
+          }
+        ],
+        "rewardText": "+20% к силе драконов, +10 признания"
+      },
+      {
+        "text": "Взять Старомест — сердце Веры",
+        "objective": {
+          "type": "controlProvince",
+          "target": "oldtown"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 25
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 2
+          }
+        ],
+        "rewardText": "+25 признания, +2 голоса"
+      }
+    ]
+  },
+  {
+    "id": "q_martell_patience",
+    "name": "Долгая игра",
+    "faction": "five_martell",
+    "eras": [
+      "fivekings"
+    ],
     "description": "Дорн не воюет открыто. Он ждёт, пока враги ослабнут, и наносит удар.",
     "steps": [
-      { "text": "Сделать веру Семерых доминирующей в 40% провинций", "objective": { "type": "faithshare", "count": 40 },
-        "reward": [ { "op": "modifier", "key": "pietyIncome", "value": 2 }, { "op": "resource", "res": "influence", "amount": 8 } ],
-        "rewardText": "+2 веры за ход, +8 влияния" },
-      { "text": "Переманить малый дом на свою сторону", "objective": { "type": "vassal", "count": 1 },
-        "reward": [ { "op": "resource", "res": "gold", "amount": 200 }, { "op": "modifier", "key": "spyOffense", "value": 1 } ],
-        "rewardText": "+200 золота, +1 шпионаж" },
-      { "text": "Получить место в Малом совете", "objective": { "type": "title", "target": "master_of_whisperers" },
-        "reward": [ { "op": "recognition", "amount": 20 }, { "op": "modifier", "key": "influenceIncome", "value": 2 } ],
-        "rewardText": "+20 признания, +2 влияния за ход" }
-    ] },
-
-  { "id": "q_greyjoy_kraken", "name": "Кракен поднимается", "faction": "five_greyjoy", "eras": ["fivekings"],
+      {
+        "text": "Сделать веру Семерых доминирующей в 40% провинций",
+        "objective": {
+          "type": "faithshare",
+          "count": 40
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "pietyIncome",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          }
+        ],
+        "rewardText": "+2 веры за ход, +8 влияния"
+      },
+      {
+        "text": "Переманить малый дом на свою сторону",
+        "objective": {
+          "type": "vassal",
+          "count": 1
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "modifier",
+            "key": "spyOffense",
+            "value": 1
+          }
+        ],
+        "rewardText": "+200 золота, +1 шпионаж"
+      },
+      {
+        "text": "Получить место в Малом совете",
+        "objective": {
+          "type": "title",
+          "target": "master_of_whisperers"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+20 признания, +2 влияния за ход"
+      }
+    ]
+  },
+  {
+    "id": "q_greyjoy_kraken",
+    "name": "Кракен поднимается",
+    "faction": "five_greyjoy",
+    "eras": [
+      "fivekings"
+    ],
     "description": "Железнорождённые должны вернуть себе былое величие — и богатства берегов.",
     "steps": [
-      { "text": "Подчинить два малых дома", "objective": { "type": "vassal", "count": 2 },
-        "reward": [ { "op": "resource", "res": "gold", "amount": 200 }, { "op": "modifier", "key": "raidLoot", "value": 0.2 } ],
-        "rewardText": "+200 золота, +20% добычи" },
-      { "text": "Захватить Сигард", "objective": { "type": "controlProvince", "target": "seagard" },
-        "reward": [ { "op": "recognition", "amount": 12 }, { "op": "resource", "res": "materials", "amount": 150 } ],
-        "rewardText": "+12 признания, +150 материалов" },
-      { "text": "Собрать 900 золота", "objective": { "type": "gold", "count": 900 },
-        "reward": [ { "op": "recognition", "amount": 20 }, { "op": "modifier", "key": "navalPower", "value": 3 } ],
-        "rewardText": "+20 признания, +3 морской силы" }
-    ] },
-
-  { "id": "q_arryn_neutrality", "name": "Нейтралитет Долины", "faction": "five_arryn", "eras": ["fivekings"],
+      {
+        "text": "Подчинить два малых дома",
+        "objective": {
+          "type": "vassal",
+          "count": 2
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "modifier",
+            "key": "raidLoot",
+            "value": 0.2
+          }
+        ],
+        "rewardText": "+200 золота, +20% добычи"
+      },
+      {
+        "text": "Захватить Сигард",
+        "objective": {
+          "type": "controlProvince",
+          "target": "seagard"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 12
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 150
+          }
+        ],
+        "rewardText": "+12 признания, +150 материалов"
+      },
+      {
+        "text": "Собрать 900 золота",
+        "objective": {
+          "type": "gold",
+          "count": 900
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "navalPower",
+            "value": 3
+          }
+        ],
+        "rewardText": "+20 признания, +3 морской силы"
+      }
+    ]
+  },
+  {
+    "id": "q_arryn_neutrality",
+    "name": "Нейтралитет Долины",
+    "faction": "five_arryn",
+    "eras": [
+      "fivekings"
+    ],
     "description": "Мудрый правитель знает, когда не вступать в войну. Долина должна стать сильнейшей, не пролив крови.",
     "steps": [
-      { "text": "Накопить 900 золота", "objective": { "type": "gold", "count": 900 },
-        "reward": [ { "op": "modifier", "key": "buildCost.pct", "value": -0.1 }, { "op": "resource", "res": "materials", "amount": 150 } ],
-        "rewardText": "−10% к стоимости построек, +150 материалов" },
-      { "text": "Построить сеть шептунов", "objective": { "type": "build", "target": "spy_network" },
-        "reward": [ { "op": "modifier", "key": "spyOffense", "value": 1 }, { "op": "modifier", "key": "spyDefense", "value": 1 } ],
-        "rewardText": "+1 шпионаж, +1 контрразведка" },
-      { "text": "Получить место в Малом совете", "objective": { "type": "title", "target": "master_of_coin" },
-        "reward": [ { "op": "recognition", "amount": 20 }, { "op": "modifier", "key": "influenceIncome", "value": 2 } ],
-        "rewardText": "+20 признания, +2 влияния за ход" }
-    ] }
+      {
+        "text": "Накопить 900 золота",
+        "objective": {
+          "type": "gold",
+          "count": 900
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "buildCost.pct",
+            "value": -0.1
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 150
+          }
+        ],
+        "rewardText": "−10% к стоимости построек, +150 материалов"
+      },
+      {
+        "text": "Построить сеть шептунов",
+        "objective": {
+          "type": "build",
+          "target": "spy_network"
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "spyOffense",
+            "value": 1
+          },
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 1
+          }
+        ],
+        "rewardText": "+1 шпионаж, +1 контрразведка"
+      },
+      {
+        "text": "Получить место в Малом совете",
+        "objective": {
+          "type": "title",
+          "target": "master_of_coin"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+20 признания, +2 влияния за ход"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_stark",
+    "name": "Короли Зимы",
+    "faction": "conquest_stark",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Север не склонится перед драконом. Соберите знамёна и удержите Винтерфелл, пока Таргариены жгут юг.",
+    "steps": [
+      {
+        "text": "Удержать Винтерфелл",
+        "objective": {
+          "type": "controlProvince",
+          "target": "winterfell"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          },
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 1
+          }
+        ],
+        "rewardText": "+8 влияния, +1 к обороне"
+      },
+      {
+        "text": "Собрать армию не меньше 500 силы",
+        "objective": {
+          "type": "army",
+          "count": 500
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "recruit",
+            "id": "northern_infantry",
+            "count": 1
+          }
+        ],
+        "rewardText": "+100 еды, северная пехота"
+      },
+      {
+        "text": "Подчинить весь Север",
+        "objective": {
+          "type": "controlRegion",
+          "target": "north",
+          "count": 10
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 1
+          }
+        ],
+        "rewardText": "+20 признания, +1 голос"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_arryn",
+    "name": "Неприступный Вейл",
+    "faction": "conquest_arryn",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Горы защищают не хуже стен. Пусть дракон обломает крылья о Вейл.",
+    "steps": [
+      {
+        "text": "Удержать Орлиное гнездо",
+        "objective": {
+          "type": "controlProvince",
+          "target": "eyrie"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 6
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 80
+          }
+        ],
+        "rewardText": "+6 влияния, +80 материалов"
+      },
+      {
+        "text": "Построить сторожевую башню",
+        "objective": {
+          "type": "build",
+          "target": "watchtower"
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "siegeDefense",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 150
+          }
+        ],
+        "rewardText": "+2 к обороне осады, +150 золота"
+      },
+      {
+        "text": "Привести к присяге малый дом",
+        "objective": {
+          "type": "vassal",
+          "count": 1
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          }
+        ],
+        "rewardText": "+200 золота, +1 влияния за ход"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_hoare",
+    "name": "Железный прилив",
+    "faction": "conquest_hoare",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Чёрный Гаррен взял Харренхолл. Теперь железнорождённые хотят реки и всё, что по ним плывёт.",
+    "steps": [
+      {
+        "text": "Удержать Харренхолл",
+        "objective": {
+          "type": "controlProvince",
+          "target": "harrenhal"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 120
+          }
+        ],
+        "rewardText": "+8 влияния, +120 золота"
+      },
+      {
+        "text": "Собрать армию не меньше 450 силы",
+        "objective": {
+          "type": "army",
+          "count": 450
+        },
+        "reward": [
+          {
+            "op": "recruit",
+            "id": "iron_reavers",
+            "count": 1
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 80
+          }
+        ],
+        "rewardText": "+1 железный разоритель, +80 еды"
+      },
+      {
+        "text": "Захватить Речные земли",
+        "objective": {
+          "type": "controlRegion",
+          "target": "riverlands",
+          "count": 8
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 18
+          },
+          {
+            "op": "modifier",
+            "key": "navalPower",
+            "value": 1
+          }
+        ],
+        "rewardText": "+18 признания, +1 к морской силе"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_lannister",
+    "name": "Золото Кастерли",
+    "faction": "conquest_lannister",
+    "eras": [
+      "conquest"
+    ],
+    "description": "У Запада есть золото, у дракона — огонь. Купите одно, чтобы пережить другое.",
+    "steps": [
+      {
+        "text": "Накопить 900 золота",
+        "objective": {
+          "type": "gold",
+          "count": 900
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+10 влияния, +2 золота за ход"
+      },
+      {
+        "text": "Удержать Кастерли-Рок",
+        "objective": {
+          "type": "controlProvince",
+          "target": "casterly"
+        },
+        "reward": [
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 100
+          }
+        ],
+        "rewardText": "+2 к обороне, +100 материалов"
+      },
+      {
+        "text": "Получить место хранителя монеты",
+        "objective": {
+          "type": "title",
+          "target": "master_of_coin"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 22
+          },
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 4
+          }
+        ],
+        "rewardText": "+22 признания, +4% торговли"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_gardener",
+    "name": "Сад королей",
+    "faction": "conquest_gardener",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Простор богат хлебом и рыцарями. Дракону нужны и то, и другое — но не даром.",
+    "steps": [
+      {
+        "text": "Подчинить Простор",
+        "objective": {
+          "type": "controlRegion",
+          "target": "reach",
+          "count": 10
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 150
+          },
+          {
+            "op": "modifier",
+            "key": "foodIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+150 еды, +2 еды за ход"
+      },
+      {
+        "text": "Сделать веру Семерых доминирующей в 30% провинций",
+        "objective": {
+          "type": "faithshare",
+          "count": 30
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "modifier",
+            "key": "pietyIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+10 влияния, +2 веры за ход"
+      },
+      {
+        "text": "Удержать Старомест",
+        "objective": {
+          "type": "controlProvince",
+          "target": "oldtown"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 1
+          }
+        ],
+        "rewardText": "+20 признания, +1 голос"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_durrandon",
+    "name": "Буря и ярость",
+    "faction": "conquest_durrandon",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Штормовые короли не отдают дочерей без боя. Соберите силу, чтобы говорить с драконом на равных.",
+    "steps": [
+      {
+        "text": "Собрать армию не меньше 500 силы",
+        "objective": {
+          "type": "army",
+          "count": 500
+        },
+        "reward": [
+          {
+            "op": "recruit",
+            "id": "storm_axemen",
+            "count": 1
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 6
+          }
+        ],
+        "rewardText": "+1 штормовой топорник, +6 влияния"
+      },
+      {
+        "text": "Подчинить Штормовые земли",
+        "objective": {
+          "type": "controlRegion",
+          "target": "stormlands",
+          "count": 8
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 120
+          },
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          }
+        ],
+        "rewardText": "+120 материалов, +1 к атаке"
+      },
+      {
+        "text": "Получить место мастера над законами",
+        "objective": {
+          "type": "title",
+          "target": "master_of_laws"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 1
+          }
+        ],
+        "rewardText": "+20 признания, +1 голос"
+      }
+    ]
+  },
+  {
+    "id": "q_conquest_martell",
+    "name": "Непримиримые",
+    "faction": "conquest_martell",
+    "eras": [
+      "conquest"
+    ],
+    "description": "Дорн не покорился ни одному дракону. Пусть пустыня станет могилой для чужаков.",
+    "steps": [
+      {
+        "text": "Удержать Солнечное Копьё",
+        "objective": {
+          "type": "controlProvince",
+          "target": "sunspear"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          },
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 1
+          }
+        ],
+        "rewardText": "+8 влияния, +1 к обороне"
+      },
+      {
+        "text": "Подчинить Дорн",
+        "objective": {
+          "type": "controlRegion",
+          "target": "dorne",
+          "count": 6
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "recruit",
+            "id": "dornish_spears",
+            "count": 1
+          }
+        ],
+        "rewardText": "+100 еды, дорнийские копейщики"
+      },
+      {
+        "text": "Сделать свою веру господствующей в 25% провинций",
+        "objective": {
+          "type": "faithshare",
+          "count": 25
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 18
+          },
+          {
+            "op": "modifier",
+            "key": "faithSpread",
+            "value": 0.15
+          }
+        ],
+        "rewardText": "+18 признания, +15% к распространению веры"
+      }
+    ]
+  },
+  {
+    "id": "q_five_baratheon",
+    "name": "Олень против льва",
+    "faction": "five_baratheon",
+    "eras": [
+      "fivekings"
+    ],
+    "description": "Роберт взял трон молотом, а Ланнистеры — интригой. Верните корону силой.",
+    "steps": [
+      {
+        "text": "Взять Королевскую Гавань",
+        "objective": {
+          "type": "controlProvince",
+          "target": "kings_landing"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 15
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          }
+        ],
+        "rewardText": "+15 признания, +250 золота"
+      },
+      {
+        "text": "Собрать армию не меньше 600 силы",
+        "objective": {
+          "type": "army",
+          "count": 600
+        },
+        "reward": [
+          {
+            "op": "recruit",
+            "id": "storm_knights",
+            "count": 1
+          },
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 3
+          }
+        ],
+        "rewardText": "+1 штормовой рыцарь, +3 к морали"
+      },
+      {
+        "text": "Стать десницей короля",
+        "objective": {
+          "type": "title",
+          "target": "hand"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 25
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 2
+          }
+        ],
+        "rewardText": "+25 признания, +2 голоса"
+      }
+    ]
+  },
+  {
+    "id": "q_five_tyrell",
+    "name": "Розы и тернии",
+    "faction": "five_tyrell",
+    "eras": [
+      "fivekings"
+    ],
+    "description": "Простор кормит королевства. Тот, кто держит урожай, держит и трон.",
+    "steps": [
+      {
+        "text": "Удержать Хайгарден",
+        "objective": {
+          "type": "controlProvince",
+          "target": "highgarden"
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 120
+          },
+          {
+            "op": "modifier",
+            "key": "foodIncome",
+            "value": 1
+          }
+        ],
+        "rewardText": "+120 еды, +1 еды за ход"
+      },
+      {
+        "text": "Привести к присяге два малых дома",
+        "objective": {
+          "type": "vassal",
+          "count": 2
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          }
+        ],
+        "rewardText": "+250 золота, +1 влияния за ход"
+      },
+      {
+        "text": "Накопить 1000 золота",
+        "objective": {
+          "type": "gold",
+          "count": 1000
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 18
+          },
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 5
+          }
+        ],
+        "rewardText": "+18 признания, +5% торговли"
+      }
+    ]
+  },
+  {
+    "id": "q_five_stannis",
+    "name": "Пламя и соль",
+    "faction": "five_stannis",
+    "eras": [
+      "fivekings"
+    ],
+    "description": "Единственный истинный король несёт свет. Огонь очистит Вестерос, соль сохранит верных.",
+    "steps": [
+      {
+        "text": "Сделать веру Р'глора господствующей в 25% провинций",
+        "objective": {
+          "type": "faithshare",
+          "count": 25
+        },
+        "reward": [
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 40
+          },
+          {
+            "op": "modifier",
+            "key": "faithSpread",
+            "value": 0.2
+          }
+        ],
+        "rewardText": "+40 веры, +20% к распространению веры"
+      },
+      {
+        "text": "Удержать Драконий Камень",
+        "objective": {
+          "type": "controlProvince",
+          "target": "dragonstone"
+        },
+        "reward": [
+          {
+            "op": "recruit",
+            "id": "rhllor_fanatics",
+            "count": 1
+          },
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          }
+        ],
+        "rewardText": "+1 фанатик Р'глора, +1 к атаке"
+      },
+      {
+        "text": "Построить храм огня",
+        "objective": {
+          "type": "build",
+          "target": "fire_temple"
+        },
+        "reward": [
+          {
+            "op": "recognition",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 2
+          }
+        ],
+        "rewardText": "+20 признания, +2 влияния за ход"
+      }
+    ]
+  }
 ]

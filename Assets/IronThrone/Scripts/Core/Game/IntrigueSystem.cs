@@ -28,6 +28,75 @@ namespace IronThrone.Core.Game
     /// <summary>Шпионаж: сеть шептунов, миссии, контрразведка.</summary>
     public static class EspionageSystem
     {
+        /// <summary>Сколько ходов донесение считается свежим (даёт бонус в бою).</summary>
+        public const int IntelFreshTurns = 5;
+        /// <summary>Сколько ходов донесение вообще доступно в архиве.</summary>
+        public const int IntelLifetimeTurns = 20;
+
+        public static bool HasFreshIntel(GameState state, string actorId, string targetId)
+        {
+            if (string.IsNullOrEmpty(actorId) || string.IsNullOrEmpty(targetId)) return false;
+            var actor = state.Faction(actorId);
+            if (actor == null || !actor.intel.TryGetValue(targetId, out var intel) || intel == null) return false;
+            return state.Turn - intel.turn <= IntelFreshTurns;
+        }
+
+        public static FactionIntel Intel(GameState state, string actorId, string targetId)
+        {
+            var actor = state.Faction(actorId);
+            if (actor == null || !actor.intel.TryGetValue(targetId ?? "", out var intel) || intel == null) return null;
+            return state.Turn - intel.turn <= IntelLifetimeTurns ? intel : null;
+        }
+
+        /// <summary>Собирает донесение о доме: армии, казна, войны, столица.</summary>
+        public static FactionIntel GatherIntel(GameState state, FactionState actor, FactionState target)
+        {
+            if (actor == null || target == null) return null;
+            var intel = new FactionIntel
+            {
+                factionId = target.id,
+                turn = state.Turn,
+                gold = target.gold,
+                food = target.food,
+                materials = target.materials,
+                influence = target.influence,
+                recognition = target.recognition,
+                provinces = state.CountControlled(target.id),
+                techs = target.techs.Count,
+                capital = target.capital,
+            };
+            var armies = state.Armies.Values.Where(a => a.faction == target.id && a.alive).ToList();
+            intel.armies = armies.Count;
+            foreach (var a in armies)
+            {
+                intel.units += a.UnitCount;
+                intel.strength += MilitarySystem.EstimateStrength(a);
+                intel.armyLines.Add($"{a.name} — {state.Province(a.province)?.def.name ?? "в пути"}: " +
+                                    $"{a.UnitCount} отр., сила {MilitarySystem.EstimateStrength(a)}");
+            }
+            intel.wars = state.Wars.Where(w => w.active && w.Involves(target.id))
+                .Select(w => state.FactionName(w.EnemyOf(target.id))).ToList();
+            intel.lastTechs = target.techs
+                .Select(id => state.Content.TechById.TryGetValue(id, out var t) ? t.name : id)
+                .OrderBy(n => n).TakeLast(3).ToList();
+            actor.intel[target.id] = intel;
+            return intel;
+        }
+
+        /// <summary>Текст донесения для журнала и вкладки интриг.</summary>
+        public static string IntelReport(GameState state, FactionIntel intel)
+        {
+            if (intel == null) return "Донесений нет.";
+            int age = state.Turn - intel.turn;
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Донесение от хода {intel.turn}" + (age > 0 ? $" (устарело на {age} ход.)" : " (свежее)"));
+            sb.AppendLine($"Казна: {intel.gold} золота, {intel.materials} материалов, {intel.food} еды, {intel.influence} влияния");
+            sb.AppendLine($"Провинций: {intel.provinces}, армий: {intel.armies}, отрядов: {intel.units}, сила: {intel.strength}");
+            sb.AppendLine($"Признание: {intel.recognition:0}, технологий: {intel.techs}");
+            if (intel.wars.Count > 0) sb.AppendLine("Войны: " + string.Join(", ", intel.wars));
+            foreach (var line in intel.armyLines) sb.AppendLine("• " + line);
+            return sb.ToString().TrimEnd();
+        }
         public static readonly List<SpyMissionDef> Missions = new List<SpyMissionDef>
         {
             new SpyMissionDef { id = "recon", name = "Разведка", description = "Раскрыть армии и планы выбранного дома.", cost = new ResourceCost(0,0,0,2), baseChance = 0.95f, targetKind = "faction" },
@@ -116,9 +185,9 @@ namespace IronThrone.Core.Game
                 {
                     foreach (var p in state.Provinces.Values.Where(p => p.controller == target.id))
                         p.flags.Add("revealed:" + actor.id);
-                    var armies = state.Armies.Values.Where(a => a.faction == target.id && a.alive)
-                        .Select(a => $"{a.name} в {state.Province(a.province)?.def.name} ({a.UnitCount} отр.)").ToList();
-                    result = "Армии: " + (armies.Count > 0 ? string.Join("; ", armies) : "не обнаружены");
+                    var intel = GatherIntel(state, actor, target);
+                    result = $"Донесение получено: казна {intel.gold}, армий {intel.armies} (сила {intel.strength}), " +
+                             $"провинций {intel.provinces}. Пять ходов данные считаются свежими.";
                     break;
                 }
                 case "steal_tech":
@@ -168,6 +237,9 @@ namespace IronThrone.Core.Game
                     if (state.Rng.NextDouble() < 0.45)
                     {
                         hero.alive = false;
+                        if (hero.armyId != null && state.Armies.TryGetValue(hero.armyId, out var deadArmy) &&
+                            deadArmy.heroId == hero.defId) deadArmy.heroId = null;
+                        hero.armyId = null;
                         target.heroes.Remove(hero.defId);
                         result = $"Герой {hero.name} убит!";
                         state.Notify($"Шептуны доносят: {hero.name} убит.");
@@ -421,8 +493,116 @@ namespace IronThrone.Core.Game
             state.Notify($"Дом {state.HouseName(house)} аннексирован");
         }
 
+        // ------------------------------------------------------------------ просьбы малых домов
+        public static readonly string[] RequestTypes = { "gold", "materials", "protection" };
+
+        public static string RequestTitle(string type) => type switch
+        {
+            "gold" => "просит золото",
+            "materials" => "просит мастеров и материалы",
+            "protection" => "просит защиты",
+            _ => "просит помощи",
+        };
+
+        public static ResourceCost RequestCost(string type) => type switch
+        {
+            "gold" => new ResourceCost(150),
+            "materials" => new ResourceCost(0, 80),
+            "protection" => new ResourceCost(0, 0, 0, 8),
+            _ => new ResourceCost()
+        };
+
+        public static int RequestReward(string type) => type switch
+        {
+            "gold" => 12,
+            "materials" => 12,
+            "protection" => 16,
+            _ => 10,
+        };
+
+        /// <summary>Малые дома время от времени просят о помощи. Просьба живёт 6 ходов.</summary>
+        public static void GenerateRequests(GameState state)
+        {
+            if (state.Turn < 4) return;
+            foreach (var f in state.Factions.Values.Where(x => x.alive).ToList())
+            {
+                if (state.MinorRequests.Count(r => r.faction == f.id) >= 2) continue;
+                if (state.Rng.NextDouble() > 0.10) continue;
+                var house = state.MinorHouses.Values
+                    .Where(m => !m.annexed && m.vassalOf == null)
+                    .Where(m => Relation(state, f, m.house) >= 0 && Relation(state, f, m.house) <= 55)
+                    .Where(m => state.Provinces.Values.Any(p => p.house == m.house))
+                    .OrderBy(_ => state.Rng.Next())
+                    .FirstOrDefault();
+                if (house == null) continue;
+                var type = RequestTypes[state.Rng.Next(RequestTypes.Length)];
+                state.MinorRequests.Add(new MinorRequestState
+                {
+                    house = house.house, faction = f.id, type = type, turnsLeft = 6,
+                });
+                state.AddLog("house", $"{state.HouseName(house.house)} {RequestTitle(type)}", f.id);
+                if (f.isPlayer)
+                    state.Notify($"{state.HouseName(house.house)} {RequestTitle(type)} — решите в «Домах»");
+            }
+        }
+
+        public static bool CanAnswerRequest(GameState state, FactionState f, MinorRequestState req, out string error)
+        {
+            error = null;
+            if (f == null || req == null || req.faction != f.id) { error = "Просьба не для вас"; return false; }
+            var cost = RequestCost(req.type);
+            if (!EffectEngine.CanAfford(f, cost)) { error = "Недостаточно ресурсов: " + cost.ToRu(); return false; }
+            return true;
+        }
+
+        public static bool AcceptRequest(GameState state, FactionState f, MinorRequestState req, out string error)
+        {
+            if (!CanAnswerRequest(state, f, req, out error)) return false;
+            EffectEngine.Pay(f, RequestCost(req.type));
+            int reward = RequestReward(req.type);
+            AddRelation(state, f, req.house, reward);
+            state.MinorRequests.Remove(req);
+            state.AddLog("house", $"{f.def.name} помогает дому {state.HouseName(req.house)}: +{reward} отношений", f.id);
+            state.Notify($"{state.HouseName(req.house)} благодарен: +{reward} отношений");
+            return true;
+        }
+
+        public static bool DeclineRequest(GameState state, FactionState f, MinorRequestState req, out string error)
+        {
+            error = null;
+            if (f == null || req == null || req.faction != f.id) { error = "Просьба не для вас"; return false; }
+            AddRelation(state, f, req.house, -6);
+            state.MinorRequests.Remove(req);
+            state.AddLog("house", $"{f.def.name} отказывает дому {state.HouseName(req.house)}: −6 отношений", f.id);
+            return true;
+        }
+
         public static void ProcessTurn(GameState state)
         {
+            // просьбы: срок, ответ ИИ, новые просьбы
+            foreach (var req in state.MinorRequests.ToList())
+            {
+                req.turnsLeft--;
+                if (req.turnsLeft > 0) continue;
+                state.MinorRequests.Remove(req);
+                var f = state.Faction(req.faction);
+                if (f == null || !f.alive) continue;
+                AddRelation(state, f, req.house, -3);
+                state.AddLog("house", $"{state.HouseName(req.house)} не дождался ответа: −3 отношений", req.faction);
+                if (f.isPlayer) state.Notify($"Просьба дома {state.HouseName(req.house)} осталась без ответа");
+            }
+            foreach (var f in state.Factions.Values.Where(x => x.alive && !x.isPlayer).ToList())
+            {
+                foreach (var req in state.MinorRequests.Where(r => r.faction == f.id).ToList())
+                {
+                    if (CanAnswerRequest(state, f, req, out _) && state.Rng.NextDouble() < 0.7)
+                        AcceptRequest(state, f, req, out _);
+                    else
+                        DeclineRequest(state, f, req, out _);
+                }
+            }
+            GenerateRequests(state);
+
             foreach (var f in state.Factions.Values.Where(x => x.alive))
             {
                 foreach (var house in f.vassals.Keys.ToList())

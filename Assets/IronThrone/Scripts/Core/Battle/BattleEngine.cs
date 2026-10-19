@@ -62,6 +62,8 @@ namespace IronThrone.Core.Battle
         public string attackerFaction;
         public string defenderFaction;
         public bool siege;
+        /// <summary>Защитник устроил засаду, и атакующий её не раскрыл.</summary>
+        public bool ambush;
         public string terrain;
         public bool coastal;
         public List<string> log = new List<string>();
@@ -70,6 +72,10 @@ namespace IronThrone.Core.Battle
         public GameState State;
         public string attackerHero;
         public string defenderHero;
+        /// <summary>Сигнатурная способность героя, доступная армии один раз за бой.</summary>
+        public string attackerHeroAbility;
+        public string defenderHeroAbility;
+        public HashSet<int> heroAbilityUsed = new HashSet<int>();
 
         public IEnumerable<BattleUnit> Side(int side) => units.Where(u => u.alive && !u.routed && u.side == side);
         public bool SideAlive(int side) => Side(side).Any();
@@ -112,6 +118,8 @@ namespace IronThrone.Core.Battle
             PlaceArmy(f, defender, 1, state);
             f.attackerHero = attacker?.heroId != null && state.Heroes.TryGetValue(attacker.heroId, out var ah) ? ah.name : null;
             f.defenderHero = defender?.heroId != null && state.Heroes.TryGetValue(defender.heroId, out var dh) ? dh.name : null;
+            if (attacker?.heroId != null) f.attackerHeroAbility = MilitarySystem.HeroSignature(state, MilitarySystem.Hero(state, attacker.heroId));
+            if (defender?.heroId != null) f.defenderHeroAbility = MilitarySystem.HeroSignature(state, MilitarySystem.Hero(state, defender.heroId));
             if (f.defenderHero != null)
             {
                 // герой-защитник даёт ауру
@@ -119,6 +127,26 @@ namespace IronThrone.Core.Battle
             }
             if (f.attackerHero != null)
                 foreach (var u in f.Side(0)) u.morale = Math.Min(120, u.morale + 5);
+
+            // засада: защитник укрылся в лесу, горах или болоте, а свежих донесений у атакующего нет
+            if (defender != null && defender.stance == "ambush" && !siege &&
+                MilitarySystem.AmbushTerrain(province?.def?.terrain))
+            {
+                bool detected = EspionageSystem.HasFreshIntel(state, attacker?.faction, defender.faction);
+                if (!detected)
+                {
+                    f.ambush = true;
+                    foreach (var u in f.Side(1))
+                    {
+                        u.stats.attack += 2;
+                        u.stats.defense += 1;
+                        u.stats.initiative += 2;
+                    }
+                    foreach (var u in f.Side(0)) u.morale = Math.Max(25, u.morale - 10);
+                    f.AddLog("Засада! Защитники бьют из укрытия, атакующие смешались.");
+                }
+                else f.AddLog("Засада раскрыта: разведка предупредила атакующих.");
+            }
             f.AddLog($"Битва за {province?.def.name ?? "поле"}");
             StartRound(f);
             return f;
@@ -126,7 +154,7 @@ namespace IronThrone.Core.Battle
 
         private static void BuildTerrain(Battlefield f, ProvinceState province, bool siege)
         {
-            var rng = new Random((province?.id ?? "x").GetHashCode() ^ 0x5f3a);
+            var rng = new Random(StableHash.Of(province?.id ?? "x") ^ 0x5f3a);
             string terrain = province?.def?.terrain ?? "plains";
             for (int r = 0; r < f.height; r++)
             {
@@ -209,6 +237,11 @@ namespace IronThrone.Core.Battle
                 }
                 if (factionState != null)
                 {
+                    // свежие донесения о противнике дают +1 к атаке: разведка имеет цену
+                    string enemyFaction = side == 0 ? f.defenderFaction : f.attackerFaction;
+                    if (EspionageSystem.HasFreshIntel(state, factionState.id, enemyFaction))
+                        bu.stats.attack += 1;
+
                     float heroMult = 1f + Math.Max(-0.5f, factionState.Mod(ModKeys.HeroPower));
                     bu.stats.attack += (int)Math.Round(factionState.Mod(ModKeys.ArmyAttack) + heroAtk * heroMult);
                     bu.stats.defense += (int)Math.Round(factionState.Mod(ModKeys.ArmyDefense) + heroDef * heroMult);
@@ -471,6 +504,106 @@ namespace IronThrone.Core.Battle
             return msg;
         }
 
+        // ------------------------------------------------------------------ герой в бою
+        public static string HeroAbilityId(Battlefield f, int side) =>
+            side == 0 ? f.attackerHeroAbility : f.defenderHeroAbility;
+
+        public static string HeroAbilityName(string ability) => ability switch
+        {
+            "dragon_breath" => "Пламя дракона",
+            "heal" => "Полевой лекарь",
+            "volley" => "Залп",
+            "charge" => "Натиск",
+            "shield_wall" => "Стена щитов",
+            "rally" => "Воодушевление",
+            "berserk" => "Берсерк",
+            "flaming" => "Пламя",
+            "swift" => "Стремительность",
+            "fortified" => "Укрепление",
+            _ => ability
+        };
+
+        /// <summary>Герой может применить свою способность один раз за бой.</summary>
+        public static bool CanUseHeroAbility(Battlefield f, int side)
+        {
+            if (f == null || f.finished) return false;
+            if (f.heroAbilityUsed.Contains(side)) return false;
+            if (string.IsNullOrEmpty(HeroAbilityId(f, side))) return false;
+            return f.Side(side).Any();
+        }
+
+        public static string UseHeroAbility(Battlefield f, int side)
+        {
+            if (!CanUseHeroAbility(f, side)) return null;
+            var ability = HeroAbilityId(f, side);
+            f.heroAbilityUsed.Add(side);
+            var mine = f.Side(side).ToList();
+            var foes = f.Side(1 - side).ToList();
+            string hero = side == 0 ? f.attackerHero : f.defenderHero;
+            if (string.IsNullOrEmpty(hero)) hero = "Герой";
+            string text;
+            switch (ability)
+            {
+                case "rally":
+                    foreach (var u in mine) u.morale = Math.Min(120, u.morale + 18);
+                    text = "+18 морали своим отрядам";
+                    break;
+                case "shield_wall":
+                    foreach (var u in mine) { u.stats.defense += 3; u.defending = true; }
+                    text = "+3 защиты своим отрядам до конца боя";
+                    break;
+                case "charge":
+                    foreach (var u in mine) u.stats.attack += 3;
+                    text = "+3 атаки своим отрядам до конца боя";
+                    break;
+                case "heal":
+                    foreach (var u in mine) { u.hp = Math.Min(u.maxHp, u.hp + 20); u.morale = Math.Min(120, u.morale + 5); }
+                    text = "+20 HP и +5 морали своим отрядам";
+                    break;
+                case "berserk":
+                    foreach (var u in mine) { u.stats.attack += 2; u.stats.defense = Math.Max(0, u.stats.defense - 1); }
+                    text = "+2 атаки и −1 защиты своим отрядам";
+                    break;
+                case "flaming":
+                    foreach (var u in mine) u.stats.attack += 2;
+                    foreach (var u in foes) u.morale = Math.Max(0, u.morale - 8);
+                    text = "+2 атаки своим, −8 морали врагам";
+                    break;
+                case "swift":
+                    foreach (var u in mine) u.movesLeft += 1;
+                    text = "+1 движение своим отрядам";
+                    break;
+                case "volley":
+                    foreach (var u in foes) HitByHero(u, 8f, 4f);
+                    text = "8 урона всем отрядам противника";
+                    break;
+                case "dragon_breath":
+                    foreach (var u in foes) HitByHero(u, 15f, 10f);
+                    text = "15 урона и −10 морали всем отрядам противника";
+                    break;
+                case "fortified":
+                    foreach (var u in mine) u.stats.defense += f.siege ? 4 : 2;
+                    text = f.siege ? "+4 защиты в осаде" : "+2 защиты своим отрядам";
+                    break;
+                default:
+                    text = "ведёт армию в бой";
+                    break;
+            }
+            string line = $"Герой {hero}: {HeroAbilityName(ability)} — {text}";
+            f.AddLog(line);
+            if (!f.SideAlive(0) || !f.SideAlive(1)) Finish(f, f.SideAlive(0) && !f.SideAlive(1));
+            return line;
+        }
+
+        private static void HitByHero(BattleUnit u, float damage, float moraleLoss)
+        {
+            if (u == null || !u.alive) return;
+            u.hp -= damage;
+            u.morale = Math.Max(0, u.morale - moraleLoss);
+            if (u.hp <= 0) { u.hp = 0; u.alive = false; }
+            else if (u.morale <= 0) u.routed = true;
+        }
+
         private static bool IsOpposite(int aq, int ar, int bq, int br, int tq, int tr)
         {
             // угол между направлениями цель->a и цель->b больше 120 градусов
@@ -531,6 +664,10 @@ namespace IronThrone.Core.Battle
         {
             var enemies = f.units.Where(x => x.alive && !x.routed && x.side != u.side).ToList();
             if (enemies.Count == 0) { u.acted = true; return; }
+
+            // герой противника не ждёт: применяет способность, когда бой разгорелся
+            if (f.round >= 2 && CanUseHeroAbility(f, u.side)) UseHeroAbility(f, u.side);
+            if (f.finished) { u.acted = true; return; }
 
             // лечение/воодушевление при низком морали
             if (u.Has("rally") && !u.usedAbilities.Contains("rally") && u.morale < 55)
@@ -624,6 +761,15 @@ namespace IronThrone.Core.Battle
             // опыт героев: победитель получает больше, проигравший — за упорство
             AwardHeroXp(f.State, attacker, f.attackerWon, dLoss);
             AwardHeroXp(f.State, defender, !f.attackerWon, aLoss);
+
+            // герой проигравшей армии может быть ранен и выбыть из строя
+            var loser = f.attackerWon ? defender : attacker;
+            var loserHero = MilitarySystem.Hero(f.State, loser?.heroId);
+            if (loserHero != null && loserHero.alive && !loserHero.wounded && f.State.Rng.NextDouble() < 0.35)
+            {
+                MilitarySystem.WoundHero(f.State, loserHero, 3);
+                result.heroWounded = loserHero.name;
+            }
             return result;
         }
 

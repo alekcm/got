@@ -188,6 +188,18 @@ namespace IronThrone.Core.Game
             return SlotsFor(state, p).Count(s => s == slotType) - UsedSlots(state, p, slotType);
         }
 
+        /// <summary>Сколько таких построек у дома: готовые и в очереди.</summary>
+        public static int CountBuilding(GameState state, FactionState f, string buildingId)
+        {
+            int count = 0;
+            foreach (var prov in state.Provinces.Values.Where(x => x.controller == f.id))
+            {
+                if (prov.buildings.Contains(buildingId)) count++;
+                if (prov.buildQueue.ContainsKey(buildingId)) count++;
+            }
+            return count;
+        }
+
         public static bool CanBuild(GameState state, FactionState f, ProvinceState p, string buildingId, out string error)
         {
             error = null;
@@ -196,6 +208,8 @@ namespace IronThrone.Core.Game
             if (p.buildings.Contains(buildingId)) { error = "Уже построено"; return false; }
             if (p.buildQueue.ContainsKey(buildingId)) { error = "Уже строится"; return false; }
             if (b.unique && state.Provinces.Values.Any(x => x.buildings.Contains(buildingId))) { error = "Уникальная постройка уже существует"; return false; }
+            if (b.maxPerEmpire < 99 && CountBuilding(state, f, buildingId) >= b.maxPerEmpire)
+            { error = $"Лимит дома: не больше {b.maxPerEmpire} таких построек"; return false; }
             if (!string.IsNullOrEmpty(b.uniqueToFaction) && b.uniqueToFaction != f.house) { error = "Недоступно вашему дому"; return false; }
             if (!string.IsNullOrEmpty(b.requiresTech) && !f.HasTech(b.requiresTech)) { error = "Требуется технология"; return false; }
             if (FreeSlots(state, p, b.slot) <= 0) { error = $"Нет свободного слота «{SlotName(b.slot)}»"; return false; }

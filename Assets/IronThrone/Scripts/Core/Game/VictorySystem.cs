@@ -21,6 +21,13 @@ namespace IronThrone.Core.Game
     {
         public const int PoliticalSeatsRequired = 6;
 
+        /// <summary>Сколько мест в совете нужно для политической победы (настройка или значение по умолчанию).</summary>
+        public static int SeatsRequired(GameState state)
+        {
+            int need = state.Settings.victory.politicalSeats;
+            return need > 0 ? need : PoliticalSeatsRequired;
+        }
+
         public static List<VictoryProgress> Evaluate(GameState state, FactionState f)
         {
             var list = new List<VictoryProgress>();
@@ -45,13 +52,14 @@ namespace IronThrone.Core.Game
                 faction = f.id, victoryType = "political",
                 value = f.recognition,
                 target = v.politicalRecognition,
-                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}; мест в совете: {PoliticsSystem.SeatsBacking(state, f.id)}/{PoliticalSeatsRequired} " +
+                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}; законов дома: {LawsSponsored(state, f.id)}/{v.politicalLaws}; мест в совете: {PoliticsSystem.SeatsBacking(state, f.id)}/{SeatsRequired(state)} " +
                               $"(своих {PoliticsSystem.SeatsOf(state, f.id)} из 3, союзных {PoliticsSystem.SeatsBacking(state, f.id) - PoliticsSystem.SeatsOf(state, f.id)})" +
                               (state.Council.throneHolder == f.id ? ", Железный трон ваш" : ", Железный трон не ваш") +
                               (PoliticsSystem.SeatsOf(state, f.id) > 3 ? " — лишние свои места не считаются" : ""),
                 achieved = f.recognition >= v.politicalRecognition && state.Council.throneHolder == f.id &&
                            PoliticsSystem.SeatsOf(state, f.id) <= 3 &&
-                           PoliticsSystem.SeatsBacking(state, f.id) >= PoliticalSeatsRequired
+                           PoliticsSystem.SeatsBacking(state, f.id) >= SeatsRequired(state) &&
+                           LawsSponsored(state, f.id) >= v.politicalLaws
             });
 
             // Экономика
@@ -60,22 +68,38 @@ namespace IronThrone.Core.Game
                 faction = f.id, victoryType = "economic",
                 value = f.tradeDominance,
                 target = v.economicDominance,
-                description = $"Торговое господство: {f.tradeDominance:0}/{v.economicDominance}% (порты и рынки), торговых узлов: {f.tradeRoutePoints}/15",
-                achieved = f.tradeDominance >= v.economicDominance && f.tradeRoutePoints >= 15
+                description = $"Торговое господство: {f.tradeDominance:0}/{v.economicDominance}% (порты и рынки), торговых узлов: {f.tradeRoutePoints}/{v.economicRoutes}",
+                achieved = f.tradeDominance >= v.economicDominance && f.tradeRoutePoints >= v.economicRoutes
             });
 
-            // Религия
+            // Религия: вера должна не только доминировать, но и обратить провинции,
+            // которые начинали под другой верой — иначе дом с господствующей верой побеждал бы мгновенно.
             float faithShare = FaithSystem.FaithShare(state, f);
+            int converted = state.Provinces.Values.Count(p => p.dominantFaith == f.faith &&
+                                                             !string.IsNullOrEmpty(p.startFaith) && p.startFaith != f.faith);
+            float startShare = 0f;
+            state.FaithStartShare.TryGetValue(f.faith ?? "", out startShare);
             list.Add(new VictoryProgress
             {
                 faction = f.id, victoryType = "religious",
-                value = faithShare * 100f, target = v.religiousProvinceShare * 100f,
-                description = $"Вера «{state.FaithName(f.faith)}» доминирует в {faithShare:P0} провинций" +
-                              (FaithSystem.IsHead(state, f) ? ", вы — глава веры" : ", вы не глава веры"),
-                achieved = faithShare >= v.religiousProvinceShare && FaithSystem.IsHead(state, f) && f.HasFlag("faith_reformed")
+                value = converted,
+                target = v.religiousConversions,
+                description = $"Вера «{state.FaithName(f.faith)}» доминирует в {faithShare:P0} провинций (с начала игры {startShare:P0}), " +
+                              $"обращено из других вер: {converted}/{v.religiousConversions}" +
+                              (FaithSystem.IsHead(state, f) ? ", вы — глава веры" : ", вы не глава веры") +
+                              (f.HasFlag("faith_reformed") ? ", вера реформирована" : ", вера не реформирована"),
+                achieved = faithShare >= v.religiousProvinceShare && converted >= v.religiousConversions &&
+                           FaithSystem.IsHead(state, f) && f.HasFlag("faith_reformed")
             });
 
             return list;
+        }
+
+        /// <summary>Сколько действующих законов провёл дом — мера его политической воли.</summary>
+        public static int LawsSponsored(GameState state, string factionId)
+        {
+            if (state == null || state.ActiveLaws == null) return 0;
+            return state.ActiveLaws.Count(l => l != null && l.sponsor == factionId);
         }
 
         public static bool Check(GameState state)

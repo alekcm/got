@@ -27,7 +27,11 @@ namespace IronThrone.Core.Game
             {
                 if (kv.Value == factionId) { count++; continue; }
                 var holder = state.Faction(kv.Value);
-                if (holder != null && holder.alive && DiplomacySystem.Relation(state, holder.id, factionId) >= BackingRelation)
+                if (holder == null || !holder.alive) continue;
+                // поддерживают союзники: высокая репутация, пакт о ненападении или династический брак
+                if (DiplomacySystem.Relation(state, holder.id, factionId) >= BackingRelation ||
+                    DiplomacySystem.HasPact(state, holder.id, factionId) ||
+                    (holder.marriages != null && holder.marriages.Contains(factionId)))
                     count++;
             }
             return count;
@@ -54,11 +58,24 @@ namespace IronThrone.Core.Game
             return Math.Max(3, (int)Math.Round(state.Settings.voteLobbyCost * factor));
         }
 
+        /// <summary>
+        /// Закон доступен дому, если он общий или входит в обычаи фракции.
+        /// Пустой пул у фракции означает «только общие законы».
+        /// </summary>
+        public static bool IsLawAvailable(FactionState f, LawDef law)
+        {
+            if (law == null || f?.def == null) return false;
+            if (law.common) return true;
+            var pool = f.def.availableLaws;
+            return pool != null && pool.Count > 0 && pool.Contains(law.id);
+        }
+
         public static IEnumerable<LawDef> AvailableLaws(GameState state, FactionState f)
         {
             foreach (var law in state.Content.Laws)
             {
                 if (law.eras.Count > 0 && !law.eras.Contains(state.Era.id)) continue;
+                if (!IsLawAvailable(f, law)) continue;
                 if (f.passedLaws.Contains(law.id) && !law.repealable) continue;
                 if (state.ActiveLaws.Any(l => l.id == law.id)) continue;
                 if (!string.IsNullOrEmpty(law.requiresTitle) && !f.HasTitle(state, law.requiresTitle)) continue;
@@ -78,6 +95,7 @@ namespace IronThrone.Core.Game
             if (f.id != state.Council.throneHolder && SeatsOf(state, f.id) == 0)
             { error = "Нужен титул в Малом совете или Железный трон"; return false; }
             if (law.eras.Count > 0 && !law.eras.Contains(state.Era.id)) { error = "Закон не действует в эту эпоху"; return false; }
+            if (!IsLawAvailable(f, law)) { error = "Этот закон не входит в обычаи вашего дома"; return false; }
             if (!string.IsNullOrEmpty(law.requiresTitle) && !f.HasTitle(state, law.requiresTitle))
             { error = "Нужен титул: " + (state.Content.TitleById.TryGetValue(law.requiresTitle, out var t) ? t.name : law.requiresTitle); return false; }
             if (state.ActiveLaws.Any(l => l.id == law.id)) { error = "Этот закон уже действует"; return false; }
@@ -104,6 +122,60 @@ namespace IronThrone.Core.Game
             state.AddLog("politics", $"{sponsor.def.name} выносит на совет закон «{law.name}»", sponsor.id);
             if (!sponsor.isPlayer) ResolveVote(state, autoPlayer: true);
             return vote;
+        }
+
+        /// <summary>Стоимость вынесения отмены закона: половина цены принятия, но не меньше 4 влияния.</summary>
+        public static int RepealCost(LawDef law) => Math.Max(4, (law?.voteCost ?? 8) / 2);
+
+        public static bool CanRepeal(GameState state, FactionState f, LawDef law, out string error)
+        {
+            error = null;
+            if (law == null) { error = "Нет такого закона"; return false; }
+            if (!law.repealable) { error = "Этот закон не подлежит отмене"; return false; }
+            if (!state.ActiveLaws.Any(l => l.id == law.id)) { error = "Закон не действует"; return false; }
+            if (state.Council.throneHolder == null) { error = "Железный трон пуст — созывать совет некому"; return false; }
+            if (f.id != state.Council.throneHolder && SeatsOf(state, f.id) == 0)
+            { error = "Нужен титул в Малом совете или Железный трон"; return false; }
+            if (!EffectEngine.CanAfford(f, new ResourceCost { influence = RepealCost(law) }))
+            { error = $"Нужно влияние: {RepealCost(law)}"; return false; }
+            if (state.PendingVote != null) { error = "Совет уже голосует"; return false; }
+            return true;
+        }
+
+        /// <summary>Вынести на совет отмену действующего закона.</summary>
+        public static LawVoteState RepealLaw(GameState state, FactionState sponsor, string lawId, out string error)
+        {
+            error = null;
+            var law = state.Content.LawById.TryGetValue(lawId, out var l) ? l : null;
+            if (!CanRepeal(state, sponsor, law, out error)) return null;
+
+            EffectEngine.Pay(sponsor, new ResourceCost { influence = RepealCost(law) });
+            var vote = new LawVoteState
+            {
+                lawId = lawId,
+                sponsor = sponsor.id,
+                openedTurn = state.Turn,
+                repeal = true,
+            };
+            state.PendingVote = vote;
+            state.AddLog("politics", $"{sponsor.def.name} требует отменить закон «{law.name}»", sponsor.id);
+            if (!sponsor.isPlayer) ResolveVote(state, autoPlayer: true);
+            return vote;
+        }
+
+        /// <summary>Снимает закон и откатывает его эффекты у всех живых домов.</summary>
+        public static void RemoveLaw(GameState state, LawDef law)
+        {
+            if (law == null) return;
+            state.ActiveLaws.RemoveAll(l => l.id == law.id);
+            foreach (var f in state.Factions.Values.Where(x => x.alive))
+            {
+                var ctx = new EffectContext { State = state, Source = f, TargetFaction = f };
+                foreach (var e in law.effects) EffectEngine.Reverse(e, ctx);
+            }
+            foreach (var f in state.Factions.Values) f.passedLaws.Remove(law.id);
+            state.AddLog("politics", $"Закон «{law.name}» отменён Малым советом");
+            if (state.Player != null) state.Notify($"Закон отменён: {law.name}");
         }
 
         public static bool Lobby(GameState state, FactionState buyer, string targetFactionId, int influenceSpent, out string error)
@@ -133,6 +205,7 @@ namespace IronThrone.Core.Game
             if (vote == null) return null;
             var law = state.Content.LawById.TryGetValue(vote.lawId, out var l) ? l : null;
             if (law == null) { state.PendingVote = null; return "Закон не найден"; }
+            string motion = vote.repeal ? "отмену закона" : "закон";
 
             vote.yes = 0; vote.no = 0;
             var details = new List<string>();
@@ -152,14 +225,15 @@ namespace IronThrone.Core.Game
 
             bool passed = vote.yes > vote.no;
             vote.resolved = true;
-            vote.resultText = $"Голосование по закону «{law.name}»: за {vote.yes}, против {vote.no} — " +
-                              (passed ? "принят" : "отклонён");
+            vote.resultText = $"Голосование за {motion} «{law.name}»: за {vote.yes}, против {vote.no} — " +
+                              (passed ? (vote.repeal ? "закон отменён" : "принят") : "отклонено");
             state.AddLog("politics", vote.resultText, vote.sponsor);
             state.AddLog("politics", "Голоса: " + string.Join("; ", details));
 
             if (passed)
             {
-                ApplyLaw(state, law, vote.sponsor);
+                if (vote.repeal) RemoveLaw(state, law);
+                else ApplyLaw(state, law, vote.sponsor);
             }
             else
             {
@@ -179,6 +253,13 @@ namespace IronThrone.Core.Game
         }
 
         public static bool DecideVote(GameState state, FactionState voter, LawDef law, LawVoteState vote)
+        {
+            if (vote != null && vote.repeal) return !SupportLaw(state, voter, law, vote);
+            return SupportLaw(state, voter, law, vote);
+        }
+
+        /// <summary>Поддерживает ли дом сам закон: при отмене голос считается наоборот.</summary>
+        private static bool SupportLaw(GameState state, FactionState voter, LawDef law, LawVoteState vote)
         {
             if (voter.id == vote.sponsor) return true;
             float score = 0;
@@ -318,6 +399,8 @@ namespace IronThrone.Core.Game
                 else
                     f.recognition = Math.Max(0, f.recognition - 0.35f);
                 f.recognition = Math.Min(100, f.recognition + SeatsOf(state, f.id) * 0.06f);
+                // династические браки: по +0.5 признания за каждый союз
+                f.recognition = Math.Min(100, f.recognition + DiplomacySystem.MarriageRecognition(f));
             }
             // контроль над Королевской Гаванью = трон
             var kl = state.Province("kings_landing");
@@ -332,11 +415,89 @@ namespace IronThrone.Core.Game
                 if (state.PendingVote != null) break;
                 if (state.Turn - state.Council.lastAgendaTurn < 5) break;
                 if (state.Rng.NextDouble() > 0.22) continue;
-                var laws = AvailableLaws(state, f).ToList();
+
+                // сначала ИИ пытается отменить закон, который ему вредит
+                var harmful = state.ActiveLaws
+                    .Select(a => state.Content.LawById.TryGetValue(a.id, out var ld) ? ld : null)
+                    .Where(l => l != null && l.repealable)
+                    .Select(l => new { law = l, value = LawValue(state, f, l) })
+                    .Where(x => x.value <= -4f)
+                    .OrderBy(x => x.value)
+                    .FirstOrDefault();
+                if (harmful != null && f.influence >= RepealCost(harmful.law) + 4)
+                {
+                    RepealLaw(state, f, harmful.law.id, out _);
+                    continue;
+                }
+
+                // затем выносит самый выгодный для себя закон
+                var laws = AvailableLaws(state, f)
+                    .Select(l => new { law = l, value = LawValue(state, f, l) })
+                    .Where(x => x.value > 0.5f)
+                    .OrderByDescending(x => x.value)
+                    .ThenBy(_ => state.Rng.Next())
+                    .Take(3)
+                    .ToList();
                 if (laws.Count == 0) continue;
-                var law = laws[state.Rng.Next(laws.Count)];
-                ProposeLaw(state, f, law.id, out _);
+                var pick = laws.Count > 1 && state.Rng.NextDouble() < 0.25
+                    ? laws[state.Rng.Next(laws.Count)]
+                    : laws[0];
+                ProposeLaw(state, f, pick.law.id, out _);
             }
+        }
+
+        /// <summary>
+        /// Насколько закон выгоден конкретному дому. ИИ-спонсор выбирает по этой оценке,
+        /// а не случайный закон из списка.
+        /// </summary>
+        public static float LawValue(GameState state, FactionState f, LawDef law)
+        {
+            if (law == null || f == null) return 0;
+            float score = 0;
+            foreach (var e in law.effects)
+            {
+                float v = e.value != 0 ? e.value : e.amount;
+                if (e.op == "recognition") { score += v * 1.2f; continue; }
+                if (e.op == "resource") { score += v / 40f; continue; }
+                if (e.op != "modifier" || string.IsNullOrEmpty(e.key)) continue;
+
+                string k = e.key;
+                if (k.EndsWith(".pct"))
+                {
+                    // для цен и беспорядков выгоден минус
+                    bool cost = k.Contains("Cost") || k.Contains("Upkeep") || k.Contains("unrest") || k.Contains("Lobby");
+                    score += cost ? -v * 60f : v * 40f;
+                    continue;
+                }
+                switch (k)
+                {
+                    case ModKeys.GoldIncome:
+                    case ModKeys.MaterialsIncome:
+                    case ModKeys.FoodIncome:
+                    case ModKeys.InfluenceIncome:
+                    case ModKeys.PietyIncome:
+                        score += v * (k == ModKeys.InfluenceIncome ? 1.2f : 1f);
+                        break;
+                    case ModKeys.ArmyAttack:
+                    case ModKeys.ArmyDefense:
+                    case ModKeys.ArmyMorale:
+                        score += v * (f.def.traits != null && f.def.traits.Contains("war") ? 2.2f : 1.4f);
+                        break;
+                    case ModKeys.VotePower:
+                        score += v * 1.5f;
+                        break;
+                    case ModKeys.RecognitionGain:
+                        score += v * 12f;
+                        break;
+                    case ModKeys.NavalPower:
+                        score += v * (f.def.traits != null && f.def.traits.Contains("raid") ? 1.6f : 0.7f);
+                        break;
+                    default:
+                        score += v * 0.5f;
+                        break;
+                }
+            }
+            return score;
         }
     }
 }

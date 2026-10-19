@@ -114,8 +114,12 @@ namespace IronThrone.Core.Content
         public float hegemonyProvinceShare = 0.55f;
         public int hegemonyRegionCapitals = 5;
         public int politicalRecognition = 100;
+        public int politicalLaws = 3;
+        public int politicalSeats = 6;
         public int economicDominance = 100;
+        public int economicRoutes = 15;
         public float religiousProvinceShare = 0.7f;
+        public int religiousConversions = 12;
         public int maxTurns = 220;
     }
 
@@ -183,6 +187,14 @@ namespace IronThrone.Core.Content
         public ModifierDef[] bonuses;
     }
 
+    /// <summary>Именная пассивка дома: небольшой постоянный бонус, отдельный от стартовых бонусов.</summary>
+    public class FactionPassiveDef
+    {
+        public string name;
+        public string text;
+        public List<ModifierDef> mods = new List<ModifierDef>();
+    }
+
     public class FactionDef
     {
         public string id;
@@ -210,6 +222,7 @@ namespace IronThrone.Core.Content
         public List<string> traits = new List<string>();
         public string techTree;
         public string focusTree;
+        public FactionPassiveDef passive;
         public List<string> advisorPool = new List<string>();
         public List<string> startUnits = new List<string>();
         public List<string> startArmies = new List<string>();
@@ -266,6 +279,8 @@ namespace IronThrone.Core.Content
         public int cooldown = 6;
         public bool repealable = true;
         public string sponsorHint;
+        /// <summary>Общий закон: доступен любому дому. Иначе — только из пула фракции.</summary>
+        public bool common;
     }
 
     public class TitleDef
@@ -388,6 +403,10 @@ namespace IronThrone.Core.Content
         public string requiresFlag;
         public float aiWeight = 1f;
         public string resultText;
+
+        /// <summary>Событие-продолжение цепочки: сработает через followUpDelay ходов.</summary>
+        public string followUpEvent;
+        public int followUpDelay = 3;
     }
 
     public class EventConditionsDef

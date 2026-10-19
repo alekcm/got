@@ -57,6 +57,7 @@ namespace IronThrone.Core.Game
             CreateRaiderCamps(state);
             CreateQuests(state, era);
             InitFaiths(state);
+            RecordFaithShares(state);
             state.AddLog("system", $"Начало игры: {era.name}. Игрок — {state.FactionName(playerFactionId)}.");
             return state;
         }
@@ -125,6 +126,16 @@ namespace IronThrone.Core.Game
                     if (b == null || string.IsNullOrEmpty(b.key)) continue;
                     f.permanentMods.TryGetValue(b.key, out var cur);
                     f.permanentMods[b.key] = cur + b.value;
+                }
+                // именная пассивка дома: отдельный слой асимметрии поверх стартовых бонусов
+                if (def.passive != null)
+                {
+                    foreach (var m in def.passive.mods ?? new List<ModifierDef>())
+                    {
+                        if (m == null || string.IsNullOrEmpty(m.key)) continue;
+                        f.permanentMods.TryGetValue(m.key, out var cur);
+                        f.permanentMods[m.key] = cur + m.value;
+                    }
                 }
                 foreach (var t in state.Content.TechsFor(def.house).Where(t => t.starting))
                 {
@@ -426,6 +437,23 @@ namespace IronThrone.Core.Game
             }
         }
 
+        /// <summary>Запоминаем, с какой доли провинций каждая вера стартует.</summary>
+        private static void RecordFaithShares(GameState state)
+        {
+            state.FaithStartShare.Clear();
+            var counts = new Dictionary<string, int>();
+            int total = 0;
+            foreach (var p in state.Provinces.Values)
+            {
+                if (string.IsNullOrEmpty(p.dominantFaith)) continue;
+                total++;
+                counts.TryGetValue(p.dominantFaith, out var c);
+                counts[p.dominantFaith] = c + 1;
+            }
+            if (total == 0) return;
+            foreach (var kv in counts) state.FaithStartShare[kv.Key] = kv.Value / (float)total;
+        }
+
         private static void InitFaiths(GameState state)
         {
             foreach (var p in state.Provinces.Values)
@@ -438,6 +466,7 @@ namespace IronThrone.Core.Game
                 if (p.id == "winterfell") { p.faith["oldgods"] = 90; p.faith["seven"] = 6; p.faith["folk"] = 4; }
                 if (p.id == "pyke") { p.faith["drowned"] = 92; p.faith["folk"] = 8; }
                 EffectEngine.RecomputeDominantFaith(p);
+                p.startFaith = p.dominantFaith;
             }
         }
     }

@@ -20,6 +20,7 @@ namespace IronThrone.Core.AI
                 Recruit(state, f);
                 DiplomacySystem.AiConsiderWars(state, f);
                 MoveArmies(state, f);
+                TryAmbush(state, f); // засада тратит остаток движения — только для тех, кто не пошёл в поход
                 ClaimLand(state, f);
                 UpgradeArmies(state, f);
                 SpendTreasury(state, f);
@@ -28,6 +29,8 @@ namespace IronThrone.Core.AI
                 ManageTitles(state, f);
                 CourtSupport(state, f);
                 FaithActions(state, f);
+                ManageHeroes(state, f);
+                ScoutRivals(state, f);
             }
             catch (Exception ex)
             {
@@ -312,10 +315,25 @@ namespace IronThrone.Core.AI
         }
 
         /// <summary>Богатые дома вкладывают излишки в землю, а не копят золото до бесконечности.</summary>
-        private static void SpendTreasury(GameState state, FactionState f)
+        public static void SpendTreasury(GameState state, FactionState f)
         {
             if (f.gold >= 900 && (f.materials < 220 || f.food < 220) && f.gold >= EconomySystem.SuppliesGoldCost)
                 EconomySystem.BuySupplies(state, f, out _);
+            // излишки казны не должны лежать мёртвым грузом: закупаем припасы и покупаем расположение
+            if (f.gold >= 1200)
+            {
+                int buys = f.gold >= 4000 ? 2 : 1;
+                for (int i = 0; i < buys; i++)
+                    EconomySystem.BuySupplies(state, f, out _);
+            }
+            if (f.gold >= 2500)
+            {
+                var friend = state.Factions.Values
+                    .Where(x => x.alive && x.id != f.id && DiplomacySystem.Relation(state, f.id, x.id) < 50)
+                    .OrderBy(x => DiplomacySystem.Relation(state, f.id, x.id))
+                    .FirstOrDefault();
+                if (friend != null) DiplomacySystem.SendGift(state, f, friend.id, out _);
+            }
             if (f.gold < 600) return;
             int bought = 0;
             foreach (var prov in state.Provinces.Values.Where(x => x.controller == f.id)
@@ -380,25 +398,80 @@ namespace IronThrone.Core.AI
         }
 
         /// <summary>Политический двор: дары домам, которые держат места в совете или могут поддержать.</summary>
+        /// <summary>ИИ прячет гарнизоны в укрытии, если рядом стоит вражеское войско.</summary>
+        private static void TryAmbush(GameState state, FactionState f)
+        {
+            foreach (var army in f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null).Where(a => a != null))
+            {
+                if (!army.alive || army.stance == "siege" || army.stance == "ambush") continue;
+                if (army.movementLeft <= 0) continue;
+                var prov = state.Province(army.province);
+                if (prov == null || prov.controller != f.id || !MilitarySystem.AmbushTerrain(prov.def.terrain)) continue;
+                if (state.Armies.Values.Any(a => a.alive && a.id != army.id && a.province == prov.id && a.faction != f.id)) continue;
+                // дом в состоянии войны: оставшиеся в тылу войска залегают в укрытиях на случай рейда
+                if (!state.Wars.Any(w => w.active && w.Involves(f.id))) continue;
+                if (state.Rng.NextDouble() > 0.5) continue;
+                MilitarySystem.SetAmbush(state, f, army, out _);
+            }
+        }
+
         private static void CourtSupport(GameState state, FactionState f)
         {
-            if (f.gold < 700) return;
             var throne = state.Council.throneHolder == f.id;
-            if (!throne && PoliticsSystem.SeatsOf(state, f.id) < 2) return;
-            if (state.Rng.NextDouble() > 0.3) return;
+            bool almostPolitical = f.recognition >= 50 && (throne || PoliticsSystem.SeatsOf(state, f.id) >= 2);
+            if (!almostPolitical && !throne && PoliticsSystem.SeatsOf(state, f.id) < 2) return;
+            if (f.gold < (almostPolitical ? 400 : 700)) return;
+            if (!almostPolitical && state.Rng.NextDouble() > 0.3) return;
 
             var candidates = state.Factions.Values
                 .Where(x => x.id != f.id && x.alive)
                 .Where(x => DiplomacySystem.WarBetween(state, f.id, x.id) == null)
                 .Select(x => (faction: x, relation: DiplomacySystem.Relation(state, f.id, x.id),
                               seat: state.Council.seats.ContainsValue(x.id)))
-                .Where(t => t.relation < 60)
+                .Where(t => t.relation < 35 && (t.seat || t.relation > 15))
                 .OrderByDescending(t => t.seat)
                 .ThenByDescending(t => t.relation)
                 .ToList();
             if (candidates.Count == 0) return;
-            var pick = candidates[0];
-            DiplomacySystem.SendGift(state, f, pick.faction.id, out _);
+            int gifts = almostPolitical ? 2 : 1;
+            for (int i = 0; i < gifts && i < candidates.Count; i++)
+            {
+                if (f.gold < 100) break;
+                DiplomacySystem.SendGift(state, f, candidates[i].faction.id, out _);
+            }
+        }
+
+        /// <summary>ИИ распределяет героев по армиям: сильнейший — в самую сильную армию.</summary>
+        private static void ManageHeroes(GameState state, FactionState f)
+        {
+            var free = f.heroes
+                .Select(id => MilitarySystem.Hero(state, id))
+                .Where(h => h != null && h.alive && !h.wounded && h.armyId == null && h.reassignCooldown == 0)
+                .OrderByDescending(h => h.level)
+                .ToList();
+            if (free.Count == 0) return;
+            foreach (var army in f.armies
+                         .Select(id => state.Armies.TryGetValue(id, out var a) ? a : null)
+                         .Where(a => a != null && a.alive && a.heroId == null)
+                         .OrderByDescending(a => MilitarySystem.EstimateStrength(a)))
+            {
+                if (free.Count == 0) break;
+                var hero = free[0];
+                if (MilitarySystem.AssignHero(state, f, hero.defId, army.id, out _)) free.RemoveAt(0);
+            }
+        }
+
+        /// <summary>ИИ изредка отправляет разведку к сопернику: свежие донесения дают бонус в бою.</summary>
+        private static void ScoutRivals(GameState state, FactionState f)
+        {
+            if (f.influence < 8 || state.Rng.NextDouble() > 0.12) return;
+            var rival = state.Factions.Values
+                .Where(x => x.id != f.id && x.alive && !EspionageSystem.HasFreshIntel(state, f.id, x.id))
+                .Where(x => DiplomacySystem.Relation(state, f.id, x.id) < 40)
+                .OrderByDescending(x => state.CountControlled(x.id))
+                .FirstOrDefault();
+            if (rival == null) return;
+            EspionageSystem.Execute(state, f, "recon", rival.id);
         }
 
         /// <summary>Вера: миссионеры и реформа, если дом контролирует святыню.</summary>
@@ -410,12 +483,33 @@ namespace IronThrone.Core.AI
                 FaithSystem.ReformFaith(state, f, out _);
                 return;
             }
-            if (f.piety < 30 || state.Rng.NextDouble() > 0.3) return;
-            var target = state.Provinces.Values
-                .Where(p => p.controller == f.id)
-                .OrderBy(p => p.faith.TryGetValue(f.faith, out var v) ? v : 0)
-                .FirstOrDefault();
-            if (target != null) FaithSystem.SendMissionary(state, f, target.id, out _);
+            // после реформации ИИ выбирает догмат по чертам дома
+            if (f.HasFlag("faith_reformed") && string.IsNullOrEmpty(f.dogma))
+            {
+                string pick = f.def.traits.Contains("war") ? "dogma_sword"
+                    : f.def.traits.Contains("trade") ? "dogma_citadel"
+                    : "dogma_mercy";
+                if (!f.def.traits.Contains("war") && !f.def.traits.Contains("trade") && f.def.traits.Contains("intrigue"))
+                    pick = "dogma_citadel";
+                FaithSystem.ChooseDogma(state, f, pick, out _);
+            }
+            if (f.piety < 30 || state.Rng.NextDouble() > 0.5) return;
+            int missions = f.piety > 80 ? 2 : 1;
+            // проповедь идёт и за границу, и туда, где вера ближе всего к перелому:
+            // тратить миссии на провинции с нулём веры бессмысленно
+            var ownIds = new HashSet<string>(state.Provinces.Values.Where(p => p.controller == f.id).Select(p => p.id));
+            bool abroad = state.Rng.NextDouble() < 0.4;
+            var pool = abroad
+                ? state.Provinces.Values.Where(p => p.controller != f.id &&
+                                                    p.def.neighbors.Any(n => ownIds.Contains(n)))
+                : state.Provinces.Values.Where(p => p.controller == f.id);
+            var targets = pool
+                .Where(p => p.dominantFaith != f.faith && (p.faith.TryGetValue(f.faith, out var v) ? v : 0) < 62)
+                .OrderByDescending(p => p.faith.TryGetValue(f.faith, out var v) ? v : 0)
+                .Take(missions)
+                .ToList();
+            foreach (var target in targets)
+                if (!FaithSystem.SendMissionary(state, f, target.id, out _)) break;
         }
 
         private static void ManageTitles(GameState state, FactionState f)

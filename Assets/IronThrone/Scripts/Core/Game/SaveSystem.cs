@@ -27,11 +27,17 @@ namespace IronThrone.Core.Game
         public List<ArmySave> armies = new List<ArmySave>();
         public List<HeroSave> heroes = new List<HeroSave>();
         public List<MinorHouseSave> minorHouses = new List<MinorHouseSave>();
+        public List<MinorRequestSave> minorRequests = new List<MinorRequestSave>();
         public List<CampSave> camps = new List<CampSave>();
         public List<QuestSave> quests = new List<QuestSave>();
         public List<LawSave> laws = new List<LawSave>();
         public List<WarSave> wars = new List<WarSave>();
         public Dictionary<string, int> truces = new Dictionary<string, int>();
+        public Dictionary<string, int> pacts = new Dictionary<string, int>();
+        public string coalitionTarget;
+        public int coalitionUntil;
+        public Dictionary<string, float> faithStartShare = new Dictionary<string, float>();
+        public List<ScheduledEventSave> scheduledEvents = new List<ScheduledEventSave>();
         public CouncilSave council = new CouncilSave();
         public List<string> firedEvents = new List<string>();
         public Dictionary<string, int> eventHistory = new Dictionary<string, int>();
@@ -70,18 +76,22 @@ namespace IronThrone.Core.Game
         public List<string> focusQueue = new List<string>();
         public List<string> passedLaws = new List<string>();
         public int lawsProposed;
+        public List<string> marriages = new List<string>();
+        public string dogma;
         public List<string> questStates = new List<string>();
         public int lastEventTurn = -1;
         public int score;
+        public List<IntelSave> intel = new List<IntelSave>();
     }
 
     public class AdvisorSave { public string defId; public int cooldown; }
+    public class ScheduledEventSave { public int turn; public string eventId; public string faction; }
     public class TimedModSave { public string key; public float value; public int turnsLeft; public string source; }
 
     public class ProvinceSave
     {
         public string id;
-        public string owner, controller, house, dominantFaith, besieger;
+        public string owner, controller, house, dominantFaith, startFaith, besieger;
         public List<string> buildings = new List<string>();
         public Dictionary<string, int> buildQueue = new Dictionary<string, int>();
         public float unrest, development;
@@ -111,9 +121,28 @@ namespace IronThrone.Core.Game
     public class HeroSave
     {
         public string defId, name, faction, armyId;
-        public int level, xp, woundedTurns, abilityCooldown;
+        public int level, xp, woundedTurns, abilityCooldown, reassignCooldown;
         public bool alive, wounded;
         public Dictionary<string, int> cooldowns = new Dictionary<string, int>();
+    }
+
+    /// <summary>Донесение разведки в сохранении.</summary>
+    public class IntelSave
+    {
+        public string factionId;
+        public int turn, gold, food, materials, influence;
+        public int provinces, armies, units, strength, techs;
+        public float recognition;
+        public string capital;
+        public List<string> armyLines = new List<string>();
+        public List<string> wars = new List<string>();
+        public List<string> lastTechs = new List<string>();
+    }
+
+    public class MinorRequestSave
+    {
+        public string house, faction, type;
+        public int turnsLeft;
     }
 
     public class MinorHouseSave
@@ -203,6 +232,13 @@ namespace IronThrone.Core.Game
                     lastAgendaTurn = state.Council.lastAgendaTurn,
                 },
                 truces = new Dictionary<string, int>(state.Truces),
+                pacts = new Dictionary<string, int>(state.Pacts),
+                coalitionTarget = state.CoalitionTarget,
+                coalitionUntil = state.CoalitionUntil,
+                faithStartShare = new Dictionary<string, float>(state.FaithStartShare),
+                scheduledEvents = state.ScheduledEvents
+                    .Select(x => new ScheduledEventSave { turn = x.turn, eventId = x.eventId, faction = x.faction })
+                    .ToList(),
                 eventHistory = new Dictionary<string, int>(state.eventHistory),
                 firedEvents = state.firedEvents.ToList(),
             };
@@ -236,12 +272,28 @@ namespace IronThrone.Core.Game
                     focusQueue = f.focusQueue.ToList(),
                     passedLaws = f.passedLaws.ToList(),
                     lawsProposed = f.lawsProposed,
+                    marriages = f.marriages.ToList(),
+                    dogma = f.dogma,
                     questStates = f.questStates.ToList(),
                     lastEventTurn = f.lastEventTurn,
                     score = f.score,
                 };
                 foreach (var a in f.advisors) fs.advisors.Add(new AdvisorSave { defId = a.defId, cooldown = a.cooldown });
                 foreach (var t in f.timedMods) fs.timedMods.Add(new TimedModSave { key = t.key, value = t.value, turnsLeft = t.turnsLeft, source = t.source });
+                foreach (var kv in f.intel)
+                {
+                    var it = kv.Value;
+                    if (it == null) continue;
+                    fs.intel.Add(new IntelSave
+                    {
+                        factionId = it.factionId, turn = it.turn,
+                        gold = it.gold, food = it.food, materials = it.materials, influence = it.influence,
+                        provinces = it.provinces, armies = it.armies, units = it.units, strength = it.strength,
+                        techs = it.techs, recognition = it.recognition, capital = it.capital,
+                        armyLines = new List<string>(it.armyLines), wars = new List<string>(it.wars),
+                        lastTechs = new List<string>(it.lastTechs),
+                    });
+                }
                 d.factions.Add(fs);
             }
 
@@ -250,7 +302,7 @@ namespace IronThrone.Core.Game
                 var ps = new ProvinceSave
                 {
                     id = p.id, owner = p.owner, controller = p.controller, house = p.house,
-                    dominantFaith = p.dominantFaith, besieger = p.besieger,
+                    dominantFaith = p.dominantFaith, startFaith = p.startFaith, besieger = p.besieger,
                     buildings = p.buildings.ToList(),
                     buildQueue = new Dictionary<string, int>(p.buildQueue),
                     unrest = p.unrest, development = p.development,
@@ -285,10 +337,14 @@ namespace IronThrone.Core.Game
                 {
                     defId = h.defId, name = h.name, faction = h.faction, armyId = h.armyId,
                     level = h.level, xp = h.xp, woundedTurns = h.woundedTurns, abilityCooldown = h.abilityCooldown,
+                    reassignCooldown = h.reassignCooldown,
                     alive = h.alive, wounded = h.wounded,
                     cooldowns = new Dictionary<string, int>(h.cooldowns),
                 });
             }
+
+            foreach (var req in state.MinorRequests)
+                d.minorRequests.Add(new MinorRequestSave { house = req.house, faction = req.faction, type = req.type, turnsLeft = req.turnsLeft });
 
             foreach (var m in state.MinorHouses.Values)
                 d.minorHouses.Add(new MinorHouseSave
@@ -370,25 +426,41 @@ namespace IronThrone.Core.Game
                     currentResearch = fs.currentResearch,
                     armies = new List<string>(fs.armies),
                     heroes = new List<string>(fs.heroes),
-                    relations = new Dictionary<string, float>(fs.relations),
-                    minorRelations = new Dictionary<string, int>(fs.minorRelations),
-                    vassals = new Dictionary<string, int>(fs.vassals),
+                    relations = new SortedDictionary<string, float>(fs.relations),
+                    minorRelations = new SortedDictionary<string, int>(fs.minorRelations),
+                    vassals = new SortedDictionary<string, int>(fs.vassals),
                     annexed = new HashSet<string>(fs.annexed),
-                    permanentMods = new Dictionary<string, float>(fs.permanentMods),
+                    permanentMods = new SortedDictionary<string, float>(fs.permanentMods),
                     flags = new HashSet<string>(fs.flags),
-                    counters = new Dictionary<string, float>(fs.counters),
+                    counters = new SortedDictionary<string, float>(fs.counters),
                     currentFocus = fs.currentFocus,
                     focusTurnsLeft = fs.focusTurnsLeft,
                     completedFocuses = new List<string>(fs.completedFocuses),
                     focusQueue = new List<string>(fs.focusQueue),
                     passedLaws = new HashSet<string>(fs.passedLaws),
                     lawsProposed = fs.lawsProposed,
+                    marriages = new HashSet<string>(fs.marriages ?? new List<string>()),
+                    dogma = fs.dogma,
                     questStates = new List<string>(fs.questStates),
                     lastEventTurn = fs.lastEventTurn,
                     score = fs.score,
                 };
                 foreach (var a in fs.advisors) f.advisors.Add(new AdvisorState { defId = a.defId, cooldown = a.cooldown });
                 foreach (var t in fs.timedMods) f.timedMods.Add(new TimedModifier { key = t.key, value = t.value, turnsLeft = t.turnsLeft, source = t.source });
+                foreach (var it in fs.intel ?? new List<IntelSave>())
+                {
+                    if (string.IsNullOrEmpty(it.factionId)) continue;
+                    f.intel[it.factionId] = new FactionIntel
+                    {
+                        factionId = it.factionId, turn = it.turn,
+                        gold = it.gold, food = it.food, materials = it.materials, influence = it.influence,
+                        provinces = it.provinces, armies = it.armies, units = it.units, strength = it.strength,
+                        techs = it.techs, recognition = it.recognition, capital = it.capital,
+                        armyLines = new List<string>(it.armyLines ?? new List<string>()),
+                        wars = new List<string>(it.wars ?? new List<string>()),
+                        lastTechs = new List<string>(it.lastTechs ?? new List<string>()),
+                    };
+                }
                 state.Factions[f.id] = f;
             }
 
@@ -399,6 +471,7 @@ namespace IronThrone.Core.Game
                 p.controller = ps.controller;
                 if (!string.IsNullOrEmpty(ps.house)) p.house = ps.house;
                 p.dominantFaith = ps.dominantFaith;
+                p.startFaith = string.IsNullOrEmpty(ps.startFaith) ? ps.dominantFaith : ps.startFaith;
                 p.besieger = ps.besieger;
                 p.buildings = new List<string>(ps.buildings);
                 p.buildQueue = new Dictionary<string, int>(ps.buildQueue);
@@ -409,7 +482,7 @@ namespace IronThrone.Core.Game
                 p.siegeProgress = ps.siegeProgress;
                 p.turnsOwned = ps.turnsOwned;
                 p.raided = ps.raided;
-                p.faith = new Dictionary<string, float>(ps.faith);
+                p.faith = new SortedDictionary<string, float>(ps.faith);
                 p.flags = new HashSet<string>(ps.flags);
             }
 
@@ -435,6 +508,7 @@ namespace IronThrone.Core.Game
                 {
                     defId = h.defId, name = h.name, faction = h.faction, armyId = h.armyId,
                     level = h.level, xp = h.xp, woundedTurns = h.woundedTurns, abilityCooldown = h.abilityCooldown,
+                    reassignCooldown = h.reassignCooldown,
                     alive = h.alive, wounded = h.wounded,
                     cooldowns = new Dictionary<string, int>(h.cooldowns),
                 };
@@ -447,6 +521,13 @@ namespace IronThrone.Core.Game
                     house = m.house, relation = m.relation, vassalOf = m.vassalOf, annexed = m.annexed,
                     hostile = m.hostile, tributeTurnsLeft = m.tributeTurnsLeft, lastActionTurn = m.lastActionTurn,
                 };
+
+            foreach (var req in d.minorRequests ?? new List<MinorRequestSave>())
+                if (!string.IsNullOrEmpty(req.house) && !string.IsNullOrEmpty(req.faction))
+                    state.MinorRequests.Add(new MinorRequestState
+                    {
+                        house = req.house, faction = req.faction, type = req.type, turnsLeft = req.turnsLeft,
+                    });
 
             foreach (var c in d.camps)
                 state.RaiderCamps.Add(new RaiderCampState
@@ -469,7 +550,14 @@ namespace IronThrone.Core.Game
                     defenderBattles = w.defenderBattles, active = w.active,
                 });
 
-            state.Truces = new Dictionary<string, int>(d.truces ?? new Dictionary<string, int>());
+            state.Truces = new SortedDictionary<string, int>(d.truces ?? new Dictionary<string, int>());
+            state.Pacts = new SortedDictionary<string, int>(d.pacts ?? new Dictionary<string, int>());
+            state.CoalitionTarget = d.coalitionTarget;
+            state.CoalitionUntil = d.coalitionUntil;
+            state.FaithStartShare = d.faithStartShare ?? new Dictionary<string, float>();
+            foreach (var se in d.scheduledEvents ?? new List<ScheduledEventSave>())
+                if (!string.IsNullOrEmpty(se.eventId))
+                    state.ScheduledEvents.Add(new ScheduledEventState { turn = se.turn, eventId = se.eventId, faction = se.faction });
             state.Council = new CouncilState
             {
                 seats = new Dictionary<string, string>(d.council.seats ?? new Dictionary<string, string>()),
@@ -480,7 +568,7 @@ namespace IronThrone.Core.Game
                 lastAgendaTurn = d.council.lastAgendaTurn,
             };
             state.firedEvents = new HashSet<string>(d.firedEvents ?? new List<string>());
-            state.eventHistory = new Dictionary<string, int>(d.eventHistory ?? new Dictionary<string, int>());
+            state.eventHistory = new SortedDictionary<string, int>(d.eventHistory ?? new Dictionary<string, int>());
             state.Log = (d.log ?? new List<LogSave>()).Select(l => new LogEntry(l.turn, l.category, l.text, l.faction)).ToList();
             return state;
         }

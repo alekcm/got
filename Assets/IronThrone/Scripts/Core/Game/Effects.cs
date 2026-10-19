@@ -106,6 +106,53 @@ namespace IronThrone.Core.Game
             }
         }
 
+        /// <summary>
+        /// Снимает эффект, ранее наложенный <see cref="Apply"/>. Нужен для отмены законов:
+        /// модификаторы вычитаются, разовые прибавки откатываются.
+        /// </summary>
+        public static string Reverse(EffectDef e, EffectContext ctx)
+        {
+            if (e == null) return null;
+            var state = ctx.State;
+            var faction = ctx.ResolveFaction(e);
+            var prov = ctx.ResolveProvince(e);
+            switch ((e.op ?? "").ToLowerInvariant())
+            {
+                case "modifier":
+                {
+                    if (faction == null || string.IsNullOrEmpty(e.key)) return null;
+                    float delta = e.value != 0 ? e.value : e.amount;
+                    faction.permanentMods.TryGetValue(e.key, out var cur);
+                    float next = cur - delta;
+                    if (Math.Abs(next) < 0.00001f) faction.permanentMods.Remove(e.key);
+                    else faction.permanentMods[e.key] = next;
+                    return null;
+                }
+                case "recognition":
+                {
+                    if (faction == null) return null;
+                    float amount = e.amount != 0 ? e.amount : e.value;
+                    faction.recognition = Clamp(faction.recognition - amount, 0, 100);
+                    return null;
+                }
+                case "resource":
+                {
+                    if (faction == null) return null;
+                    int amount = Mathf(e.amount != 0 ? e.amount : e.value);
+                    AddResource(faction, e.res ?? e.key ?? "gold", -amount);
+                    return null;
+                }
+                case "faith":
+                {
+                    if (prov == null) return null;
+                    float delta = (e.amount != 0 ? e.amount : e.value) / 100f;
+                    ShiftFaith(prov, e.id ?? faction?.faith ?? "seven", -delta);
+                    return null;
+                }
+            }
+            return null;
+        }
+
         public static string Apply(EffectDef e, EffectContext ctx)
         {
             if (e == null) return null;
@@ -431,10 +478,12 @@ namespace IronThrone.Core.Game
         public static string ResourceName(string res) => (res ?? "").ToLowerInvariant() switch
         {
             "gold" => "золото",
-            "materials" or "material" => "стройматериалы",
+            "materials" => "стройматериалы",
+            "material" => "стройматериалы",
             "food" => "продовольствие",
             "influence" => "влияние",
-            "piety" or "faith" => "вера",
+            "piety" => "вера",
+            "faith" => "вера",
             _ => res
         };
 

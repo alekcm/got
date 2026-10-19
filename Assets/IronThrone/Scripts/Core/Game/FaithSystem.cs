@@ -8,8 +8,62 @@ namespace IronThrone.Core.Game
     /// <summary>
     /// Религия в духе Civilization: вера, распространение, десятина, святыни и религиозная победа.
     /// </summary>
+    /// <summary>Догмат веры — один из трёх путей, выбираемый при реформации.</summary>
+    public class DogmaDef
+    {
+        public string id;
+        public string name;
+        public string description;
+        public Dictionary<string, float> mods = new Dictionary<string, float>();
+    }
+
     public static class FaithSystem
     {
+        /// <summary>Три догмата: воинственный, милосердный и книжный. Выбирается один.</summary>
+        public static readonly List<DogmaDef> Dogmas = new List<DogmaDef>
+        {
+            new DogmaDef
+            {
+                id = "dogma_sword", name = "Меч и пламя",
+                description = "+1 к атаке армий, +1 влияния за ход",
+                mods = new Dictionary<string, float> { [ModKeys.ArmyAttack] = 1f, [ModKeys.InfluenceIncome] = 1f },
+            },
+            new DogmaDef
+            {
+                id = "dogma_mercy", name = "Милость Семерых",
+                description = "+2 еды за ход, +10% к приросту признания, меньше беспорядков",
+                mods = new Dictionary<string, float> { [ModKeys.FoodIncome] = 2f, [ModKeys.RecognitionGain] = 0.1f, [ModKeys.UnrestGlobalPct] = -0.1f },
+            },
+            new DogmaDef
+            {
+                id = "dogma_citadel", name = "Мудрость Цитадели",
+                description = "+2 материалов за ход, +2 веры за ход",
+                mods = new Dictionary<string, float> { [ModKeys.MaterialsIncome] = 2f, [ModKeys.PietyIncome] = 2f },
+            },
+        };
+
+        public static DogmaDef Dogma(string id) => Dogmas.FirstOrDefault(d => d.id == id);
+
+        /// <summary>Выбрать догмат можно один раз и только после реформации веры.</summary>
+        public static bool ChooseDogma(GameState state, FactionState f, string dogmaId, out string error)
+        {
+            error = null;
+            var dogma = Dogma(dogmaId);
+            if (dogma == null) { error = "Неизвестный догмат"; return false; }
+            if (f == null || !f.alive) { error = "Дом не существует"; return false; }
+            if (!f.HasFlag("faith_reformed")) { error = "Сначала реформируйте веру"; return false; }
+            if (!string.IsNullOrEmpty(f.dogma)) { error = "Догмат уже выбран: " + (Dogma(f.dogma)?.name ?? f.dogma); return false; }
+            f.dogma = dogma.id;
+            foreach (var m in dogma.mods)
+            {
+                f.permanentMods.TryGetValue(m.Key, out var cur);
+                f.permanentMods[m.Key] = cur + m.Value;
+            }
+            state.AddLog("faith", $"{f.def.name} избирает догмат «{dogma.name}»: {dogma.description}", f.id);
+            if (f.isPlayer) state.Notify($"Догмат веры: {dogma.name}. {dogma.description}");
+            return true;
+        }
+
         public static void ApplyFaithModifiers(GameState state, FactionState f, string faithId, bool remove = false)
         {
             if (!state.Content.FaithById.TryGetValue(faithId ?? "", out var faith)) return;
@@ -51,7 +105,7 @@ namespace IronThrone.Core.Game
             var cost = new ResourceCost(20, 0, 0, 0, 15);
             if (!EffectEngine.CanAfford(f, cost)) { error = "Нужно 20 золота и 15 веры"; return false; }
             EffectEngine.Pay(f, cost);
-            float spread = 8f * (1f + f.Mod(ModKeys.FaithSpread));
+            float spread = 10f * (1f + f.Mod(ModKeys.FaithSpread));
             EffectEngine.ShiftFaith(p, f.faith, spread / 100f);
             p.unrest = Math.Min(100, p.unrest + (p.controller == f.id ? 1 : 6));
             state.AddLog("faith", $"{f.def.name}: миссионеры в {p.def.name} (+{spread:0}% веры)", f.id);

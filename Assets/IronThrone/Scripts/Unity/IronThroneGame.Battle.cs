@@ -167,7 +167,7 @@ namespace IronThrone.Unity
                 $"Битва за {_battleProvince?.def.name ?? "поле"}", _h1);
             GUI.Label(new Rect(24, top + 38, Screen.width - 440, 22),
                 $"Раунд {b.round}/{b.maxRounds} · {(_battleAttacker != null ? _battleAttacker.name : "атакующие")} против {(_battleDefender != null ? _battleDefender.name : "защитники")}" +
-                (b.siege ? " · осада" : ""), _small);
+                (b.siege ? " · осада" : "") + (b.ambush ? " · засада" : ""), _small);
 
             var autoRect = new Rect(Screen.width - 400, top + 4, 300, 30);
             if (GUI.Button(autoRect, "Автобой", _button))
@@ -240,6 +240,23 @@ namespace IronThrone.Unity
                 if (GUILayout.Button(!_battleMoveMode ? "● Бить" : "Бить", !_battleMoveMode ? _tabActive : _button))
                 { _battleMoveMode = false; _battleDirty = true; }
                 GUILayout.EndHorizontal();
+
+                // способность героя: одна на бой, на всю армию
+                if (BattleEngine.CanUseHeroAbility(_battle, 0))
+                {
+                    string heroAb = BattleEngine.HeroAbilityId(_battle, 0);
+                    if (GUILayout.Button($"Герой: {BattleEngine.HeroAbilityName(heroAb)} (раз за бой)", _tabActive))
+                    {
+                        string line = BattleEngine.UseHeroAbility(_battle, 0);
+                        Toast(line ?? "Способность недоступна");
+                        _battleDirty = true;
+                        if (_battle.finished) FinishBattle();
+                    }
+                }
+                else if (BattleEngine.CanUseHeroAbility(_battle, 1))
+                {
+                    GUILayout.Label($"Герой противника готовит «{BattleEngine.HeroAbilityName(BattleEngine.HeroAbilityId(_battle, 1))}».", _small);
+                }
 
                 var abilities = new[] { "volley", "charge", "rally", "heal", "dragon_breath", "shield_wall", "berserk" };
                 GUILayout.Space(4);
