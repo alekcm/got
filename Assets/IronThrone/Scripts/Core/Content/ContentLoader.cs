@@ -211,7 +211,8 @@ namespace IronThrone.Core.Content
             foreach (var fo in db.Focuses)
             {
                 if (!string.IsNullOrEmpty(fo.faction) && !db.FactionById.ContainsKey(fo.faction) &&
-                    !db.Factions.Any(f => f.house == fo.faction))
+                    !db.Factions.Any(f => f.house == fo.faction) &&
+                    !db.Factions.Any(f => f.focusTree == fo.faction))
                     w.Add($"[focus] {fo.id}: фракция '{fo.faction}' не существует");
                 if (fo.faction != "shared" && !db.Factions.Any(f => f.focusTree == fo.faction))
                     w.Add($"[focus] {fo.id}: дерево '{fo.faction}' ни к одной фракции не привязано");
@@ -296,7 +297,8 @@ namespace IronThrone.Core.Content
             "spyOffense", "spyDefense", "spyNetwork", "siegeSpeed", "raidLoot", "tradeDominance",
             "recognitionGain", "votePower", "levySize", "recruitCost.pct", "upkeep.pct",
             "buildCost.pct", "lobbyCost.pct", "recoveryCost.pct", "researchSpeed",
-            "faithSpread", "unrestGlobal.pct", "garrisonBonus", "siegeDefense", "growthBonus"
+            "faithSpread", "unrestGlobal.pct", "garrisonBonus", "siegeDefense", "growthBonus",
+            "movement"
         };
 
         private static bool IsKnownMod(string key) =>

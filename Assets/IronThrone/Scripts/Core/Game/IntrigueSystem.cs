@@ -213,12 +213,15 @@ namespace IronThrone.Core.Game
             foreach (var f in state.Factions.Values.Where(x => x.alive))
             {
                 // сеть шептунов растёт от построек и титула
-                int gain = state.Settings.spyNetworkBase;
+                int gain = state.Settings.spyNetworkBase + (int)f.Mod(ModKeys.SpyNetwork);
                 if (f.HasTitle(state, "master_of_whisperers")) gain += 1;
                 foreach (var p in state.Provinces.Values.Where(p => p.controller == f.id))
                     foreach (var b in p.buildings)
                         if (b == "spy_network" || b == "whisperers") gain += 1;
-                f.spyNetwork = Math.Min(12, f.spyNetwork + (state.Rng.NextDouble() < 0.4 ? 1 : 0));
+                // сеть растёт до предела, заданного постройками, титулом и советниками
+                if (f.spyNetwork < gain) f.spyNetwork++;
+                else if (state.Rng.NextDouble() < 0.15) f.spyNetwork = Math.Min(gain + 1, f.spyNetwork + 1);
+                f.spyNetwork = Math.Min(12, f.spyNetwork);
                 f.counterspy = Math.Max(0, f.counterspy - 1);
 
                 // AI шпионит

@@ -26,6 +26,8 @@ namespace IronThrone.Core.AI
                 MinorDiplomacy(state, f);
                 UseAdvisors(state, f);
                 ManageTitles(state, f);
+                CourtSupport(state, f);
+                FaithActions(state, f);
             }
             catch (Exception ex)
             {
@@ -64,6 +66,10 @@ namespace IronThrone.Core.AI
             return s;
         }
 
+        /// <summary>
+        /// ИИ выбирает фокус по ценности наград, чертам дома и обстановке. Небольшой разброс
+        /// нужен, чтобы в разных партиях дом шёл разными путями (в том числе по веткам-развилкам).
+        /// </summary>
         private static void ChooseFocus(GameState state, FactionState f)
         {
             if (f.currentFocus != null) return;
@@ -71,7 +77,38 @@ namespace IronThrone.Core.AI
                 .Where(fo => ProgressSystem.IsFocusAvailable(state, f, fo, out _))
                 .ToList();
             if (options.Count == 0) return;
-            var pick = options.OrderByDescending(fo => fo.y * 10 + fo.x).First();
+
+            float Score(FocusDef fo)
+            {
+                float s = 1f;
+                foreach (var e in fo.effects)
+                {
+                    float v = e.amount != 0 ? e.amount : e.value;
+                    switch ((e.op ?? "").ToLowerInvariant())
+                    {
+                        case "modifier":
+                            if (e.key != null && e.key.Contains("Income")) s += v * 0.8f;
+                            if (e.key != null && e.key.Contains("Army")) s += v * 1.4f;
+                            if (e.key != null && e.key.Contains("Spy")) s += v;
+                            if (e.key != null && e.key.Contains("Trade") || (e.key != null && e.key.Contains("Gold"))) s += v * 0.4f;
+                            break;
+                        case "resource": s += v / 150f; break;
+                        case "recognition": s += v / 12f; break;
+                        case "title": s += 3f; break;
+                        case "capitalbuilding": s += 2f; break;
+                        case "recruit": s += e.count * 1.5f; break;
+                    }
+                }
+                if (f.def.traits.Contains("war") && fo.branch == "power") s += 2f;
+                if (f.def.traits.Contains("trade") && fo.branch == "economy") s += 2f;
+                if (f.def.traits.Contains("intrigue") && fo.branch == "intrigue") s += 2f;
+                if (f.def.traits.Contains("faith") && fo.branch == "faith") s += 2f;
+                if (f.def.traits.Contains("raid") && fo.branch == "power") s += 1f;
+                return s;
+            }
+
+            var top = options.OrderByDescending(Score).ThenBy(_ => state.Rng.Next()).Take(2).ToList();
+            var pick = top.Count == 1 || state.Rng.NextDouble() < 0.7 ? top[0] : top[1];
             ProgressSystem.StartFocus(state, f, pick.id, out _);
         }
 
@@ -124,7 +161,8 @@ namespace IronThrone.Core.AI
                 .ToList();
             if (options.Count == 0) return;
 
-            int maxUnits = state.Settings.armyMaxUnits * Math.Max(1, state.Settings.maxArmies);
+            int perArmy = MilitarySystem.MaxUnitsInArmy(state, f);
+            int maxUnits = perArmy * Math.Max(1, state.Settings.maxArmies);
             int recruits = 0;
             for (int round = 0; round < 3; round++)
             {
@@ -133,7 +171,7 @@ namespace IronThrone.Core.AI
                 if (f.armies.Count >= state.Settings.maxArmies && totalUnits >= state.Settings.armyMaxUnits * f.armies.Count) return;
 
                 var army = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null)
-                    .Where(a => a != null && a.alive && a.UnitCount < state.Settings.armyMaxUnits)
+                    .Where(a => a != null && a.alive && a.UnitCount < perArmy)
                     .OrderByDescending(a => a.UnitCount).FirstOrDefault();
 
                 string provinceId = army?.province;
@@ -341,22 +379,64 @@ namespace IronThrone.Core.AI
             }
         }
 
+        /// <summary>Политический двор: дары домам, которые держат места в совете или могут поддержать.</summary>
+        private static void CourtSupport(GameState state, FactionState f)
+        {
+            if (f.gold < 700) return;
+            var throne = state.Council.throneHolder == f.id;
+            if (!throne && PoliticsSystem.SeatsOf(state, f.id) < 2) return;
+            if (state.Rng.NextDouble() > 0.3) return;
+
+            var candidates = state.Factions.Values
+                .Where(x => x.id != f.id && x.alive)
+                .Where(x => DiplomacySystem.WarBetween(state, f.id, x.id) == null)
+                .Select(x => (faction: x, relation: DiplomacySystem.Relation(state, f.id, x.id),
+                              seat: state.Council.seats.ContainsValue(x.id)))
+                .Where(t => t.relation < 60)
+                .OrderByDescending(t => t.seat)
+                .ThenByDescending(t => t.relation)
+                .ToList();
+            if (candidates.Count == 0) return;
+            var pick = candidates[0];
+            DiplomacySystem.SendGift(state, f, pick.faction.id, out _);
+        }
+
+        /// <summary>Вера: миссионеры и реформа, если дом контролирует святыню.</summary>
+        private static void FaithActions(GameState state, FactionState f)
+        {
+            if (string.IsNullOrEmpty(f.faith)) return;
+            if (!f.HasFlag("faith_reformed") && f.piety >= 120 && FaithSystem.IsHead(state, f))
+            {
+                FaithSystem.ReformFaith(state, f, out _);
+                return;
+            }
+            if (f.piety < 30 || state.Rng.NextDouble() > 0.3) return;
+            var target = state.Provinces.Values
+                .Where(p => p.controller == f.id)
+                .OrderBy(p => p.faith.TryGetValue(f.faith, out var v) ? v : 0)
+                .FirstOrDefault();
+            if (target != null) FaithSystem.SendMissionary(state, f, target.id, out _);
+        }
+
         private static void ManageTitles(GameState state, FactionState f)
         {
             if (state.Council.throneHolder != f.id) return;
             if (state.Rng.NextDouble() > 0.08) return;
             // раздаёт титулы дружественным домам
             var friendly = state.Factions.Values
-                .Where(x => x.id != f.id && x.alive && f.relations.TryGetValue(x.id, out var r) && r > 35)
-                .OrderByDescending(x => x.recognition)
+                .Where(x => x.id != f.id && x.alive &&
+                            DiplomacySystem.Relation(state, f.id, x.id) > 20 &&
+                            DiplomacySystem.WarBetween(state, f.id, x.id) == null)
+                .OrderByDescending(x => DiplomacySystem.Relation(state, f.id, x.id))
+                .ThenByDescending(x => x.recognition)
                 .FirstOrDefault();
             var vacant = state.Content.Titles.FirstOrDefault(t =>
                 !state.Council.seats.ContainsKey(t.id) || state.Council.seats[t.id] != f.id);
             if (vacant == null || f.influence < 25) return;
-            // корона раздаёт должности своим людям, иногда — союзникам
-            string receiver = friendly != null && PoliticsSystem.SeatsOf(state, f.id) >= 3 && state.Rng.NextDouble() < 0.5
-                ? friendly.id : f.id;
-            PoliticsSystem.GrantTitle(state, vacant.id, receiver, out _);
+            // три места корона держит за собой, остальные раздаёт сторонникам
+            int own = PoliticsSystem.SeatsOf(state, f.id);
+            string receiver = own >= 3 && friendly != null ? friendly.id : f.id;
+            PoliticsSystem.GrantTitle(state, vacant.id, receiver, out _, actorId: f.id);
         }
     }
 }

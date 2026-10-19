@@ -62,6 +62,8 @@ namespace IronThrone.Core.Battle
         public string attackerFaction;
         public string defenderFaction;
         public bool siege;
+        public string terrain;
+        public bool coastal;
         public List<string> log = new List<string>();
         public int activeIndex = -1;
         public List<BattleUnit> order = new List<BattleUnit>();
@@ -100,6 +102,8 @@ namespace IronThrone.Core.Battle
                 attackerFaction = attacker?.faction,
                 defenderFaction = defender?.faction,
                 siege = siege,
+                terrain = province?.def.terrain,
+                coastal = province != null && (province.def.port || province.def.region == "islands"),
                 width = 9,
                 height = 7,
             };
@@ -164,6 +168,7 @@ namespace IronThrone.Core.Battle
             {
                 var inst = alive[i];
                 if (!state.Content.UnitById.TryGetValue(inst.defId, out var def)) continue;
+                float hpMul = 1f + Math.Max(-0.75f, state.Faction(army.faction)?.Mod(ModKeys.ArmyHp) ?? 0f);
                 int q = side == 0 ? 1 : f.width - 2;
                 int r = n == 1 ? 3 : (int)Math.Round(1 + i * (f.height - 2.0) / Math.Max(1, n - 1));
                 var bu = new BattleUnit
@@ -176,8 +181,8 @@ namespace IronThrone.Core.Battle
                     stats = def.stats.Clone(),
                     q = q,
                     r = r,
-                    hp = inst.hp,
-                    maxHp = 100,
+                    hp = Math.Min(100f, inst.hp) * hpMul,
+                    maxHp = 100f * hpMul,
                     morale = Math.Max(20, inst.morale),
                     level = inst.level,
                     upgradeLevel = inst.upgradeLevel,
@@ -204,9 +209,42 @@ namespace IronThrone.Core.Battle
                 }
                 if (factionState != null)
                 {
-                    bu.stats.attack += (int)Math.Round(factionState.Mod(ModKeys.ArmyAttack) + heroAtk);
-                    bu.stats.defense += (int)Math.Round(factionState.Mod(ModKeys.ArmyDefense) + heroDef);
+                    float heroMult = 1f + Math.Max(-0.5f, factionState.Mod(ModKeys.HeroPower));
+                    bu.stats.attack += (int)Math.Round(factionState.Mod(ModKeys.ArmyAttack) + heroAtk * heroMult);
+                    bu.stats.defense += (int)Math.Round(factionState.Mod(ModKeys.ArmyDefense) + heroDef * heroMult);
                     bu.morale = Math.Min(120, Math.Max(20, bu.morale + factionState.Mod(ModKeys.ArmyMorale)));
+
+                    // флот поддерживает бой на побережье и островах
+                    if (f.coastal)
+                    {
+                        float naval = factionState.Mod(ModKeys.NavalPower);
+                        bu.stats.attack += (int)Math.Round(naval * 0.6f);
+                        bu.stats.defense += (int)Math.Round(naval * 0.3f);
+                    }
+
+                    // особые свойства отряда
+                    foreach (var tr in def.traits ?? new List<string>())
+                    {
+                        switch (tr)
+                        {
+                            case "reave": bu.stats.attack += 1; bu.morale = Math.Min(120, bu.morale + 5); break;
+                            case "amphibious": if (f.coastal) { bu.stats.attack += 2; bu.stats.defense += 1; } break;
+                            case "disciplined": bu.morale = Math.Min(120, bu.morale + 8); bu.stats.defense += 1; break;
+                            case "fanatic": if (bu.morale >= 70) bu.stats.attack += 2; break;
+                        }
+                    }
+
+                    // родная местность: снег у северян, пески у дорнийцев, горы у долинцев
+                    if (!string.IsNullOrEmpty(def.terrainBonus) && !string.IsNullOrEmpty(f.terrain))
+                    {
+                        var homes = def.terrainBonus.Split(new[] { ',', ' ', '|' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (homes.Contains(f.terrain))
+                        {
+                            bu.stats.attack += 3;
+                            bu.stats.defense += 2;
+                        }
+                    }
+
                     if (def.kind == "dragon")
                     {
                         float dp = 1f + factionState.Mod(ModKeys.DragonPower);
@@ -564,7 +602,7 @@ namespace IronThrone.Core.Battle
                 var inst = FindInstance(army, bu);
                 if (inst == null) continue;
                 float before = inst.hp;
-                inst.hp = Math.Max(0, bu.hp);
+                inst.hp = Math.Max(0, Math.Min(100f, bu.hp / Math.Max(1f, bu.maxHp) * 100f));
                 inst.morale = Math.Max(0, bu.morale);
                 inst.alive = bu.hp > 0 && !bu.routed;
                 if (bu.routed) inst.hp = Math.Max(5, inst.hp * 0.5f);

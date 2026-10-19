@@ -14,12 +14,18 @@ namespace IronThrone.Core.Game
         public static BattleResolver Resolver; // Unity подменяет на ручной бой
 
         // ------------------------------------------------------------------ армии
+        /// <summary>Сколько отрядов помещается в одну армию: ополчение дома расширяет строй.</summary>
+        public static int MaxUnitsInArmy(GameState state, FactionState f) =>
+            Math.Max(1, state.Settings.armyMaxUnits + (int)f.Mod(ModKeys.LevySize));
+
         public static ArmyState CreateArmy(GameState state, FactionState faction, string province, string name)
         {
-            if (faction.armies.Count >= Math.Max(1, state.Settings.maxArmies + (int)faction.Mod(ModKeys.LevySize)))
+            if (faction.armies.Count >= Math.Max(1, state.Settings.maxArmies))
             {
-                // сливаем в существующую армию, если лимит исчерпан
-                var existing = faction.armies.Select(id => state.Armies[id]).FirstOrDefault(a => a.province == province && a.alive);
+                // лимит армий исчерпан: пополняем ту, что стоит здесь, иначе — любую существующую
+                var existing = faction.armies.Select(id => state.Armies[id])
+                    .FirstOrDefault(a => a.province == province && a.alive)
+                    ?? faction.armies.Select(id => state.Armies[id]).FirstOrDefault(a => a.alive);
                 if (existing != null) return existing;
             }
             var army = new ArmyState
@@ -40,8 +46,10 @@ namespace IronThrone.Core.Game
         public static void RecruitFree(GameState state, FactionState faction, UnitDef unit, int count, string provinceId)
         {
             var army = state.Armies.Values.FirstOrDefault(a => a.faction == faction.id && a.province == provinceId && a.alive)
+                       ?? state.Armies.Values.FirstOrDefault(a => a.faction == faction.id && a.alive)
                        ?? CreateArmy(state, faction, provinceId, "Новый сбор");
-            for (int i = 0; i < count; i++)
+            int room = Math.Max(0, MaxUnitsInArmy(state, faction) - army.units.Count);
+            for (int i = 0; i < Math.Min(count, room); i++)
                 army.units.Add(new UnitInstance(unit.id, unit.name) { hp = 100, morale = 100 });
         }
 
@@ -57,15 +65,25 @@ namespace IronThrone.Core.Game
 
             var prov = state.Province(provinceId);
             if (prov == null || prov.controller != faction.id) { error = "Набирать войска можно только на своей территории"; return false; }
+            if (faction.armies.Count >= Math.Max(1, state.Settings.maxArmies) &&
+                !state.Armies.Values.Any(a => a.alive && a.faction == faction.id && a.province == provinceId))
+            { error = "Достигнут предел армий — наймите войска там, где уже стоит ваша армия"; return false; }
 
             int n = Math.Max(1, count);
             float costMod = faction.ModPct(ModKeys.RecruitCostPct);
             var cost = def.cost.Scaled(n * costMod);
             if (!EffectEngine.CanAfford(faction, cost)) { error = "Недостаточно ресурсов: " + cost.ToRu(); return false; }
 
-            EffectEngine.Pay(faction, cost);
             var army = state.Armies.Values.FirstOrDefault(a => a.faction == faction.id && a.province == provinceId && a.alive)
                        ?? CreateArmy(state, faction, provinceId, "Сбор в " + prov.def.name);
+            int room = MaxUnitsInArmy(state, faction) - army.units.Count;
+            if (room <= 0) { error = $"В армии уже {army.units.Count} отрядов — больше не поместится"; return false; }
+            n = Math.Min(n, room);
+            // пересчитываем цену за фактическое число отрядов
+            cost = def.cost.Scaled(n * costMod);
+            if (!EffectEngine.CanAfford(faction, cost)) { error = "Недостаточно ресурсов: " + cost.ToRu(); return false; }
+
+            EffectEngine.Pay(faction, cost);
             for (int i = 0; i < n; i++)
                 army.units.Add(new UnitInstance(unitId, def.name) { hp = 100, morale = 100 });
             state.AddLog("army", $"{faction.def.name} набирает {def.name} ×{n} в {prov.def.name}", faction.id);
@@ -192,6 +210,12 @@ namespace IronThrone.Core.Game
             if (!CanMove(state, army, target, out message)) return false;
             var prov = state.Province(target);
             int cost = MoveCost(state, army.province, target);
+            if (!state.Province(army.province).def.neighbors.Contains(target))
+            {
+                var fleetFaction = state.Faction(army.faction);
+                if (fleetFaction != null)
+                    cost = Math.Max(1, cost - (int)(fleetFaction.Mod(ModKeys.NavalPower) / 2f));
+            }
 
             var enemyArmy = state.Armies.Values.FirstOrDefault(a =>
                 a.alive && a.province == target && a.faction != army.faction && !a.IsEmpty &&
@@ -230,7 +254,7 @@ namespace IronThrone.Core.Game
                         if (u != null) u.hp = Math.Max(1, u.hp - 18);
                     }
                     prov.garrison = 0;
-                    CaptureProvince(state, prov, army.faction);
+                    CaptureProvince(state, prov, army.faction, army);
                     message ??= $"{prov.def.name} взята штурмом";
                     return true;
                 }
@@ -245,7 +269,7 @@ namespace IronThrone.Core.Game
                 return true;
             }
 
-            CaptureProvince(state, prov, army.faction);
+            CaptureProvince(state, prov, army.faction, army);
             message ??= $"{prov.def.name} захвачена";
             return true;
         }
@@ -319,7 +343,8 @@ namespace IronThrone.Core.Game
             }
             else
             {
-                CaptureProvince(state, prov, winner);
+                var winnerArmy = state.Armies.Values.FirstOrDefault(a => a.alive && a.faction == winner && a.province == prov.id);
+                CaptureProvince(state, prov, winner, winnerArmy);
             }
         }
 
@@ -335,22 +360,48 @@ namespace IronThrone.Core.Game
                 siegePower += basePower;
             }
             int defense = 10 + prov.def.level * 4 + (prov.def.isCapital ? 25 : 0);
-            int dmg = Math.Max(3, siegePower - defense);
+            var defenderFaction = state.Faction(prov.controller);
+            if (defenderFaction != null) defense += (int)defenderFaction.Mod(ModKeys.SiegeDefense) * 4;
+            var attackerFaction = state.Faction(besieger.faction);
+            float speed = 1f + (attackerFaction?.Mod(ModKeys.SiegeSpeed) ?? 0f);
+            int dmg = Math.Max(3, (int)Math.Round((siegePower - defense) * Math.Max(0.5f, speed)));
             prov.siegeProgress += dmg;
             prov.besieger = besieger.faction;
             besieger.stance = "siege";
             prov.unrest = Math.Min(100, prov.unrest + 1);
             if (prov.siegeProgress >= prov.garrison)
             {
-                CaptureProvince(state, prov, besieger.faction);
+                CaptureProvince(state, prov, besieger.faction, besieger);
                 state.Notify($"{prov.def.name} пала после осады!");
             }
         }
 
-        public static void CaptureProvince(GameState state, ProvinceState prov, string factionId)
+        public static void CaptureProvince(GameState state, ProvinceState prov, string factionId, ArmyState looter = null)
         {
             var f = state.Faction(factionId);
             string oldController = prov.controller;
+
+            // военная добыча: чем богаче провинция, тем больше золота и материалов
+            if (f != null && oldController != null && oldController != factionId)
+            {
+                int baseLoot = 15 + prov.def.level * 12 + (prov.def.isCapital ? 30 : 0);
+                float lootMult = 1f + f.Mod(ModKeys.RaidLoot);
+                int reavers = 0;
+                if (looter != null)
+                    foreach (var u in looter.units.Where(x => x.alive))
+                        if (state.Content.UnitById.TryGetValue(u.defId, out var ud) && (ud.traits ?? new List<string>()).Contains("reave"))
+                            reavers++;
+                baseLoot += reavers * 10;
+                int goldLoot = Math.Max(0, (int)Math.Round(baseLoot * lootMult));
+                int matLoot = Math.Max(0, goldLoot / 2);
+                f.gold += goldLoot;
+                f.materials += matLoot;
+                if (goldLoot > 0)
+                    state.AddLog("war", $"{f.def.name}: добыча в {prov.def.name} — {goldLoot} золота, {matLoot} материалов", factionId);
+                if (looter != null)
+                    foreach (var u in looter.units.Where(x => x.alive))
+                        u.morale = Math.Min(100, u.morale + 5);
+            }
             prov.controller = factionId;
             if (f != null) prov.owner = factionId;
             prov.garrison = Math.Max(0, prov.garrison / 2);
@@ -435,7 +486,7 @@ namespace IronThrone.Core.Game
                             var lostId = army.destroyedUnits[0];
                             if (state.Content.UnitById.TryGetValue(lostId, out var lostDef))
                             {
-                                var cost = lostDef.cost.Scaled(0.5f * f.ModPct(ModKeys.RecoveryCostPct));
+                                var cost = lostDef.cost.Scaled(lostDef.recoveryCostFactor * f.ModPct(ModKeys.RecoveryCostPct));
                                 if (f.food >= cost.food && f.gold >= cost.gold && f.materials >= cost.materials)
                                 {
                                     EffectEngine.Pay(f, cost);

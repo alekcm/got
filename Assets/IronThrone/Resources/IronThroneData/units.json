@@ -147,7 +147,8 @@
       "volley"
     ],
     "requiresTech": "shared_archery",
-    "description": "Закалённые луки, пробивающие доспехи на большом расстоянии."
+    "description": "Длинные луки: лес и холмы дают им укрытие и дальность.",
+    "terrainBonus": "forest"
   },
   {
     "id": "knights",
@@ -291,9 +292,12 @@
     "abilities": [
       "swift"
     ],
-    "description": "Быстрые грабители, сильные в набегах и слабые в осадах.",
+    "description": "Разбойники-мореходы воюют ради добычи: после победы грабят.",
     "upgradesTo": [
       "iron_reavers"
+    ],
+    "traits": [
+      "reave"
     ]
   },
   {
@@ -322,7 +326,11 @@
     "abilities": [
       "shield_wall"
     ],
-    "description": "Тяжёлая северная пехота, привыкшая к холоду и потерям."
+    "description": "Северяне в тяжёлых шубах: держат строй в снегу и лесу, где южане вязнут.",
+    "traits": [
+      "disciplined"
+    ],
+    "terrainBonus": "snow,forest"
   },
   {
     "id": "direwolves",
@@ -352,7 +360,8 @@
       "berserk"
     ],
     "requiresTech": "stark_direwolves",
-    "description": "Волки Старков. Ужас на поле боя и символ Севера."
+    "description": "Лютоволки идут по следу и рвут строй; в лесу и снегу им нет равных.",
+    "terrainBonus": "forest,snow"
   },
   {
     "id": "red_cloaks",
@@ -361,17 +370,17 @@
     "tier": 2,
     "kind": "infantry",
     "cost": {
-      "gold": 85,
-      "materials": 40,
-      "food": 30
+      "gold": 100,
+      "materials": 50,
+      "food": 35
     },
     "upkeep": {
-      "gold": 6
+      "gold": 9
     },
     "stats": {
       "hp": 100,
-      "attack": 16,
-      "defense": 13,
+      "attack": 18,
+      "defense": 15,
       "range": 1,
       "move": 3,
       "morale": 75,
@@ -380,7 +389,10 @@
     "abilities": [
       "shield_wall"
     ],
-    "description": "Домовая гвардия Ланнистеров, дисциплинированная и хорошо оплаченная."
+    "description": "Красные плащи — профессиональная гвардия: дорогая, зато дисциплинированная и крепкая.",
+    "traits": [
+      "disciplined"
+    ]
   },
   {
     "id": "westerland_knights",
@@ -389,17 +401,17 @@
     "tier": 3,
     "kind": "cavalry",
     "cost": {
-      "gold": 160,
-      "materials": 80,
-      "food": 65
+      "gold": 190,
+      "materials": 90,
+      "food": 75
     },
     "upkeep": {
-      "gold": 11
+      "gold": 16
     },
     "stats": {
       "hp": 100,
-      "attack": 24,
-      "defense": 14,
+      "attack": 28,
+      "defense": 15,
       "range": 1,
       "move": 4,
       "morale": 82,
@@ -408,7 +420,11 @@
     "abilities": [
       "charge"
     ],
-    "description": "Лучшие доспехи за золото Запада."
+    "description": "Тяжёлая конница Запада: удар страшен, а содержание обходится вдвое дороже обычного рыцаря.",
+    "traits": [
+      "disciplined"
+    ],
+    "terrainBonus": "plains"
   },
   {
     "id": "storm_knights",
@@ -436,7 +452,8 @@
     "abilities": [
       "charge"
     ],
-    "description": "Наследники ярости Штормового Предела."
+    "description": "Штормовые рыцари привыкли к холмам и бурям.",
+    "terrainBonus": "hills"
   },
   {
     "id": "rhllor_fanatics",
@@ -466,7 +483,10 @@
       "berserk",
       "flaming"
     ],
-    "description": "Они не боятся смерти — Владыка Света ждёт их."
+    "description": "Воины Рглора не боятся смерти — пока горит их вера.",
+    "traits": [
+      "fanatic"
+    ]
   },
   {
     "id": "reach_knights",
@@ -494,7 +514,8 @@
     "abilities": [
       "charge"
     ],
-    "description": "Цвет рыцарства Вестероса, воспитанный на турнирах."
+    "description": "Цвет рыцарства Простора: в открытом поле их строй почти не остановить.",
+    "terrainBonus": "plains"
   },
   {
     "id": "tyrell_guard",
@@ -522,7 +543,10 @@
     "abilities": [
       "shield_wall"
     ],
-    "description": "Дисциплинированная стража, охраняющая лорда."
+    "description": "Гвардия Хайгардена славится выучкой и дисциплиной.",
+    "traits": [
+      "disciplined"
+    ]
   },
   {
     "id": "dornish_spears",
@@ -550,7 +574,8 @@
     "abilities": [
       "swift"
     ],
-    "description": "Легкая пехота, рождённая в пустыне."
+    "description": "Дорнийцы сражаются там, где чужаки умирают от жажды.",
+    "terrainBonus": "desert"
   },
   {
     "id": "sand_riders",
@@ -578,7 +603,8 @@
     "abilities": [
       "swift"
     ],
-    "description": "Быстрые и неуловимые, как самум."
+    "description": "Песчаные всадники исчезают в барханах и бьют из ниоткуда.",
+    "terrainBonus": "desert"
   },
   {
     "id": "ironborn_reavers",
@@ -606,7 +632,11 @@
     "abilities": [
       "berserk"
     ],
-    "description": "Они платят железную цену и не боятся утонуть."
+    "description": "Железнорождённые живут набегом: берут добычу и не боятся моря.",
+    "traits": [
+      "reave",
+      "amphibious"
+    ]
   },
   {
     "id": "drowned_men",
@@ -635,7 +665,11 @@
     "abilities": [
       "berserk"
     ],
-    "description": "Фанатики Утонувшего Бога, которых не остановить."
+    "description": "Утонувшие идут в бой с именем Утонувшего Бога и не отступают.",
+    "traits": [
+      "reave",
+      "fanatic"
+    ]
   },
   {
     "id": "iron_reavers",
@@ -663,7 +697,11 @@
     "abilities": [
       "berserk"
     ],
-    "description": "Воины Харрена, держащие речные земли в страхе."
+    "description": "Разорители Харрена грабят речные земли и уходят по воде.",
+    "traits": [
+      "reave",
+      "amphibious"
+    ]
   },
   {
     "id": "vale_knights",
@@ -691,7 +729,8 @@
     "abilities": [
       "charge"
     ],
-    "description": "Славнейшие рыцари, выросшие среди гор."
+    "description": "Рыцари Долины выросли среди гор и держат перевалы.",
+    "terrainBonus": "mountains,hills"
   },
   {
     "id": "mountain_archers",
@@ -719,7 +758,8 @@
     "abilities": [
       "volley"
     ],
-    "description": "Бьют без промаха с любой высоты."
+    "description": "Горные лучники бьют сверху, зная каждую тропу.",
+    "terrainBonus": "mountains,hills"
   },
   {
     "id": "dragon_balerion",
@@ -837,7 +877,8 @@
     "abilities": [
       "berserk"
     ],
-    "description": "Свирепые воины, которые идут в бой под гром."
+    "description": "Штормовые топорники рубятся в холмах, как у себя дома.",
+    "terrainBonus": "hills"
   },
   {
     "id": "greenhand_knights",
@@ -893,6 +934,10 @@
     "abilities": [
       "swift"
     ],
-    "description": "Те, кто ходит за Стену и возвращается."
+    "description": "Разведчики Дозора в снегу и лесу двигаются быстрее врага.",
+    "traits": [
+      "disciplined"
+    ],
+    "terrainBonus": "snow,forest"
   }
 ]

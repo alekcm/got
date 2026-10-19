@@ -133,6 +133,24 @@ namespace IronThrone.Core.Game
             return true;
         }
 
+        public const int GiftGold = 100;
+        public const float GiftRelation = 10f;
+
+        /// <summary>Дары великому дому: золото в обмен на расположение. Основа политических союзов.</summary>
+        public static bool SendGift(GameState state, FactionState f, string targetId, out string error)
+        {
+            error = null;
+            if (f == null) { error = "Нет дома"; return false; }
+            var target = state.Faction(targetId);
+            if (target == null || target.id == f.id) { error = "Нет такого дома"; return false; }
+            if (!target.alive) { error = "Дом уже не существует"; return false; }
+            if (f.gold < GiftGold) { error = $"Нужно {GiftGold} золота"; return false; }
+            f.gold -= GiftGold;
+            AddRelation(state, f.id, target.id, GiftRelation);
+            state.AddLog("diplomacy", $"{f.def.name} отправляет дары дому {target.def.name} (+{GiftRelation:0} отношений)", f.id);
+            return true;
+        }
+
         // ------------------------------------------------------------------ ИИ
         public static void AiConsiderWars(GameState state, FactionState f)
         {

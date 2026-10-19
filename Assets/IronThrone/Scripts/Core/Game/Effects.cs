@@ -27,6 +27,8 @@ namespace IronThrone.Core.Game
         public const string ArmyHp = "armyHp";
         public const string DragonPower = "dragonPower";
         public const string SiegeSpeed = "siegeSpeed";
+        public const string SiegeDefense = "siegeDefense";
+        public const string GarrisonBonus = "garrisonBonus";
         public const string NavalPower = "navalPower";
 
         public const string VotePower = "votePower";
@@ -151,12 +153,24 @@ namespace IronThrone.Core.Game
                 case "opinion":
                 case "relation":
                 {
-                    // отношение к другой фракции
-                    var other = state.Faction(e.id ?? e.target);
-                    if (faction == null || other == null) return null;
-                    if (!faction.relations.ContainsKey(other.id)) faction.relations[other.id] = 0;
-                    faction.relations[other.id] = Clamp(faction.relations[other.id] + (e.amount != 0 ? e.amount : e.value), -100, 100);
-                    return $"отношения с {other.def.name} {(e.amount >= 0 ? "+" : "")}{e.amount:0}";
+                    if (faction == null) return null;
+                    float delta = e.amount != 0 ? e.amount : e.value;
+                    string target = e.id ?? e.target;
+                    // «all» — отношение ко всем остальным живым домам: так работает молва о поступке
+                    if (target == "all" || target == "everyone")
+                    {
+                        foreach (var other in state.Factions.Values.Where(x => x.alive && x.id != faction.id))
+                        {
+                            if (!faction.relations.ContainsKey(other.id)) faction.relations[other.id] = 0;
+                            faction.relations[other.id] = Clamp(faction.relations[other.id] + delta, -100, 100);
+                        }
+                        return $"отношения со всеми домами {Sign((int)delta)}";
+                    }
+                    var otherFaction = state.Faction(target);
+                    if (otherFaction == null) return null;
+                    if (!faction.relations.ContainsKey(otherFaction.id)) faction.relations[otherFaction.id] = 0;
+                    faction.relations[otherFaction.id] = Clamp(faction.relations[otherFaction.id] + delta, -100, 100);
+                    return $"отношения с {otherFaction.def.name} {Sign((int)delta)}";
                 }
                 case "unrest":
                 {

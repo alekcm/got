@@ -129,6 +129,7 @@ namespace IronThrone.Core.Game
             }
 
             // закон о налогах и т.п. — уже в модификаторах
+            gold += (int)f.Mod(ModKeys.GoldFlat);
             inc.gold = Math.Max(0, gold);
             inc.materials = Math.Max(0, materials);
             inc.food = Math.Max(0, food);

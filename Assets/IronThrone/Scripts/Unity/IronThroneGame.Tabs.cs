@@ -22,7 +22,7 @@ namespace IronThrone.Unity
             GUILayout.Label($"{(RegionName(p.def.region))} · {TerrainName(p.def.terrain)} · уровень {p.def.level}" +
                             (p.def.isCapital ? " · столица региона" : "") + (p.def.port ? " · порт" : ""), _small);
             GUILayout.Label($"Владелец: {_state.FactionName(p.owner)}   Контроль: {_state.FactionName(p.controller)}", _body);
-            GUILayout.Label($"Гарнизон: {p.garrison}/{TurnEngine.MaxGarrison(p)}   Беспорядки: {p.unrest:0}%   Развитие: {p.development:0}", _body);
+            GUILayout.Label($"Гарнизон: {p.garrison}/{TurnEngine.MaxGarrison(_state, p)}   Беспорядки: {p.unrest:0}%   Развитие: {p.development:0}", _body);
             if (!string.IsNullOrEmpty(p.besieger) && p.controller != p.besieger)
                 GUILayout.Label($"Осада: {_state.FactionName(p.besieger)} · пробито {p.siegeProgress:0}/{Math.Max(1, p.garrison)}", _small);
             GUILayout.Label($"Вера: {FaithName(p.dominantFaith)}", _body);
@@ -242,6 +242,11 @@ namespace IronThrone.Unity
                     }
                 }
                 GUILayout.EndHorizontal();
+                if (_state.Content.UnitById.TryGetValue(u.defId, out var udef))
+                {
+                    string tags = UnitTraitText(udef);
+                    if (!string.IsNullOrEmpty(tags)) GUILayout.Label("    " + tags, _small);
+                }
             }
             foreach (var u in army.units.Where(u => !u.alive))
                 GUILayout.Label($"✝ {u.name} — уничтожен", _small);
@@ -440,6 +445,15 @@ namespace IronThrone.Unity
                 bool available = ProgressSystem.IsFocusAvailable(_state, f, fo, out var reason);
                 GUILayout.Label((done ? "✓ " : available ? "○ " : "🔒 ") + $"<b>{fo.name}</b> <color=#8a8a8a>[{BranchName(fo.branch)}]</color>", _body);
                 GUILayout.Label(fo.description + $" · {fo.turns} ход(ов)" + (string.IsNullOrEmpty(fo.rewardText) ? "" : " · " + fo.rewardText), _small);
+                if (fo.exclusive.Count > 0)
+                {
+                    var alternatives = fo.exclusive
+                        .Where(id => _state.Content.FocusById.ContainsKey(id))
+                        .Select(id => _state.Content.FocusById[id].name).ToList();
+                    bool taken = fo.exclusive.Any(id => f.completedFocuses.Contains(id));
+                    if (taken) GUILayout.Label("    Путь закрыт: вы уже выбрали «" + string.Join("», «", alternatives) + "».", _small);
+                    else GUILayout.Label("    Взаимоисключающий выбор: " + string.Join(" / ", alternatives), _small);
+                }
                 if (!done && available && string.IsNullOrEmpty(f.currentFocus))
                 {
                     if (GUILayout.Button("Начать фокус", _button))
@@ -473,6 +487,11 @@ namespace IronThrone.Unity
                 }
                 else
                 {
+                    if (GUILayout.Button("Дары 100", _button, GUILayout.Width(90)))
+                    {
+                        if (DiplomacySystem.SendGift(_state, f, other.id, out var gerr)) Toast("Дары отправлены: +10 отношений");
+                        else Toast(gerr);
+                    }
                     if (GUILayout.Button("Война", _button, GUILayout.Width(70)))
                     {
                         if (DiplomacySystem.DeclareWar(_state, f, other.id) != null) Toast("Война с " + other.def.name);
@@ -692,6 +711,27 @@ namespace IronThrone.Unity
             "river" => "река",
             _ => t ?? "—",
         };
+
+        private static string UnitTraitText(UnitDef def)
+        {
+            var parts = new List<string>();
+            foreach (var tr in def.traits ?? new List<string>())
+            {
+                switch (tr)
+                {
+                    case "reave": parts.Add("грабёж: после победы берёт добычу"); break;
+                    case "amphibious": parts.Add("морская пехота: сильнее на побережье"); break;
+                    case "disciplined": parts.Add("дисциплина: выше мораль и стойкость"); break;
+                    case "fanatic": parts.Add("фанатики: ярость при высокой морали"); break;
+                    default: parts.Add(tr); break;
+                }
+            }
+            if (!string.IsNullOrEmpty(def.terrainBonus))
+                parts.Add("родная местность: " + def.terrainBonus.Replace(",", ", "));
+            if (def.upkeep != null && def.upkeep.gold > 0)
+                parts.Add($"содержание {def.upkeep.gold} золота/ход");
+            return string.Join(" · ", parts);
+        }
 
         private static string BranchName(string b) => b switch
         {

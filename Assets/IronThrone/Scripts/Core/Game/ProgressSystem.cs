@@ -11,7 +11,8 @@ namespace IronThrone.Core.Game
         // ------------------------------------------------------------------ технологии
         public static IEnumerable<TechDef> AvailableTechs(GameState state, FactionState f)
         {
-            return state.Content.TechsFor(f.house).Where(t =>
+            string tree = !string.IsNullOrEmpty(f.def.techTree) ? f.def.techTree : f.house;
+            return state.Content.TechsFor(tree).Where(t =>
                 !f.techs.Contains(t.id) &&
                 f.currentResearch != t.id &&
                 t.requires.All(r => f.techs.Contains(r)));
@@ -57,7 +58,8 @@ namespace IronThrone.Core.Game
             {
                 if (string.IsNullOrEmpty(f.currentResearch)) continue;
                 if (!f.research.ContainsKey(f.currentResearch)) { f.currentResearch = null; continue; }
-                f.research[f.currentResearch]--;
+                float speed = 1f + Math.Max(0f, f.Mod("researchSpeed"));
+                f.research[f.currentResearch] -= Math.Max(1, (int)Math.Floor(speed));
                 if (f.research[f.currentResearch] <= 0)
                     CompleteResearchImmediately(state, f, f.currentResearch);
             }
@@ -66,8 +68,10 @@ namespace IronThrone.Core.Game
         // ------------------------------------------------------------------ фокусы
         public static IEnumerable<FocusDef> FocusesOf(GameState state, FactionState f)
         {
+            // Дерево фокусов задаётся focusTree: у Станниса своя ветка, а не общая баротеоновская
+            string tree = !string.IsNullOrEmpty(f.def.focusTree) ? f.def.focusTree : f.house;
             return state.Content.Focuses.Where(fo =>
-                (fo.faction == f.house || fo.faction == f.id) &&
+                (fo.faction == tree || fo.faction == f.id) &&
                 (fo.eras.Count == 0 || fo.eras.Contains(state.Era.id)));
         }
 

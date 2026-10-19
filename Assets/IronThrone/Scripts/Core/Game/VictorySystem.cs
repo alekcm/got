@@ -45,10 +45,13 @@ namespace IronThrone.Core.Game
                 faction = f.id, victoryType = "political",
                 value = f.recognition,
                 target = v.politicalRecognition,
-                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}, мест в совете: {PoliticsSystem.SeatsOf(state, f.id)}/{PoliticalSeatsRequired}" +
-                              (state.Council.throneHolder == f.id ? ", Железный трон ваш" : ", Железный трон не ваш"),
+                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}; мест в совете: {PoliticsSystem.SeatsBacking(state, f.id)}/{PoliticalSeatsRequired} " +
+                              $"(своих {PoliticsSystem.SeatsOf(state, f.id)} из 3, союзных {PoliticsSystem.SeatsBacking(state, f.id) - PoliticsSystem.SeatsOf(state, f.id)})" +
+                              (state.Council.throneHolder == f.id ? ", Железный трон ваш" : ", Железный трон не ваш") +
+                              (PoliticsSystem.SeatsOf(state, f.id) > 3 ? " — лишние свои места не считаются" : ""),
                 achieved = f.recognition >= v.politicalRecognition && state.Council.throneHolder == f.id &&
-                           PoliticsSystem.SeatsOf(state, f.id) >= PoliticalSeatsRequired
+                           PoliticsSystem.SeatsOf(state, f.id) <= 3 &&
+                           PoliticsSystem.SeatsBacking(state, f.id) >= PoliticalSeatsRequired
             });
 
             // Экономика
@@ -94,13 +97,18 @@ namespace IronThrone.Core.Game
                     return true;
                 }
             }
-            if (state.Turn > state.Settings.maxTurns)
-            {
-                var best = alive.OrderByDescending(f => Score(state, f)).First();
-                Declare(state, best.id, "score", "Эпоха завершилась. Победитель определён по очкам.");
-                return true;
-            }
+            if (state.Turn > state.Settings.maxTurns) return DeclareScore(state);
             return false;
+        }
+
+        /// <summary>Победитель по очкам, когда лимит ходов исчерпан.</summary>
+        public static bool DeclareScore(GameState state)
+        {
+            var alive = state.Factions.Values.Where(f => f.alive).ToList();
+            if (alive.Count == 0) return false;
+            var best = alive.OrderByDescending(f => Score(state, f)).First();
+            Declare(state, best.id, "score", "Эпоха завершилась. Победитель определён по очкам.");
+            return true;
         }
 
         public static void Declare(GameState state, string factionId, string type, string description)

@@ -25,6 +25,11 @@ namespace IronThrone.Core.Game
 
             MilitarySystem.TurnEnd(state);
             if (VictorySystem.Check(state)) return;
+            if (state.Settings.maxTurns > 0 && state.Turn >= state.Settings.maxTurns)
+            {
+                VictorySystem.DeclareScore(state);
+                return;
+            }
             AdvanceTurn(state);
         }
 
@@ -82,9 +87,13 @@ namespace IronThrone.Core.Game
                     if (p.raidCooldown <= 0) p.raided = false;
                 }
                 p.turnsOwned++;
-                // беспорядки: медленно спадают при стабильном правлении
+                // беспорядки: медленно спадают при стабильном правлении (законы и черты дома ускоряют)
                 if (p.controller != null && p.unrest > 0)
-                    p.unrest = Math.Max(0, p.unrest - 0.8f);
+                {
+                    var ruler = state.Faction(p.controller);
+                    float calm = 1f - (ruler?.Mod(ModKeys.UnrestGlobalPct) ?? 0f);
+                    p.unrest = Math.Max(0, p.unrest - 0.8f * Math.Max(0.25f, calm));
+                }
                 // восстание в провинции
                 if (p.controller != null && p.unrest >= state.Settings.unrestRevoltThreshold)
                 {
@@ -108,16 +117,18 @@ namespace IronThrone.Core.Game
                     }
                 }
                 // рост развития/восстановление гарнизона
-                if (p.garrison < MaxGarrison(p) && p.controller != null)
-                    p.garrison = Math.Min(MaxGarrison(p), p.garrison + 4);
+                if (p.garrison < MaxGarrison(state, p) && p.controller != null)
+                    p.garrison = Math.Min(MaxGarrison(state, p), p.garrison + 4);
             }
         }
 
-        public static int MaxGarrison(ProvinceState p)
+        public static int MaxGarrison(GameState state, ProvinceState p)
         {
             int g = 20 + p.def.level * 18 + (p.def.isCapital ? 40 : 0);
             if (p.def.terrain == "mountains") g += 20;
-            return g;
+            var owner = state?.Faction(p.controller);
+            if (owner != null) g += (int)owner.Mod(ModKeys.GarrisonBonus);
+            return Math.Max(5, g);
         }
 
         private static void RecomputeAlive(GameState state)

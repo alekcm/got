@@ -91,6 +91,7 @@ namespace IronThrone.Headless
 
             if (saveTest) ok &= SaveTest(db);
             if (args.Contains("--battletest")) ok &= BattleTest(db);
+            if (args.Contains("--traitstest")) ok &= TraitTest(db);
             if (args.Contains("--exportmap"))
             {
                 var m = MapGenerator.Generate(db.Map, 20261019);
@@ -138,15 +139,23 @@ namespace IronThrone.Headless
             {
                 int pi = Array.IndexOf(args, "--debug-pol");
                 string polFaction = pi + 1 < args.Length && !args[pi + 1].StartsWith("--") ? args[pi + 1] : "five_lannister";
+                bool runAi = args.Contains("--ai");
                 var st = GameSetup.CreateNewGame(db, "fivekings", polFaction, seed: 1337, mapMode: "canonical");
                 TurnEngine.StartGame(st);
-                for (int turnNo = 1; turnNo <= 60; turnNo++)
+                for (int turnNo = 1; turnNo <= 90; turnNo++)
                 {
+                    if (runAi)
+                    {
+                        var pp = st.Faction(polFaction);
+                        if (pp != null && pp.alive) FactionAI.TakeTurn(st, pp);
+                    }
                     TurnEngine.EndTurn(st);
-                    if (turnNo % 10 != 0) continue;
+                    if (turnNo % 5 != 0) continue;
                     var f = st.Faction(polFaction);
                     var seats = st.Council.seats.Where(kv => kv.Value == f.id).Select(kv => kv.Key).ToList();
-                    Console.WriteLine($"  [полит {turnNo}] трон: {st.FactionName(st.Council.throneHolder)}, признание: {f.recognition:0.#}, мест: {seats.Count}/{VictorySystem.PoliticalSeatsRequired} ({string.Join(",", seats)}), влияния: {f.influence:0}, законов: {f.passedLaws.Count}");
+                    var holders = string.Join("; ", st.Council.seats.GroupBy(kv => kv.Value)
+                        .Select(g => $"{st.FactionName(g.Key)} {g.Count()}"));
+                    Console.WriteLine($"  [полит {turnNo}] трон: {st.FactionName(st.Council.throneHolder)}, признание: {f.recognition:0.#}, своих: {seats.Count}, поддержка: {PoliticsSystem.SeatsBacking(st, f.id)}/{VictorySystem.PoliticalSeatsRequired}, места: {holders}, влияния: {f.influence:0}, активных законов: {st.ActiveLaws.Count}, фокусов: {f.completedFocuses.Count}, войн: {st.Wars.Count(w => w.active)}, вера {f.faith}: доля {FaithSystem.FaithShare(st, f):P0}, глава {FaithSystem.IsHead(st, f)}, реформа {f.HasFlag("faith_reformed")}");
                 }
             }
 
@@ -164,6 +173,11 @@ namespace IronThrone.Headless
                         .ToList();
                     Console.WriteLine($"  [эконом {turnNo}] " + string.Join(" · ", top));
                 }
+            }
+
+            if (args.Contains("--victorystats"))
+            {
+                VictoryStats(db, seeds: 3, turns: 220);
             }
 
             if (mapCheck)
@@ -390,6 +404,72 @@ namespace IronThrone.Headless
             }
         }
 
+        /// <summary>Проверяет, что черты отрядов и местность реально меняют бой, а грабёж даёт добычу.</summary>
+        private static bool TraitTest(ContentDb db)
+        {
+            Console.WriteLine("\n=== Проверка черт отрядов ===");
+            try
+            {
+                var state = GameSetup.CreateNewGame(db, "fivekings", "five_stark", seed: 4242, mapMode: "canonical");
+                TurnEngine.StartGame(state);
+                var stark = state.Faction("five_stark");
+                var enemy = state.Factions.Values.First(f => f.id != stark.id && f.alive);
+
+                Battlefield FieldAt(string provinceId)
+                {
+                    var prov = state.Province(provinceId);
+                    var a = new ArmyState { id = "t_a_" + provinceId, faction = stark.id, province = prov.id, name = "тест" };
+                    var d = new ArmyState { id = "t_d_" + provinceId, faction = enemy.id, province = prov.id, name = "тест" };
+                    a.units.Add(new UnitInstance("northern_infantry", "Северная пехота") { hp = 100, morale = 100 });
+                    d.units.Add(new UnitInstance("levy", "Ополчение") { hp = 100, morale = 100 });
+                    return BattleEngine.Create(state, a, d, prov);
+                }
+
+                var snow = state.Provinces.Values.FirstOrDefault(p => p.def.terrain == "snow") ?? state.Province("winterfell");
+                var desert = state.Provinces.Values.FirstOrDefault(p => p.def.terrain == "desert");
+                var fSnow = FieldAt(snow.id);
+                var fDesert = FieldAt(desert.id);
+                int atkSnow = fSnow.units.First(u => u.side == 0).stats.attack;
+                int atkDesert = fDesert.units.First(u => u.side == 0).stats.attack;
+                bool terrainOk = atkSnow > atkDesert;
+                Console.WriteLine($"  северная пехота: атака в снегу {atkSnow}, в пустыне {atkDesert} → {(terrainOk ? "бонус родной местности работает" : "ОШИБКА")}");
+
+                // грабёж: железнорождённые берут больше, чем обычная пехота
+                var victim = state.Provinces.Values.First(p => p.controller != null && p.controller != "five_greyjoy" && p.def.level >= 2);
+                var raiderFaction = state.Faction(state.Factions.Values.First(f => f.house == "greyjoy").id);
+                int goldBefore = raiderFaction.gold;
+                var raiderArmy = new ArmyState { id = "t_raid", faction = raiderFaction.id, province = victim.id, name = "налёт" };
+                raiderArmy.units.Add(new UnitInstance("ironborn_reavers", "Железнорождённые") { hp = 100, morale = 100 });
+                string oldController = victim.controller;
+                MilitarySystem.CaptureProvince(state, victim, raiderFaction.id, raiderArmy);
+                int loot = raiderFaction.gold - goldBefore;
+                victim.controller = oldController;
+                bool lootOk = loot > 0;
+                Console.WriteLine($"  грабёж железнорождённых: {loot} золота с провинции уровня {victim.def.level} → {(lootOk ? "добыча начисляется" : "ОШИБКА")}");
+
+                // goldFlat: плоская прибавка к доходу
+                var beforeFlat = EconomySystem.CalculateIncome(state, stark).gold;
+                stark.permanentMods[ModKeys.GoldFlat] = 17f;
+                var afterFlat = EconomySystem.CalculateIncome(state, stark).gold;
+                bool flatOk = afterFlat - beforeFlat == 17;
+                Console.WriteLine($"  доход с goldFlat +17: {beforeFlat} → {afterFlat} → {(flatOk ? "работает" : "ОШИБКА")}");
+
+                // armyHp: процентный запас прочности отрядов
+                stark.permanentMods[ModKeys.ArmyHp] = 0.25f;
+                var fHp = FieldAt(snow.id);
+                float maxHp = fHp.units.First(u => u.side == 0).maxHp;
+                bool hpOk = Math.Abs(maxHp - 125f) < 0.1f;
+                Console.WriteLine($"  armyHp +25%: максимум здоровья отряда {maxHp} → {(hpOk ? "работает" : "ОШИБКА")}");
+
+                return terrainOk && lootOk && flatOk && hpOk;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("  ОШИБКА черт: " + ex);
+                return false;
+            }
+        }
+
         private static List<string> CheckGeneratedMap(ContentDb db, int seed)
         {
             var problems = new List<string>();
@@ -517,6 +597,51 @@ namespace IronThrone.Headless
             }
             Console.WriteLine(report);
             return true;
+        }
+
+        /// <summary>Сводка побед по нескольким сидам: какие типы побед вообще случаются и на каком ходу.</summary>
+        private static void VictoryStats(ContentDb db, int seeds, int turns)
+        {
+            Console.WriteLine($"\n=== Статистика побед: {seeds} сида x все фракции, {turns} ходов ===");
+            var outcomes = new Dictionary<string, int>();
+            var turnsByType = new Dictionary<string, List<int>>();
+            for (int seed = 0; seed < seeds; seed++)
+            {
+                foreach (var era in db.Eras)
+                {
+                    foreach (var f in db.Factions.Where(x => x.era == era.id && x.playable))
+                    {
+                        var advisors = db.AdvisorsFor(era, f).Select(a => a.id).Take(2).ToList();
+                        var st = GameSetup.CreateNewGame(db, era.id, f.id, seed: 5000 + seed * 131 + f.id.GetHashCode(),
+                            chosenAdvisors: advisors, mapMode: "canonical");
+                        TurnEngine.StartGame(st);
+                        for (int i = 0; i < turns && st.Phase != GamePhase.GameOver; i++)
+                        {
+                            ResolvePending(st);
+                            var p = st.Faction(f.id);
+                            if (p != null && p.alive) FactionAI.TakeTurn(st, p);
+                            ResolvePending(st);
+                            TurnEngine.EndTurn(st);
+                            ResolvePending(st);
+                        }
+                        string type = st.Phase == GamePhase.GameOver ? (st.VictoryType ?? "unknown") : "turn-limit";
+                        if (seed == 0 && type != "turn-limit")
+                        {
+                            var w = st.Faction(st.VictoryWinner);
+                            Console.WriteLine($"    победа: {type}, {st.VictoryWinner}, вера {w?.faith}, доля {(w != null ? FaithSystem.FaithShare(st, w) : 0):P0}, глава {(w != null && FaithSystem.IsHead(st, w))}, реформа {w?.HasFlag("faith_reformed")}, ход {st.Turn}");
+                        }
+                        outcomes.TryGetValue(type, out var n);
+                        outcomes[type] = n + 1;
+                        if (!turnsByType.TryGetValue(type, out var list)) turnsByType[type] = list = new List<int>();
+                        list.Add(st.Turn);
+                    }
+                }
+            }
+            foreach (var kv in outcomes.OrderByDescending(kv => kv.Value))
+            {
+                var list = turnsByType[kv.Key];
+                Console.WriteLine($"  {kv.Key}: {kv.Value} (средний ход {list.Average():0}, от {list.Min()} до {list.Max()})");
+            }
         }
 
         /// <summary>Авторазрешение отложенных событий и голосований, чтобы прогон не останавливался.</summary>

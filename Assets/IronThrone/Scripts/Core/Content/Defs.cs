@@ -294,6 +294,8 @@ namespace IronThrone.Core.Content
         public string kind = "infantry"; // infantry, cavalry, archers, siege, navy, dragon, special
         public string requiresTech;
         public float recoveryCostFactor = 0.5f;
+        /// <summary>Особые свойства отряда: reave (грабёж), amphibious (морской бой), disciplined, fanatic.</summary>
+        public List<string> traits = new List<string>();
     }
 
     public class HeroDef

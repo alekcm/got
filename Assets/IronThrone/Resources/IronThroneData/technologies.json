@@ -1,208 +1,1993 @@
 [
-  { "id": "shared_archery", "name": "Лучное дело", "faction": "shared", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90, "influence": 5 }, "description": "Длинные луки и лучшая выучка стрелков.",
-    "effects": [ { "op": "unlockunit", "id": "longbowmen" }, { "op": "modifier", "key": "armyAttack", "value": 1 } ] },
-  { "id": "shared_siegecraft", "name": "Осадное дело", "faction": "shared", "branch": "war", "tier": 2, "researchTurns": 3,
-    "requires": ["shared_archery"], "cost": { "gold": 160, "materials": 80, "influence": 10 },
+  {
+    "id": "shared_archery",
+    "name": "Лучное дело",
+    "faction": "shared",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90,
+      "influence": 5
+    },
+    "description": "Длинные луки и лучшая выучка стрелков.",
+    "effects": [
+      {
+        "op": "unlockunit",
+        "id": "longbowmen"
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "shared_siegecraft",
+    "name": "Осадное дело",
+    "faction": "shared",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 3,
+    "requires": [
+      "shared_archery"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 80,
+      "influence": 10
+    },
     "description": "Требушеты, тараны и подкопы.",
-    "effects": [ { "op": "unlockunit", "id": "siege_engine" }, { "op": "modifier", "key": "siegeSpeed", "value": 0.15 } ] },
-  { "id": "shared_keeps", "name": "Каменные твердыни", "faction": "shared", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100, "materials": 60 }, "description": "Укрепления нового образца.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 1 }, { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.05 } ] },
-  { "id": "shared_roads", "name": "Королевские тракты", "faction": "shared", "branch": "economy", "tier": 1, "researchTurns": 1,
-    "cost": { "gold": 70, "materials": 40 }, "description": "Дороги ускоряют армии и торговлю.",
-    "effects": [ { "op": "modifier", "key": "armyMove", "value": 1 }, { "op": "modifier", "key": "goldIncome", "value": 2 } ] },
-  { "id": "shared_coinage", "name": "Чеканка монеты", "faction": "shared", "branch": "economy", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100, "influence": 5 }, "description": "Собственная монета укрепляет торговлю.",
-    "effects": [ { "op": "modifier", "key": "goldIncome", "value": 4 }, { "op": "modifier", "key": "buildCost.pct", "value": -0.05 } ] },
-  { "id": "shared_trade_routes", "name": "Торговые пути", "faction": "shared", "branch": "economy", "tier": 2, "researchTurns": 3,
-    "requires": ["shared_coinage"], "cost": { "gold": 180, "influence": 10 }, "description": "Фактории и караванные пути.",
-    "effects": [ { "op": "modifier", "key": "goldIncome.pct", "value": 0.08 }, { "op": "modifier", "key": "tradeDominance", "value": 4 } ] },
-  { "id": "shared_medicine", "name": "Мейстерская наука", "faction": "shared", "branch": "economy", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 80, "influence": 5 }, "description": "Лекари и травы сокращают потери.",
-    "effects": [ { "op": "modifier", "key": "recoveryCost.pct", "value": -0.12 }, { "op": "modifier", "key": "foodIncome", "value": 1 } ] },
-  { "id": "shared_shipbuilding", "name": "Корабельное дело", "faction": "shared", "branch": "war", "tier": 2, "researchTurns": 3,
-    "requires": ["shared_roads"], "cost": { "gold": 170, "materials": 100, "influence": 8 },
+    "effects": [
+      {
+        "op": "unlockunit",
+        "id": "siege_engine"
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.15
+      }
+    ]
+  },
+  {
+    "id": "shared_keeps",
+    "name": "Каменные твердыни",
+    "faction": "shared",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100,
+      "materials": 60
+    },
+    "description": "Укрепления нового образца.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "unrestGlobal.pct",
+        "value": -0.05
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "shared_roads",
+    "name": "Королевские тракты",
+    "faction": "shared",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 1,
+    "cost": {
+      "gold": 70,
+      "materials": 40
+    },
+    "description": "Дороги ускоряют армии и торговлю.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMove",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "shared_coinage",
+    "name": "Чеканка монеты",
+    "faction": "shared",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100,
+      "influence": 5
+    },
+    "description": "Собственная монета укрепляет торговлю.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.05
+      }
+    ]
+  },
+  {
+    "id": "shared_trade_routes",
+    "name": "Торговые пути",
+    "faction": "shared",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 3,
+    "requires": [
+      "shared_coinage"
+    ],
+    "cost": {
+      "gold": 180,
+      "influence": 10
+    },
+    "description": "Фактории и караванные пути.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome.pct",
+        "value": 0.08
+      },
+      {
+        "op": "modifier",
+        "key": "tradeDominance",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "shared_medicine",
+    "name": "Мейстерская наука",
+    "faction": "shared",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 80,
+      "influence": 5
+    },
+    "description": "Лекари и травы сокращают потери.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "recoveryCost.pct",
+        "value": -0.12
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "shared_shipbuilding",
+    "name": "Корабельное дело",
+    "faction": "shared",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 3,
+    "requires": [
+      "shared_roads"
+    ],
+    "cost": {
+      "gold": 170,
+      "materials": 100,
+      "influence": 8
+    },
     "description": "Верфи и дальние плавания.",
-    "effects": [ { "op": "modifier", "key": "navalPower", "value": 2 }, { "op": "modifier", "key": "goldIncome", "value": 2 } ] },
-  { "id": "shared_bureaucracy", "name": "Королевская канцелярия", "faction": "shared", "branch": "intrigue", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90, "influence": 8 }, "description": "Чиновники, печати и бумаги. Влияние растёт.",
-    "effects": [ { "op": "modifier", "key": "influenceIncome", "value": 2 }, { "op": "modifier", "key": "votePower", "value": 1 } ] },
-  { "id": "shared_alchemy", "name": "Алхимия", "faction": "shared", "branch": "intrigue", "tier": 2, "researchTurns": 3,
-    "requires": ["shared_bureaucracy"], "cost": { "gold": 150, "influence": 12 }, "description": "Дикий огонь, яды и тайные знания.",
-    "effects": [ { "op": "modifier", "key": "spyOffense", "value": 2 }, { "op": "modifier", "key": "armyAttack", "value": 1 } ] },
-
-  { "id": "stark_winter", "name": "Зима близко", "faction": "stark", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Северные погреба и тёплая одежда. Армии легче переживают зиму.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 2 }, { "op": "modifier", "key": "foodIncome", "value": 2 } ] },
-  { "id": "stark_direwolves", "name": "Лютоволки", "faction": "stark", "branch": "war", "tier": 2, "researchTurns": 3,
-    "requires": ["stark_winter"], "cost": { "gold": 180, "influence": 8 }, "description": "Волки Старков выходят на войну.",
-    "effects": [ { "op": "unlockunit", "id": "direwolves" }, { "op": "modifier", "key": "armyMorale", "value": 4 } ] },
-  { "id": "stark_first_men", "name": "Первые Люди", "faction": "stark", "branch": "economy", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 80 }, "description": "Древние обычаи позволяют собирать больше ополчения.",
-    "effects": [ { "op": "modifier", "key": "levySize", "value": 1 }, { "op": "modifier", "key": "recruitCost.pct", "value": -0.08 } ] },
-  { "id": "stark_wolfswood", "name": "Волчий лес", "faction": "stark", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["stark_first_men"], "cost": { "gold": 140, "materials": 60 }, "description": "Древесина и меха Севера.",
-    "effects": [ { "op": "modifier", "key": "materialsIncome", "value": 5 }, { "op": "modifier", "key": "armyMove", "value": 1 } ] },
-  { "id": "stark_old_gods", "name": "Старые боги", "faction": "stark", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["stark_first_men"], "cost": { "gold": 120, "influence": 6 }, "description": "Вера отцов укрепляет дух.",
-    "effects": [ { "op": "modifier", "key": "faithSpread", "value": 0.15 }, { "op": "modifier", "key": "armyMorale", "value": 3 }, { "op": "modifier", "key": "pietyIncome", "value": 2 } ] },
-
-  { "id": "lannister_gold", "name": "Золотые шахты", "faction": "lannister", "branch": "economy", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100 }, "description": "Новые жилы под Утёсом Кастерли.",
-    "effects": [ { "op": "modifier", "key": "goldIncome", "value": 6 }, { "op": "modifier", "key": "goldIncome.pct", "value": 0.05 } ] },
-  { "id": "lannister_red_cloaks", "name": "Красные плащи", "faction": "lannister", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["lannister_gold"], "cost": { "gold": 170, "materials": 80 }, "description": "Домовая гвардия в лучшей броне.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 2 } ] },
-  { "id": "lannister_gold_buys", "name": "Золото покупает всё", "faction": "lannister", "branch": "intrigue", "tier": 2, "researchTurns": 2,
-    "requires": ["lannister_gold"], "cost": { "gold": 200, "influence": 10 }, "description": "Наёмники и шпионы дешевле.",
-    "effects": [ { "op": "modifier", "key": "recruitCost.pct", "value": -0.12 }, { "op": "modifier", "key": "spyOffense", "value": 2 } ] },
-  { "id": "lannister_spymaster", "name": "Шептуны Запада", "faction": "lannister", "branch": "intrigue", "tier": 3, "researchTurns": 3,
-    "requires": ["lannister_gold_buys"], "cost": { "gold": 260, "influence": 15 }, "description": "Сеть информаторов в каждом замке.",
-    "effects": [ { "op": "modifier", "key": "spyOffense", "value": 2 }, { "op": "modifier", "key": "spyDefense", "value": 2 }, { "op": "modifier", "key": "lobbyCost.pct", "value": -0.15 } ] },
-  { "id": "lannister_casterly", "name": "Утёс Кастерли", "faction": "lannister", "branch": "economy", "tier": 3, "researchTurns": 3,
-    "requires": ["lannister_red_cloaks"], "cost": { "gold": 240, "materials": 120 }, "description": "Неприступная столица Запада.",
-    "effects": [ { "op": "modifier", "key": "buildCost.pct", "value": -0.12 }, { "op": "modifier", "key": "armyDefense", "value": 1 } ] },
-
-  { "id": "baratheon_storm", "name": "Ярость шторма", "faction": "baratheon", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Баратеоны бьют первыми и сильнее.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 } ] },
-  { "id": "baratheon_knights", "name": "Рыцари Штормовых земель", "faction": "baratheon", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["baratheon_storm"], "cost": { "gold": 160, "materials": 80 }, "description": "Тяжёлая конница юга.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 1 }, { "op": "modifier", "key": "recruitCost.pct", "value": -0.08 } ] },
-  { "id": "baratheon_iron_will", "name": "Железная воля", "faction": "baratheon", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["baratheon_storm"], "cost": { "gold": 130, "influence": 8 }, "description": "Никакие потери не сломят дух.",
-    "effects": [ { "op": "modifier", "key": "armyMorale", "value": 8 }, { "op": "modifier", "key": "spyDefense", "value": 1 } ] },
-  { "id": "baratheon_dragonstone", "name": "Драконий Камень", "faction": "baratheon", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["baratheon_storm"], "cost": { "gold": 150, "materials": 80 }, "description": "Вулканический остров и флот.",
-    "effects": [ { "op": "modifier", "key": "navalPower", "value": 2 }, { "op": "modifier", "key": "pietyIncome", "value": 1 } ] },
-  { "id": "baratheon_claim", "name": "Право на трон", "faction": "baratheon", "branch": "intrigue", "tier": 3, "researchTurns": 3,
-    "requires": ["baratheon_iron_will"], "cost": { "gold": 220, "influence": 20 }, "description": "Родство с Таргариенами даёт законные права.",
-    "effects": [ { "op": "modifier", "key": "recognitionGain", "value": 0.3 }, { "op": "modifier", "key": "votePower", "value": 1 } ] },
-
-  { "id": "tyrell_harvest", "name": "Богатый урожай", "faction": "tyrell", "branch": "economy", "tier": 1, "researchTurns": 1,
-    "cost": { "gold": 80 }, "description": "Трёхполье и ирригация Простора.",
-    "effects": [ { "op": "modifier", "key": "foodIncome", "value": 6 } ] },
-  { "id": "tyrell_chivalry", "name": "Рыцарская слава", "faction": "tyrell", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100 }, "description": "Турниры воспитывают лучших бойцов.",
-    "effects": [ { "op": "modifier", "key": "armyMorale", "value": 4 }, { "op": "modifier", "key": "armyAttack", "value": 1 } ] },
-  { "id": "tyrell_trade", "name": "Мандер и торговля", "faction": "tyrell", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["tyrell_harvest"], "cost": { "gold": 150, "influence": 6 }, "description": "Река Мандер — торговый путь.",
-    "effects": [ { "op": "modifier", "key": "goldIncome", "value": 6 }, { "op": "modifier", "key": "tradeDominance", "value": 4 } ] },
-  { "id": "tyrell_alliances", "name": "Браки и союзы", "faction": "tyrell", "branch": "intrigue", "tier": 2, "researchTurns": 2,
-    "requires": ["tyrell_harvest"], "cost": { "gold": 140, "influence": 10 }, "description": "Тиреллы побеждают обаянием.",
-    "effects": [ { "op": "modifier", "key": "lobbyCost.pct", "value": -0.2 }, { "op": "modifier", "key": "influenceIncome", "value": 2 } ] },
-  { "id": "tyrell_gardens", "name": "Сады Хайгардена", "faction": "tyrell", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["tyrell_chivalry"], "cost": { "gold": 120, "influence": 8 }, "description": "Красота как политика.",
-    "effects": [ { "op": "modifier", "key": "faithSpread", "value": 0.1 }, { "op": "modifier", "key": "recognitionGain", "value": 0.1 } ] },
-
-  { "id": "martell_desert", "name": "Война в пустыне", "faction": "martell", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Дорнские тропы и засады.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 2 }, { "op": "modifier", "key": "armyMove", "value": 1 } ] },
-  { "id": "martell_poison", "name": "Яды и вино", "faction": "martell", "branch": "intrigue", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100, "influence": 6 }, "description": "Дорнийские яды не оставляют следов.",
-    "effects": [ { "op": "modifier", "key": "spyOffense", "value": 2 } ] },
-  { "id": "martell_spears", "name": "Копья Дорна", "faction": "martell", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["martell_desert"], "cost": { "gold": 150, "materials": 60 }, "description": "Лёгкая пехота и конница.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "recruitCost.pct", "value": -0.08 } ] },
-  { "id": "martell_water", "name": "Водные сады", "faction": "martell", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["martell_desert"], "cost": { "gold": 140, "materials": 60 }, "description": "Орошение пустыни.",
-    "effects": [ { "op": "modifier", "key": "foodIncome", "value": 5 }, { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.08 } ] },
-  { "id": "martell_vengeance", "name": "Долгая месть", "faction": "martell", "branch": "intrigue", "tier": 3, "researchTurns": 3,
-    "requires": ["martell_poison"], "cost": { "gold": 220, "influence": 18 }, "description": "Мы помним. Мы ждём. Мы бьём.",
-    "effects": [ { "op": "modifier", "key": "spyOffense", "value": 2 }, { "op": "modifier", "key": "recognitionGain", "value": 0.15 }, { "op": "modifier", "key": "armyAttack", "value": 1 } ] },
-
-  { "id": "greyjoy_fleet", "name": "Железный флот", "faction": "greyjoy", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 100, "materials": 60 }, "description": "Длинные корабли и опытные капитаны.",
-    "effects": [ { "op": "modifier", "key": "navalPower", "value": 3 }, { "op": "modifier", "key": "raidLoot", "value": 0.2 } ] },
-  { "id": "greyjoy_reaving", "name": "Искусство набега", "faction": "greyjoy", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["greyjoy_fleet"], "cost": { "gold": 150, "influence": 6 }, "description": "Железнорождённые живут добычей.",
-    "effects": [ { "op": "modifier", "key": "raidLoot", "value": 0.3 }, { "op": "modifier", "key": "armyAttack", "value": 1 } ] },
-  { "id": "greyjoy_drowned", "name": "Утонувший Бог", "faction": "greyjoy", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["greyjoy_fleet"], "cost": { "gold": 120, "influence": 8 }, "description": "Что мертво, умереть не может.",
-    "effects": [ { "op": "modifier", "key": "pietyIncome", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 6 }, { "op": "modifier", "key": "faithSpread", "value": 0.1 } ] },
-  { "id": "greyjoy_thralls", "name": "Триллы и соль", "faction": "greyjoy", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["greyjoy_fleet"], "cost": { "gold": 130, "materials": 60 }, "description": "Пленники работают на острова.",
-    "effects": [ { "op": "modifier", "key": "materialsIncome", "value": 5 }, { "op": "modifier", "key": "foodIncome", "value": 2 } ] },
-
-  { "id": "arryn_mountains", "name": "Горы Долины", "faction": "arryn", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Каждый перевал — крепость.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 3 } ] },
-  { "id": "arryn_knights", "name": "Орлиная гвардия", "faction": "arryn", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["arryn_mountains"], "cost": { "gold": 160, "materials": 80 }, "description": "Рыцари, воспитанные в горах.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 3 } ] },
-  { "id": "arryn_falconry", "name": "Соколиная охота", "faction": "arryn", "branch": "intrigue", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90, "influence": 6 }, "description": "Наблюдатели на каждой вершине.",
-    "effects": [ { "op": "modifier", "key": "spyDefense", "value": 2 }, { "op": "modifier", "key": "spyOffense", "value": 1 } ] },
-  { "id": "arryn_stone", "name": "Камень и труд", "faction": "arryn", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["arryn_mountains"], "cost": { "gold": 140, "materials": 80 }, "description": "Каменоломни и рудники.",
-    "effects": [ { "op": "modifier", "key": "materialsIncome", "value": 5 }, { "op": "modifier", "key": "buildCost.pct", "value": -0.1 } ] },
-  { "id": "arryn_gates", "name": "Кровавые Ворота", "faction": "arryn", "branch": "war", "tier": 3, "researchTurns": 3,
-    "requires": ["arryn_knights"], "cost": { "gold": 240, "materials": 120 }, "description": "Единственный вход в Долину.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 3 }, { "op": "modifier", "key": "siegeSpeed", "value": 0.15 } ] },
-
-  { "id": "targ_dragonlore", "name": "Драконье знание", "faction": "targaryen", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 120, "influence": 10 }, "description": "Валирийские свитки о приручении драконов.",
-    "effects": [ { "op": "modifier", "key": "dragonPower", "value": 0.3 }, { "op": "modifier", "key": "armyMorale", "value": 4 } ] },
-  { "id": "targ_valyrian_steel", "name": "Валирийская сталь", "faction": "targaryen", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["targ_dragonlore"], "cost": { "gold": 190, "materials": 100 }, "description": "Клинки, секрет которых утрачен.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 3 } ] },
-  { "id": "targ_blood", "name": "Кровь дракона", "faction": "targaryen", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["targ_dragonlore"], "cost": { "gold": 150, "influence": 10 }, "description": "Люди верят в божественность драконьих королей.",
-    "effects": [ { "op": "modifier", "key": "faithSpread", "value": 0.15 }, { "op": "modifier", "key": "recognitionGain", "value": 0.2 } ] },
-  { "id": "targ_doom", "name": "Память о Роке", "faction": "targaryen", "branch": "intrigue", "tier": 2, "researchTurns": 2,
-    "requires": ["targ_dragonlore"], "cost": { "gold": 160, "influence": 12 }, "description": "Опыт выживания среди катастроф.",
-    "effects": [ { "op": "modifier", "key": "spyDefense", "value": 2 }, { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.08 } ] },
-  { "id": "targ_conquest", "name": "Завоевание", "faction": "targaryen", "branch": "war", "tier": 3, "researchTurns": 3,
-    "requires": ["targ_valyrian_steel"], "cost": { "gold": 260, "influence": 20 }, "description": "Весь Вестерос должен склониться.",
-    "effects": [ { "op": "modifier", "key": "recognitionGain", "value": 0.25 }, { "op": "modifier", "key": "armyAttack", "value": 2 } ] },
-
-  { "id": "gardener_harvest", "name": "Дар Зелёной Руки", "faction": "gardener", "branch": "economy", "tier": 1, "researchTurns": 1,
-    "cost": { "gold": 80 }, "description": "Земля Простора кормит армии.",
-    "effects": [ { "op": "modifier", "key": "foodIncome", "value": 6 }, { "op": "modifier", "key": "levySize", "value": 1 } ] },
-  { "id": "gardener_knights", "name": "Рыцари Зелёной Руки", "faction": "gardener", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["gardener_harvest"], "cost": { "gold": 160, "materials": 70 }, "description": "Лучшая конница юга.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 3 } ] },
-  { "id": "gardener_oldtown", "name": "Старомест", "faction": "gardener", "branch": "faith", "tier": 2, "researchTurns": 2,
-    "requires": ["gardener_harvest"], "cost": { "gold": 150, "influence": 10 }, "description": "Цитадель и Звёздная септа.",
-    "effects": [ { "op": "modifier", "key": "pietyIncome", "value": 3 }, { "op": "modifier", "key": "influenceIncome", "value": 1 }, { "op": "modifier", "key": "faithSpread", "value": 0.1 } ] },
-  { "id": "gardener_banners", "name": "Знамёна Простора", "faction": "gardener", "branch": "war", "tier": 3, "researchTurns": 3,
-    "requires": ["gardener_knights"], "cost": { "gold": 230, "influence": 15 }, "description": "Собрать всех вассалов.",
-    "effects": [ { "op": "modifier", "key": "levySize", "value": 1 }, { "op": "modifier", "key": "recruitCost.pct", "value": -0.1 } ] },
-
-  { "id": "durrandon_storm", "name": "Сердце бури", "faction": "durrandon", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Штормовые короли бьются до конца.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 3 } ] },
-  { "id": "durrandon_axemen", "name": "Топорники", "faction": "durrandon", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["durrandon_storm"], "cost": { "gold": 150, "materials": 70 }, "description": "Свирепая пехота Штормовых земель.",
-    "effects": [ { "op": "modifier", "key": "armyMorale", "value": 6 }, { "op": "modifier", "key": "armyDefense", "value": 1 } ] },
-  { "id": "durrandon_marches", "name": "Дорнийские марки", "faction": "durrandon", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["durrandon_storm"], "cost": { "gold": 130, "materials": 60 }, "description": "Пограничные замки и дозоры.",
-    "effects": [ { "op": "modifier", "key": "spyDefense", "value": 2 }, { "op": "modifier", "key": "foodIncome", "value": 3 } ] },
-  { "id": "durrandon_rage", "name": "Ярость Дюррандонов", "faction": "durrandon", "branch": "war", "tier": 3, "researchTurns": 3,
-    "requires": ["durrandon_axemen"], "cost": { "gold": 220, "influence": 12 }, "description": "Нам ярость!",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "recruitCost.pct", "value": -0.1 } ] },
-
-  { "id": "hoare_black_blood", "name": "Чёрная кровь", "faction": "hoare", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 90 }, "description": "Железнорождённые не знают страха.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 3 } ] },
-  { "id": "hoare_river_iron", "name": "Железо над реками", "faction": "hoare", "branch": "economy", "tier": 2, "researchTurns": 2,
-    "requires": ["hoare_black_blood"], "cost": { "gold": 150, "influence": 8 }, "description": "Речные земли платят железную пошлину.",
-    "effects": [ { "op": "modifier", "key": "goldIncome", "value": 5 }, { "op": "modifier", "key": "influenceIncome", "value": 2 } ] },
-  { "id": "hoare_fleet", "name": "Флот Харрена", "faction": "hoare", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["hoare_black_blood"], "cost": { "gold": 160, "materials": 100 }, "description": "Корабли, которым нет равных.",
-    "effects": [ { "op": "modifier", "key": "navalPower", "value": 3 }, { "op": "modifier", "key": "raidLoot", "value": 0.2 } ] },
-  { "id": "hoare_fear", "name": "Правление страхом", "faction": "hoare", "branch": "intrigue", "tier": 3, "researchTurns": 3,
-    "requires": ["hoare_river_iron"], "cost": { "gold": 220, "influence": 15 }, "description": "Пусть боятся. Так надёжнее.",
-    "effects": [ { "op": "modifier", "key": "votePower", "value": 1 }, { "op": "modifier", "key": "spyOffense", "value": 2 }, { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.1 } ] },
-
-  { "id": "nw_wall", "name": "Стена", "faction": "nightswatch", "branch": "war", "tier": 1, "researchTurns": 2,
-    "cost": { "gold": 60 }, "description": "Лёд, камень и древние чары.",
-    "effects": [ { "op": "modifier", "key": "armyDefense", "value": 4 } ] },
-  { "id": "nw_rangers", "name": "Разведка за Стеной", "faction": "nightswatch", "branch": "war", "tier": 2, "researchTurns": 2,
-    "requires": ["nw_wall"], "cost": { "gold": 100 }, "description": "Дозорные знают каждую тропу.",
-    "effects": [ { "op": "modifier", "key": "armyMove", "value": 1 }, { "op": "modifier", "key": "spyDefense", "value": 2 } ] },
-  { "id": "nw_steel", "name": "Дозорная сталь", "faction": "nightswatch", "branch": "war", "tier": 3, "researchTurns": 3,
-    "requires": ["nw_rangers"], "cost": { "gold": 160, "materials": 80 }, "description": "Оружие против Иных.",
-    "effects": [ { "op": "modifier", "key": "armyAttack", "value": 2 }, { "op": "modifier", "key": "armyMorale", "value": 4 } ] }
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "shared_bureaucracy",
+    "name": "Королевская канцелярия",
+    "faction": "shared",
+    "branch": "intrigue",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90,
+      "influence": 8
+    },
+    "description": "Чиновники, печати и бумаги. Влияние растёт.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "shared_alchemy",
+    "name": "Алхимия",
+    "faction": "shared",
+    "branch": "intrigue",
+    "tier": 2,
+    "researchTurns": 3,
+    "requires": [
+      "shared_bureaucracy"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 12
+    },
+    "description": "Дикий огонь, яды и тайные знания.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "stark_winter",
+    "name": "Зима близко",
+    "faction": "stark",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Северные погреба и тёплая одежда. Армии легче переживают зиму.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "stark_direwolves",
+    "name": "Лютоволки",
+    "faction": "stark",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 3,
+    "requires": [
+      "stark_winter"
+    ],
+    "cost": {
+      "gold": 180,
+      "influence": 8
+    },
+    "description": "Волки Старков выходят на войну.",
+    "effects": [
+      {
+        "op": "unlockunit",
+        "id": "direwolves"
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "stark_first_men",
+    "name": "Первые Люди",
+    "faction": "stark",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 80
+    },
+    "description": "Древние обычаи позволяют собирать больше ополчения.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "stark_wolfswood",
+    "name": "Волчий лес",
+    "faction": "stark",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "stark_first_men"
+    ],
+    "cost": {
+      "gold": 140,
+      "materials": 60
+    },
+    "description": "Древесина и меха Севера. Даёт лесопилку в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "armyMove",
+        "value": 1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "sawmill"
+      }
+    ]
+  },
+  {
+    "id": "stark_old_gods",
+    "name": "Старые боги",
+    "faction": "stark",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "stark_first_men"
+    ],
+    "cost": {
+      "gold": 120,
+      "influence": 6
+    },
+    "description": "Вера отцов укрепляет дух. Даёт богорощу в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.15
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "godswood"
+      }
+    ]
+  },
+  {
+    "id": "lannister_gold",
+    "name": "Золотые шахты",
+    "faction": "lannister",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100
+    },
+    "description": "Новые жилы под Утёсом Кастерли. Даёт шахту в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome.pct",
+        "value": 0.05
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "mine"
+      }
+    ]
+  },
+  {
+    "id": "lannister_red_cloaks",
+    "name": "Красные плащи",
+    "faction": "lannister",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "lannister_gold"
+    ],
+    "cost": {
+      "gold": 170,
+      "materials": 80
+    },
+    "description": "Домовая гвардия в лучшей броне.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lannister_gold_buys",
+    "name": "Золото покупает всё",
+    "faction": "lannister",
+    "branch": "intrigue",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "lannister_gold"
+    ],
+    "cost": {
+      "gold": 200,
+      "influence": 10
+    },
+    "description": "Наёмники и шпионы дешевле.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.12
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lannister_spymaster",
+    "name": "Шептуны Запада",
+    "faction": "lannister",
+    "branch": "intrigue",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "lannister_gold_buys"
+    ],
+    "cost": {
+      "gold": 260,
+      "influence": 15
+    },
+    "description": "Сеть информаторов в каждом замке.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "lobbyCost.pct",
+        "value": -0.15
+      },
+      {
+        "op": "modifier",
+        "key": "spyNetwork",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "lannister_casterly",
+    "name": "Утёс Кастерли",
+    "faction": "lannister",
+    "branch": "economy",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "lannister_red_cloaks"
+    ],
+    "cost": {
+      "gold": 240,
+      "materials": 120
+    },
+    "description": "Неприступная столица Запада. Даёт монетный двор в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.12
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "mint"
+      }
+    ]
+  },
+  {
+    "id": "baratheon_storm",
+    "name": "Ярость шторма",
+    "faction": "baratheon",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Баратеоны бьют первыми и сильнее.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "baratheon_knights",
+    "name": "Рыцари Штормовых земель",
+    "faction": "baratheon",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "baratheon_storm"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 80
+    },
+    "description": "Тяжёлая конница юга.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "baratheon_iron_will",
+    "name": "Железная воля",
+    "faction": "baratheon",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "baratheon_storm"
+    ],
+    "cost": {
+      "gold": 130,
+      "influence": 8
+    },
+    "description": "Никакие потери не сломят дух.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 8
+      },
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "baratheon_dragonstone",
+    "name": "Драконий Камень",
+    "faction": "baratheon",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "baratheon_storm"
+    ],
+    "cost": {
+      "gold": 150,
+      "materials": 80
+    },
+    "description": "Вулканический остров и флот. Даёт якорную стоянку флота в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "fleet_anchorage"
+      }
+    ]
+  },
+  {
+    "id": "baratheon_claim",
+    "name": "Право на трон",
+    "faction": "baratheon",
+    "branch": "intrigue",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "baratheon_iron_will"
+    ],
+    "cost": {
+      "gold": 220,
+      "influence": 20
+    },
+    "description": "Родство с Таргариенами даёт законные права.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.3
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "tyrell_harvest",
+    "name": "Богатый урожай",
+    "faction": "tyrell",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 1,
+    "cost": {
+      "gold": 80
+    },
+    "description": "Трёхполье и ирригация Простора. Даёт фермы в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 6
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "farms"
+      }
+    ]
+  },
+  {
+    "id": "tyrell_chivalry",
+    "name": "Рыцарская слава",
+    "faction": "tyrell",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100
+    },
+    "description": "Турниры воспитывают лучших бойцов.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "tyrell_trade",
+    "name": "Мандер и торговля",
+    "faction": "tyrell",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "tyrell_harvest"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 6
+    },
+    "description": "Река Мандер — торговый путь.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "tradeDominance",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "tyrell_alliances",
+    "name": "Браки и союзы",
+    "faction": "tyrell",
+    "branch": "intrigue",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "tyrell_harvest"
+    ],
+    "cost": {
+      "gold": 140,
+      "influence": 10
+    },
+    "description": "Тиреллы побеждают обаянием.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "lobbyCost.pct",
+        "value": -0.2
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "tyrell_gardens",
+    "name": "Сады Хайгардена",
+    "faction": "tyrell",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "tyrell_chivalry"
+    ],
+    "cost": {
+      "gold": 120,
+      "influence": 8
+    },
+    "description": "Красота как политика. Даёт турнирное поле в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "tourney_grounds"
+      }
+    ]
+  },
+  {
+    "id": "martell_desert",
+    "name": "Война в пустыне",
+    "faction": "martell",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Дорнские тропы и засады.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMove",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recoveryCost.pct",
+        "value": -0.1
+      }
+    ]
+  },
+  {
+    "id": "martell_poison",
+    "name": "Яды и вино",
+    "faction": "martell",
+    "branch": "intrigue",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100,
+      "influence": 6
+    },
+    "description": "Дорнийские яды не оставляют следов.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "martell_spears",
+    "name": "Копья Дорна",
+    "faction": "martell",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "martell_desert"
+    ],
+    "cost": {
+      "gold": 150,
+      "materials": 60
+    },
+    "description": "Лёгкая пехота и конница.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "martell_water",
+    "name": "Водные сады",
+    "faction": "martell",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "martell_desert"
+    ],
+    "cost": {
+      "gold": 140,
+      "materials": 60
+    },
+    "description": "Орошение пустыни.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "unrestGlobal.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "martell_vengeance",
+    "name": "Долгая месть",
+    "faction": "martell",
+    "branch": "intrigue",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "martell_poison"
+    ],
+    "cost": {
+      "gold": 220,
+      "influence": 18
+    },
+    "description": "Мы помним. Мы ждём. Мы бьём.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.15
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_fleet",
+    "name": "Железный флот",
+    "faction": "greyjoy",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 100,
+      "materials": 60
+    },
+    "description": "Длинные корабли и опытные капитаны. Даёт якорную стоянку флота в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.2
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "fleet_anchorage"
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_reaving",
+    "name": "Искусство набега",
+    "faction": "greyjoy",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "greyjoy_fleet"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 6
+    },
+    "description": "Железнорождённые живут добычей.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.3
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.05
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_drowned",
+    "name": "Утонувший Бог",
+    "faction": "greyjoy",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "greyjoy_fleet"
+    ],
+    "cost": {
+      "gold": 120,
+      "influence": 8
+    },
+    "description": "Что мертво, умереть не может. Даёт святилище Утонувшего в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "drowned_shrine"
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_thralls",
+    "name": "Триллы и соль",
+    "faction": "greyjoy",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "greyjoy_fleet"
+    ],
+    "cost": {
+      "gold": 130,
+      "materials": 60
+    },
+    "description": "Пленники работают на острова.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "arryn_mountains",
+    "name": "Горы Долины",
+    "faction": "arryn",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Каждый перевал — крепость.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "arryn_knights",
+    "name": "Орлиная гвардия",
+    "faction": "arryn",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "arryn_mountains"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 80
+    },
+    "description": "Рыцари, воспитанные в горах.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "arryn_falconry",
+    "name": "Соколиная охота",
+    "faction": "arryn",
+    "branch": "intrigue",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90,
+      "influence": 6
+    },
+    "description": "Наблюдатели на каждой вершине.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "arryn_stone",
+    "name": "Камень и труд",
+    "faction": "arryn",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "arryn_mountains"
+    ],
+    "cost": {
+      "gold": 140,
+      "materials": 80
+    },
+    "description": "Каменоломни и рудники. Даёт каменоломню-шахту в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "mine"
+      }
+    ]
+  },
+  {
+    "id": "arryn_gates",
+    "name": "Кровавые Ворота",
+    "faction": "arryn",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "arryn_knights"
+    ],
+    "cost": {
+      "gold": 240,
+      "materials": 120
+    },
+    "description": "Единственный вход в Долину.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.15
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "targ_dragonlore",
+    "name": "Драконье знание",
+    "faction": "targaryen",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 120,
+      "influence": 10
+    },
+    "description": "Валирийские свитки о приручении драконов. Даёт драконье логово в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "dragonPower",
+        "value": 0.3
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "dragonpit"
+      }
+    ]
+  },
+  {
+    "id": "targ_valyrian_steel",
+    "name": "Валирийская сталь",
+    "faction": "targaryen",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "targ_dragonlore"
+    ],
+    "cost": {
+      "gold": 190,
+      "materials": 100
+    },
+    "description": "Клинки, секрет которых утрачен. Даёт оружейную в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "armory"
+      }
+    ]
+  },
+  {
+    "id": "targ_blood",
+    "name": "Кровь дракона",
+    "faction": "targaryen",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "targ_dragonlore"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 10
+    },
+    "description": "Люди верят в божественность драконьих королей.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.15
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "targ_doom",
+    "name": "Память о Роке",
+    "faction": "targaryen",
+    "branch": "intrigue",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "targ_dragonlore"
+    ],
+    "cost": {
+      "gold": 160,
+      "influence": 12
+    },
+    "description": "Опыт выживания среди катастроф.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "unrestGlobal.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "targ_conquest",
+    "name": "Завоевание",
+    "faction": "targaryen",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "targ_valyrian_steel"
+    ],
+    "cost": {
+      "gold": 260,
+      "influence": 20
+    },
+    "description": "Весь Вестерос должен склониться.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.25
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "gardener_harvest",
+    "name": "Дар Зелёной Руки",
+    "faction": "gardener",
+    "branch": "economy",
+    "tier": 1,
+    "researchTurns": 1,
+    "cost": {
+      "gold": 80
+    },
+    "description": "Земля Простора кормит армии. Даёт фермы в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "farms"
+      }
+    ]
+  },
+  {
+    "id": "gardener_knights",
+    "name": "Рыцари Зелёной Руки",
+    "faction": "gardener",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "gardener_harvest"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 70
+    },
+    "description": "Лучшая конница юга.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "gardener_oldtown",
+    "name": "Старомест",
+    "faction": "gardener",
+    "branch": "faith",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "gardener_harvest"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 10
+    },
+    "description": "Цитадель и Звёздная септа. Даёт септу в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "sept"
+      }
+    ]
+  },
+  {
+    "id": "gardener_banners",
+    "name": "Знамёна Простора",
+    "faction": "gardener",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "gardener_knights"
+    ],
+    "cost": {
+      "gold": 230,
+      "influence": 15
+    },
+    "description": "Собрать всех вассалов.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.1
+      }
+    ]
+  },
+  {
+    "id": "durrandon_storm",
+    "name": "Сердце бури",
+    "faction": "durrandon",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Штормовые короли бьются до конца.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "durrandon_axemen",
+    "name": "Топорники",
+    "faction": "durrandon",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "durrandon_storm"
+    ],
+    "cost": {
+      "gold": 150,
+      "materials": 70
+    },
+    "description": "Свирепая пехота Штормовых земель.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "durrandon_marches",
+    "name": "Дорнийские марки",
+    "faction": "durrandon",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "durrandon_storm"
+    ],
+    "cost": {
+      "gold": 130,
+      "materials": 60
+    },
+    "description": "Пограничные замки и дозоры.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "durrandon_rage",
+    "name": "Ярость Дюррандонов",
+    "faction": "durrandon",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "durrandon_axemen"
+    ],
+    "cost": {
+      "gold": 220,
+      "influence": 12
+    },
+    "description": "Нам ярость!",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "hoare_black_blood",
+    "name": "Чёрная кровь",
+    "faction": "hoare",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 90
+    },
+    "description": "Железнорождённые не знают страха.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "hoare_river_iron",
+    "name": "Железо над реками",
+    "faction": "hoare",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "hoare_black_blood"
+    ],
+    "cost": {
+      "gold": 150,
+      "influence": 8
+    },
+    "description": "Речные земли платят железную пошлину. Даёт большой зал в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "great_hall"
+      }
+    ]
+  },
+  {
+    "id": "hoare_fleet",
+    "name": "Флот Харрена",
+    "faction": "hoare",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "hoare_black_blood"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 100
+    },
+    "description": "Корабли, которым нет равных. Даёт верфь в столице.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.2
+      },
+      {
+        "op": "capitalbuilding",
+        "id": "shipyard"
+      }
+    ]
+  },
+  {
+    "id": "hoare_fear",
+    "name": "Правление страхом",
+    "faction": "hoare",
+    "branch": "intrigue",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "hoare_river_iron"
+    ],
+    "cost": {
+      "gold": 220,
+      "influence": 15
+    },
+    "description": "Пусть боятся. Так надёжнее.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "unrestGlobal.pct",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "nw_wall",
+    "name": "Стена",
+    "faction": "nightswatch",
+    "branch": "war",
+    "tier": 1,
+    "researchTurns": 2,
+    "cost": {
+      "gold": 60
+    },
+    "description": "Лёд, камень и древние чары.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "nw_rangers",
+    "name": "Разведка за Стеной",
+    "faction": "nightswatch",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "nw_wall"
+    ],
+    "cost": {
+      "gold": 100
+    },
+    "description": "Дозорные знают каждую тропу.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMove",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "nw_steel",
+    "name": "Дозорная сталь",
+    "faction": "nightswatch",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "nw_rangers"
+    ],
+    "cost": {
+      "gold": 160,
+      "materials": 80
+    },
+    "description": "Оружие против Иных.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "gardener_bounty",
+    "name": "Хлеб и вино",
+    "faction": "gardener",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "gardener_harvest"
+    ],
+    "cost": {
+      "gold": 130,
+      "influence": 6
+    },
+    "description": "Простор кормит королевство и поит его вином. Амбары и погреба работают на войну.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 8
+      }
+    ]
+  },
+  {
+    "id": "durrandon_laststorm",
+    "name": "Последняя гроза",
+    "faction": "durrandon",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "durrandon_storm"
+    ],
+    "cost": {
+      "gold": 220,
+      "influence": 14
+    },
+    "description": "Штормовые короли бьют первыми и отступают последними. Осадные машины идут под гром.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.15
+      }
+    ]
+  },
+  {
+    "id": "hoare_harren",
+    "name": "Проклятие Харренхола",
+    "faction": "hoare",
+    "branch": "war",
+    "tier": 3,
+    "researchTurns": 3,
+    "requires": [
+      "hoare_river_iron"
+    ],
+    "cost": {
+      "gold": 230,
+      "materials": 100
+    },
+    "description": "Стены Харренхола помнят драконов. Пусть помнят и враги.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "nw_oath",
+    "name": "Клятва Дозора",
+    "faction": "nightswatch",
+    "branch": "war",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "nw_wall"
+    ],
+    "cost": {
+      "gold": 110,
+      "influence": 6
+    },
+    "description": "Клятва не берёт жён и не владеет землями — но держит Стену.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_salt",
+    "name": "Соль и камень",
+    "faction": "greyjoy",
+    "branch": "economy",
+    "tier": 2,
+    "researchTurns": 2,
+    "requires": [
+      "greyjoy_thralls"
+    ],
+    "cost": {
+      "gold": 130,
+      "materials": 50
+    },
+    "description": "Соль, камень и труд триллов. Железные острова бедны, но упрямы.",
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.05
+      }
+    ]
+  }
 ]

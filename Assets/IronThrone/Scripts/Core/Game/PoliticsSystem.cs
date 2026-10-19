@@ -11,10 +11,27 @@ namespace IronThrone.Core.Game
     /// </summary>
     public static class PoliticsSystem
     {
+        /// <summary>Отношение, при котором дом реально поддерживает претендента на трон.</summary>
+        public const float BackingRelation = 55f;
+
         public const int CoronationRecognition = 10;
 
         public static int SeatsOf(GameState state, string factionId) =>
             state.Council.seats.Count(kv => kv.Value == factionId);
+
+        /// <summary>Сколько мест Малого совета поддержат дом: свои и дружественных домов.</summary>
+        public static int SeatsBacking(GameState state, string factionId)
+        {
+            int count = 0;
+            foreach (var kv in state.Council.seats)
+            {
+                if (kv.Value == factionId) { count++; continue; }
+                var holder = state.Faction(kv.Value);
+                if (holder != null && holder.alive && DiplomacySystem.Relation(state, holder.id, factionId) >= BackingRelation)
+                    count++;
+            }
+            return count;
+        }
 
         public static int VotePower(GameState state, FactionState f)
         {
@@ -210,7 +227,7 @@ namespace IronThrone.Core.Game
             if (sponsor != null)
             {
                 sponsor.passedLaws.Add(law.id);
-                sponsor.recognition = Math.Min(100, sponsor.recognition + 3.5f * (1f + sponsor.Mod(ModKeys.RecognitionGain)));
+                sponsor.recognition = Math.Min(100, sponsor.recognition + 2f * (1f + sponsor.Mod(ModKeys.RecognitionGain)));
                 sponsor.lawsProposed++;
                 sponsor.influence += 4;
             }
@@ -219,30 +236,33 @@ namespace IronThrone.Core.Game
         }
 
         // ------------------------------------------------------------------ титулы
-        public static bool GrantTitle(GameState state, string titleId, string factionId, out string error)
+        public static bool GrantTitle(GameState state, string titleId, string factionId, out string error, string actorId = null)
         {
             error = null;
             if (!state.Content.TitleById.TryGetValue(titleId, out var title)) { error = "Нет такого титула"; return false; }
             var f = state.Faction(factionId);
             if (f == null) { error = "Нет такой фракции"; return false; }
             string holder = state.Council.throneHolder;
-            var actor = state.Player;
+            var actor = !string.IsNullOrEmpty(actorId) ? state.Faction(actorId) : state.Player;
             if (actor == null) return false;
             if (actor.id != holder) { error = "Раздавать титулы может только владелец Железного трона"; return false; }
             if (SeatsOf(state, actor.id) == 0 && actor.id != holder) { error = "Недостаточно власти"; return false; }
             var cost = new ResourceCost { influence = 25 };
             if (!EffectEngine.CanAfford(actor, cost)) { error = "Нужно 25 влияния"; return false; }
 
-            if (state.Council.seats.TryGetValue(titleId, out var oldHolder) && oldHolder != factionId)
+            if (factionId == actor.id && SeatsOf(state, actor.id) >= 3)
+            { error = "Нельзя держать больше трёх мест самому — раздайте титулы союзникам"; return false; }
+            if (state.Council.seats.TryGetValue(titleId, out var oldHolder) && oldHolder == factionId)
+                return true; // титул уже у этого дома, эффекты не дублируем
+            if (state.Council.seats.TryGetValue(titleId, out oldHolder) && oldHolder != factionId)
                 RemoveTitleEffects(state, title, oldHolder);
 
             EffectEngine.Pay(actor, cost);
             state.Council.seats[titleId] = factionId;
             if (titleId == "hand") state.Council.hand = factionId;
             ApplyTitleEffects(state, title, f);
-            // благодарность
-            if (f.relations.ContainsKey(actor.id))
-                f.relations[actor.id] = Math.Min(100, f.relations[actor.id] + 15);
+            // благодарность в обе стороны — так растёт политическая поддержка
+            DiplomacySystem.AddRelation(state, actor.id, f.id, 15f);
             state.AddLog("politics", $"{actor.def.name} жалует титул «{title.name}» дому {f.def.name}", actor.id);
             return true;
         }
@@ -294,10 +314,10 @@ namespace IronThrone.Core.Game
             foreach (var f in state.Factions.Values.Where(x => x.alive))
             {
                 if (state.Council.throneHolder == f.id)
-                    f.recognition = Math.Min(100, f.recognition + 0.55f * (1f + f.Mod(ModKeys.RecognitionGain)));
+                    f.recognition = Math.Min(100, f.recognition + 0.4f * (1f + f.Mod(ModKeys.RecognitionGain)));
                 else
                     f.recognition = Math.Max(0, f.recognition - 0.35f);
-                f.recognition = Math.Min(100, f.recognition + SeatsOf(state, f.id) * 0.12f);
+                f.recognition = Math.Min(100, f.recognition + SeatsOf(state, f.id) * 0.06f);
             }
             // контроль над Королевской Гаванью = трон
             var kl = state.Province("kings_landing");

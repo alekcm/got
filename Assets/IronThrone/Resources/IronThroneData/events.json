@@ -995,5 +995,697 @@
         ]
       }
     ]
+  },
+  {
+    "id": "ev_targ_blood_wedding",
+    "type": "random",
+    "name": "Кровь и пламя",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Двор шепчется: король взял в жёны собственную сестру. Старые боги и Семеро молчат, но люди помнят Валирию.",
+    "conditions": {
+      "faction": "targaryen",
+      "requiresFlag": "incest_path"
+    },
+    "choices": [
+      {
+        "text": "Сыграть свадьбу по валирийскому обряду",
+        "resultText": "Драконья кровь не разбавлена. Двор в ужасе, но драконы сильны.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "dragonPower",
+            "value": 0.2,
+            "turns": 3,
+            "text": "Кровь дракона"
+          },
+          {
+            "op": "recognition",
+            "amount": 8
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          },
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 15
+          }
+        ]
+      },
+      {
+        "text": "Ограничиться тайным обрядом",
+        "resultText": "Свадьба без свидетелей. Слухи есть, доказательств нет.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "spyDefense",
+            "value": 2,
+            "turns": 3,
+            "text": "Тайна двора"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_targ_new_marriage",
+    "type": "random",
+    "name": "Новый союз",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Король ищет невесту среди великих домов. Дракон должен породниться с Вестеросом, а не с самим собой.",
+    "conditions": {
+      "faction": "targaryen",
+      "requiresFlag": "reform_path"
+    },
+    "choices": [
+      {
+        "text": "Породниться с великим домом",
+        "resultText": "Союз скреплён браком. Дворы Вестероса видят в вас своих.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 12
+          },
+          {
+            "op": "recognition",
+            "amount": 6
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      },
+      {
+        "text": "Взять в жёны дочь купца",
+        "resultText": "Богатое приданое и никаких обязательств перед лордами.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 300
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": 2
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_stark_crown",
+    "type": "random",
+    "name": "Корона Севера",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Лорды Севера собрались в Винтерфелле. Они ждут, наденет ли Старк корону — или снова склонит колено.",
+    "conditions": {
+      "faction": "stark",
+      "requiresFlag": "king_in_the_north"
+    },
+    "choices": [
+      {
+        "text": "Надеть корону",
+        "resultText": "Север провозглашает Короля в Северном крае. Юг в ярости, Север — в восторге.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 12
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyMorale",
+            "value": 6,
+            "turns": 3,
+            "text": "Корона Севера"
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -8
+          }
+        ]
+      },
+      {
+        "text": "Оставить корону в крипте",
+        "resultText": "Символ власти без вызова трону. Лорды расходятся, кто-то недоволен.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 20
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_stark_oath",
+    "type": "random",
+    "name": "Присяга Железному трону",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Ворон из Королевской Гавани принёс присягу. Север должен решить: мир или гордость.",
+    "conditions": {
+      "faction": "stark",
+      "requiresFlag": "bent_knee"
+    },
+    "choices": [
+      {
+        "text": "Присягнуть публично",
+        "resultText": "Присяга приносит мир и признание, но Север помнит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 12
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": -15
+          }
+        ]
+      },
+      {
+        "text": "Затянуть с ответом",
+        "resultText": "Пока ворон ждёт, купцы платят за проходы.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 150
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_lannister_terror",
+    "type": "random",
+    "name": "Красный страх",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Шептуны донесли: враги собираются в тёмных углах. Лев должен ответить — или проявить милость.",
+    "conditions": {
+      "faction": "lannister",
+      "requiresFlag": "ruthless_path"
+    },
+    "choices": [
+      {
+        "text": "Устроить чистку",
+        "resultText": "Дворы замолчали. Кто-то исчез, кто-то просто больше не говорит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -10
+          },
+          {
+            "op": "timedmodifier",
+            "key": "spyOffense",
+            "value": 2,
+            "turns": 3,
+            "text": "Красный страх"
+          }
+        ]
+      },
+      {
+        "text": "Казнить только главарей",
+        "resultText": "Мера страха и милосердия. Двор вздохнул, но не расслабился.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 4
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_lannister_amnesty",
+    "type": "random",
+    "name": "Прощение долгов",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Должники пришли к воротам. Можно взыскать долг, а можно простить — и купить верность.",
+    "conditions": {
+      "faction": "lannister",
+      "requiresFlag": "mercy_path"
+    },
+    "choices": [
+      {
+        "text": "Простить долги",
+        "resultText": "Лорды запомнили доброту. Золото вернётся позже — с процентами верности.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 12
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": -100
+          }
+        ]
+      },
+      {
+        "text": "Взыскать сполна",
+        "resultText": "Казна полна, но должники злы.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_greyjoy_oldway",
+    "type": "random",
+    "name": "Старый путь",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Капитан предлагает новый набег на богатое побережье. Старый путь не спрашивает, можно ли.",
+    "conditions": {
+      "faction": "greyjoy",
+      "requiresFlag": "old_way"
+    },
+    "choices": [
+      {
+        "text": "Идти на восток",
+        "resultText": "Длинные корабли уходят в туман. Добыча будет.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 100
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -8
+          },
+          {
+            "op": "timedmodifier",
+            "key": "raidLoot",
+            "value": 0.1,
+            "turns": 3,
+            "text": "Старый путь"
+          }
+        ]
+      },
+      {
+        "text": "Отложить набег",
+        "resultText": "Воины недовольны, но буря переждана.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "navalPower",
+            "value": 2,
+            "turns": 3,
+            "text": "Тихая гавань"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_greyjoy_trade",
+    "type": "random",
+    "name": "Договор с зелёными",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Купцы Простора предлагают торговать вместо грабежа. Железные люди не сеют — но, может, умеют считать?",
+    "conditions": {
+      "faction": "greyjoy",
+      "requiresFlag": "new_way"
+    },
+    "choices": [
+      {
+        "text": "Подписать договор",
+        "resultText": "Золото потечёт в гавани. Старые капитаны ворчат, но кошельки полны.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "tradedominance",
+            "amount": 6
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          }
+        ]
+      },
+      {
+        "text": "Забрать товар силой",
+        "resultText": "Купцы бегут. Добыча есть, но торговля закрыта.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 80
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_martell_vengeance",
+    "type": "random",
+    "name": "Пламя Дорна",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Дорн ждал слишком долго. Можно нанести удар сейчас — или подождать ещё немного.",
+    "conditions": {
+      "faction": "martell",
+      "requiresFlag": "vengeance_path"
+    },
+    "choices": [
+      {
+        "text": "Ударить",
+        "resultText": "Яд и копьё сделали своё дело. Враги знают: Дорн не прощает.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 15
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyAttack",
+            "value": 2,
+            "turns": 3,
+            "text": "Месть Дорна"
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          }
+        ]
+      },
+      {
+        "text": "Продолжать ждать",
+        "resultText": "Дорн копит силы. Терпение — тоже оружие.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_martell_peace",
+    "type": "random",
+    "name": "Мирный Дорн",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Королевская Гавань предлагает мир. Дорн может принять его — или вспомнить Элию.",
+    "conditions": {
+      "faction": "martell",
+      "requiresFlag": "peace_path"
+    },
+    "choices": [
+      {
+        "text": "Принять мир",
+        "resultText": "Послы подписывают договор. Дорн торгует, а не хоронит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "tradedominance",
+            "amount": 5
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      },
+      {
+        "text": "Отклонить",
+        "resultText": "Мир отвергнут. Дорн снова один.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "armyDefense",
+            "value": 2,
+            "turns": 3,
+            "text": "Непокорённые"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_arryn_littlefinger",
+    "type": "random",
+    "name": "Сделка с Мизинцем",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Мизинец привёз карту и мешок золота. Услуга будет оказана — но что ему нужно взамен?",
+    "conditions": {
+      "faction": "arryn",
+      "requiresFlag": "littlefinger_path"
+    },
+    "choices": [
+      {
+        "text": "Принять сделку",
+        "resultText": "Золото в сундуках, а в Долине появляются новые люди Мизинца.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 300
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -5
+          },
+          {
+            "op": "modifier",
+            "key": "spyNetwork",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Отказаться",
+        "resultText": "Мизинец уехал улыбаясь. Улыбка не внушала доверия.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_arryn_honor",
+    "type": "random",
+    "name": "Честь Долины",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Долина может снова стать известна честью, а не интригами. Лорды ждут решения.",
+    "conditions": {
+      "faction": "arryn",
+      "requiresFlag": "honor_path"
+    },
+    "choices": [
+      {
+        "text": "Созвать рыцарей",
+        "resultText": "Знамёна Долины подняты. Честь стоит золота.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "recruit",
+            "id": "vale_knights",
+            "count": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": -50
+          }
+        ]
+      },
+      {
+        "text": "Укрепить перевалы",
+        "resultText": "Честь — это ещё и умение держать границу.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 2
+          },
+          {
+            "op": "modifier",
+            "key": "garrisonBonus",
+            "value": 3
+          }
+        ]
+      }
+    ]
   }
 ]
