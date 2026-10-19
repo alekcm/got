@@ -5,15 +5,23 @@ using System.Linq;
 using IronThrone.Core.Content;
 using IronThrone.Core.Game;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace IronThrone.Unity
 {
     /// <summary>
     /// Точка входа Unity-слоя: меню выбора эпохи/фракции/карты и игровой экран.
     /// Вся логика — в IronThrone.Core; здесь только отображение и ввод (IMGUI).
+    /// Сцены: <c>Assets/Scenes/MainMenu.unity</c> — меню (настройка и запуск партии),
+    /// <c>Assets/Scenes/Game.unity</c> — партия. Переход между ними — через SceneManager.
     /// </summary>
     public partial class IronThroneGame : MonoBehaviour
     {
+        /// <summary>Имя сцены главного меню.</summary>
+        public const string MenuSceneName = "MainMenu";
+        /// <summary>Имя сцены партии.</summary>
+        public const string GameSceneName = "Game";
+
         private enum UiScreen { Loading, Menu, Game, Error }
 
         private static IronThroneGame _instance;
@@ -25,6 +33,20 @@ namespace IronThrone.Unity
             var go = new GameObject("Iron Throne");
             UnityEngine.Object.DontDestroyOnLoad(go);
             _instance = go.AddComponent<IronThroneGame>();
+        }
+
+        private static string ActiveSceneName()
+        {
+            try { return SceneManager.GetActiveScene().name; }
+            catch { return ""; }
+        }
+
+        /// <summary>Загружает сцену по имени; ошибки (сцена вне Build Settings) не рвут игру.</summary>
+        private static void LoadGameScene(string sceneName)
+        {
+            if (ActiveSceneName() == sceneName) return;
+            try { SceneManager.LoadScene(sceneName); }
+            catch (Exception ex) { Debug.LogWarning("Iron Throne: не удалось загрузить сцену " + sceneName + ": " + ex.Message); }
         }
 
         private ContentDb _content;
@@ -66,8 +88,12 @@ namespace IronThrone.Unity
             try
             {
                 _content = UnityContent.Load();
-                _screen = UiScreen.Menu;
                 PickDefaultFaction();
+                _screen = UiScreen.Menu;
+                // Play в сцене Game — сразу партия с настройками по умолчанию;
+                // Play в MainMenu (или любой другой сцене) — меню.
+                if (ActiveSceneName() == GameSceneName)
+                    StartNewGame();
             }
             catch (Exception ex)
             {
@@ -240,7 +266,11 @@ namespace IronThrone.Unity
             if (GUILayout.Button("НАЧАТЬ ИГРУ", _h1, GUILayout.Height(44), GUILayout.Width(260))) StartNewGame();
             GUI.enabled = true;
             if (_state != null && GUILayout.Button("Продолжить партию", _button, GUILayout.Height(44), GUILayout.Width(220)))
-            { _screen = UiScreen.Game; Toast("Партия продолжена: ход " + _state.Turn); }
+            {
+                _screen = UiScreen.Game;
+                LoadGameScene(GameSceneName);
+                Toast("Партия продолжена: ход " + _state.Turn);
+            }
             if (File.Exists(UnityContent.SavePath) || File.Exists(UnityContent.AutoSavePath))
             {
                 if (GUILayout.Button("Загрузить сохранение", _button, GUILayout.Height(44), GUILayout.Width(220)))
@@ -272,6 +302,7 @@ namespace IronThrone.Unity
                 _tab = 0;
                 _sideScroll = Vector2.zero;
                 _screen = UiScreen.Game;
+                LoadGameScene(GameSceneName);
                 Toast("Партия начата. Ход 1.");
             }
             catch (Exception ex)
@@ -279,6 +310,14 @@ namespace IronThrone.Unity
                 Toast("Ошибка старта: " + ex.Message);
                 Debug.LogError(ex);
             }
+        }
+
+        /// <summary>Возврат в главное меню (сцена MainMenu). Партия остаётся доступной через «Продолжить».</summary>
+        private void ReturnToMenu()
+        {
+            _screen = UiScreen.Menu;
+            PickDefaultFaction();
+            LoadGameScene(MenuSceneName);
         }
 
         // ------------------------------------------------------------------ игра
@@ -337,7 +376,7 @@ namespace IronThrone.Unity
             GUI.enabled = true;
             if (GUI.Button(new Rect(244, Screen.height - bottomH + 8, 120, 40), "Сохранить", _button)) SaveGame(false);
             if (GUI.Button(new Rect(372, Screen.height - bottomH + 8, 120, 40), "Загрузить", _button)) LoadGame();
-            if (GUI.Button(new Rect(500, Screen.height - bottomH + 8, 120, 40), "В меню", _button)) { _screen = UiScreen.Menu; PickDefaultFaction(); }
+            if (GUI.Button(new Rect(500, Screen.height - bottomH + 8, 120, 40), "В меню", _button)) ReturnToMenu();
             if (GUI.Button(new Rect(628, Screen.height - bottomH + 8, 44, 40), "?", _button)) _showHelp = !_showHelp;
             GUI.Label(new Rect(684, Screen.height - bottomH + 16, Screen.width - 704, 24),
                 $"ход {_state.Turn} · {Season(_state.Season)} · войн: {_state.Wars.Count(w => w.active)}" +
@@ -484,6 +523,7 @@ namespace IronThrone.Unity
                 _selectedProvince = _state.Provinces.ContainsKey(_selectedProvince ?? "") ? _selectedProvince : _state.Provinces.Keys.FirstOrDefault();
                 _selectedArmy = null;
                 _screen = UiScreen.Game;
+                LoadGameScene(GameSceneName);
                 Toast("Загружено: ход " + _state.Turn);
             }
             catch (Exception ex) { Toast("Не удалось загрузить: " + ex.Message); Debug.LogError(ex); }
@@ -696,11 +736,7 @@ namespace IronThrone.Unity
             GUILayout.Label(_state.FactionName(_state.VictoryWinner) + " — " + VictorySystem.VictoryName(_state.VictoryType), _h1);
             GUILayout.Label($"Ход {_state.Turn}. {TurnEngine.DateLabel(_state)}", _body);
             GUILayout.Space(12);
-            if (GUILayout.Button("Вернуться в меню", _button, GUILayout.Height(36)))
-            {
-                _screen = UiScreen.Menu;
-                PickDefaultFaction();
-            }
+            if (GUILayout.Button("Вернуться в меню", _button, GUILayout.Height(36))) ReturnToMenu();
             GUILayout.EndArea();
         }
     }

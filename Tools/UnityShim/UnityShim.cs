@@ -273,3 +273,39 @@ namespace UnityEngine
         public RuntimeInitializeOnLoadMethodAttribute(RuntimeInitializeLoadType t) { }
     }
 }
+
+namespace UnityEngine.SceneManagement
+{
+    /// <summary>Заглушка SceneManager: сцены управляются через <see cref="SceneManager.ActiveSceneName"/>.</summary>
+    public struct Scene
+    {
+        public string name;
+        public string path;
+        public bool IsValid() => !string.IsNullOrEmpty(name);
+    }
+
+    public enum LoadSceneMode { Single, Additive }
+
+    public static class SceneManager
+    {
+        /// <summary>Текущая «активная» сцена в шиме; тесты переключают её сами.</summary>
+        public static string ActiveSceneName = "MainMenu";
+
+        /// <summary>История вызовов LoadScene — для проверки переходов в смоук-тесте.</summary>
+        public static readonly List<string> LoadHistory = new List<string>();
+
+        public static Scene GetActiveScene() => new Scene
+        {
+            name = ActiveSceneName,
+            path = "Assets/Scenes/" + ActiveSceneName + ".unity",
+        };
+
+        public static void LoadScene(string name)
+        {
+            LoadHistory.Add(name);
+            ActiveSceneName = name;
+        }
+
+        public static void LoadScene(string name, LoadSceneMode mode) => LoadScene(name);
+    }
+}

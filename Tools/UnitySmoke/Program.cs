@@ -9,6 +9,7 @@ using IronThrone.Core.Content;
 using IronThrone.Core.Game;
 using IronThrone.Unity;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace IronThrone.UnitySmoke
 {
@@ -50,7 +51,8 @@ namespace IronThrone.UnitySmoke
             }
 
             var game = new IronThroneGame();
-            Console.WriteLine("Unity-слой: меню и партия");
+            Console.WriteLine("Unity-слой: сцены, меню и партия");
+            SceneManager.ActiveSceneName = IronThroneGame.MenuSceneName;
             Step("Awake/загрузка контента", () => Call(game, "Awake"));
             var content = (ContentDb)Get(game, "_content");
             Console.WriteLine($"  контент: эпох {content?.Eras.Count}, фракций {content?.Factions.Count}");
@@ -71,6 +73,14 @@ namespace IronThrone.UnitySmoke
                 var state = (GameState)Get(game, "_state");
                 if (state == null || state.PlayerFaction != "five_stark")
                     throw new Exception("партия не создана");
+            });
+
+            Step("старт переключает на сцену Game", () =>
+            {
+                if (SceneManager.ActiveSceneName != IronThroneGame.GameSceneName)
+                    throw new Exception("активная сцена: " + SceneManager.ActiveSceneName);
+                if (Get(game, "_screen").ToString() != "Game")
+                    throw new Exception("экран: " + Get(game, "_screen"));
             });
 
             Step("OnGUI игровой экран", () => Call(game, "OnGUI"));
@@ -264,6 +274,30 @@ namespace IronThrone.UnitySmoke
             {
                 for (int i = 0; i < 2; i++) Call(game, "NextTurn");
                 Call(game, "OnGUI");
+            });
+
+            Step("возврат в главное меню (сцена MainMenu)", () =>
+            {
+                Call(game, "ReturnToMenu");
+                if (SceneManager.ActiveSceneName != IronThroneGame.MenuSceneName)
+                    throw new Exception("активная сцена: " + SceneManager.ActiveSceneName);
+                if (Get(game, "_screen").ToString() != "Menu")
+                    throw new Exception("экран: " + Get(game, "_screen"));
+                if (Get(game, "_state") == null)
+                    throw new Exception("партия потеряна при выходе в меню");
+                Call(game, "OnGUI"); // меню с кнопкой «Продолжить партию»
+            });
+
+            Step("Play в сцене Game сразу запускает партию", () =>
+            {
+                SceneManager.ActiveSceneName = IronThroneGame.GameSceneName;
+                var fresh = new IronThroneGame();
+                Call(fresh, "Awake");
+                if (Get(fresh, "_state") == null)
+                    throw new Exception("партия не создалась автоматически");
+                if (Get(fresh, "_screen").ToString() != "Game")
+                    throw new Exception("экран: " + Get(fresh, "_screen"));
+                Call(fresh, "OnGUI");
             });
 
             Console.WriteLine(failures == 0 ? "\nИТОГ: OK" : $"\nИТОГ: ошибок {failures}");
