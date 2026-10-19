@@ -1,0 +1,21 @@
+"InstallScript"
+{
+	"Firewall"
+	{
+		"Project Highlander"		"%INSTALLDIR%\\AOW4.exe"
+	}
+	"Run Process"
+	{
+		"GameInputRedist"
+		{
+			"HasRunKey"		"HKEY_LOCAL_MACHINE\\Software\\Paradox Interactive\\Project Highlander\\gameinput"
+			"process 1"		"msiexec.exe"
+			"command 1"		"/qn /i \"%INSTALLDIR%\\GameInputRedist.msi\""
+			"NoCleanUp"		"1"
+		}
+	}
+}
+"kvsignatures"
+{
+	"InstallScript"		"541c340c57a3e9d4eda913736a616b55ca0370b014991f4b86db37661174f8dd26aaeb39e9a918179faf11e0ec5af6533677ce8c57408085e38a8e15efdc859da1659b27da627ecb2c4002b15fcf4fd75816ccd6d5612880e7327759f38127d651fd83f68b8cd4ab4a913910bbb18ee9b50f515288276423866eca6257fca07a"
+}

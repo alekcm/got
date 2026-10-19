@@ -1,0 +1,36 @@
+{
+    "formatVersion": 1.1,
+    "gameId": "aow4",
+    "displayName": "Age of Wonders 4",
+    "exePath": "AOW4.exe",
+    "gameDataPath": "%USER_DOCUMENTS%/Paradox Interactive/Age of Wonders 4",
+    "themeFile": "Launcher/assets/theme-settings.json",
+    "dlcPath": "Launcher/dlc/",
+    "ingameSettingsPath": "Launcher/game-settings.json",
+    "ingameSettingsLayoutPath": "Launcher/launcher-ingame-settings.json",
+    "modPath": "Mods",
+    "isLooseFilesModSupported": true,
+    "modsCompatibilityVersion": "14",
+    "distPlatform": "steam",
+    "distPlatformModsEnabled": true,
+    "browserDlcUrl": "https://store.steampowered.com/app/1669000/Age_of_Wonders_4/",
+    "browserModUrl": "https://mods.paradoxplaza.com/games/aow4",
+    "alternativeExecutables": [
+        {
+            "label": {
+                "de": "Modding-Tools \u00f6ffnen",
+                "en": "Open modding tools",
+                "es": "Abrir herramientas de modificaci\u00f3n.",
+                "fr": "Ouvrir les outils pour faire les mods",
+                "ja": "MOD\u30c4\u30fc\u30eb\u3092\u958b",
+                "ko": "\ubaa8\ub529 \ud234 \uc5f4\uae30",
+                "pl": "Uruchom narz\u0119dzia moderskie",
+                "pt": "Abrir ferramentas para modding",
+                "ru": "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043f\u0430\u043d\u0435\u043b\u044c \u043c\u043e\u0434\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0439",
+                "zh": "\u6253\u5f00\u6a21\u5757\u5de5\u5177"
+            },
+            "exePath": "PackageManager.exe",
+            "exeArgs": []
+        }
+    ]
+}
