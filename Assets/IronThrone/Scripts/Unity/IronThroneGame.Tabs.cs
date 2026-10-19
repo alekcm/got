@@ -90,6 +90,14 @@ namespace IronThrone.Unity
                 else GUILayout.Label("Все улучшения земли уже стоят. Лимит растёт со столицей и присоединением провинций.", _small);
 
                 GUILayout.Space(6);
+                GUILayout.Label("Рынок", _h2);
+                if (GUILayout.Button($"Закупить припасы — {EconomySystem.SuppliesGoldCost} золота → 120 материалов, 90 еды", _button))
+                {
+                    if (EconomySystem.BuySupplies(_state, f, out var err)) Toast("Припасы закуплены");
+                    else Toast(err);
+                }
+
+                GUILayout.Space(6);
                 GUILayout.Label("Найм войск", _h2);
                 foreach (var u in _state.Content.Units.Where(u => (u.faction == "shared" || u.faction == f.house)))
                 {

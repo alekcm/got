@@ -326,7 +326,9 @@ namespace IronThrone.Unity
             if (GUI.Button(new Rect(372, Screen.height - bottomH + 8, 120, 40), "Загрузить", _button)) LoadGame();
             if (GUI.Button(new Rect(500, Screen.height - bottomH + 8, 120, 40), "В меню", _button)) { _screen = UiScreen.Menu; PickDefaultFaction(); }
             GUI.Label(new Rect(640, Screen.height - bottomH + 16, Screen.width - 660, 24),
-                $"ход {_state.Turn} · {Season(_state.Season)} · войн: {_state.Wars.Count(w => w.active)}", _small);
+                $"ход {_state.Turn} · {Season(_state.Season)} · войн: {_state.Wars.Count(w => w.active)}" +
+                (f != null ? $" · освоение {f.growth:0}/{TerritorySystem.GrowthThreshold(_state, f)}" +
+                             (f.growthReady ? " (готово)" : "") : ""), _small);
 
             if (!string.IsNullOrEmpty(_toast) && Time.time < _toastUntil)
                 GUI.Label(new Rect(Screen.width / 2f - 350, Screen.height - bottomH - 34, 700, 26), _toast, _h2);
@@ -366,7 +368,10 @@ namespace IronThrone.Unity
                     Toast("Игра окончена: " + _state.FactionName(_state.VictoryWinner));
                 else
                 {
-                    Toast($"Ход {_state.Turn}. {TurnEngine.DateLabel(_state)}");
+                    var headline = _state.Log.LastOrDefault(l => l.turn == _state.Turn && l.category == "event");
+                    Toast(headline != null
+                        ? $"Ход {_state.Turn}. {headline.text}"
+                        : $"Ход {_state.Turn}. {TurnEngine.DateLabel(_state)}");
                     if (_state.Turn % 5 == 0) SaveGame(true);
                 }
             }

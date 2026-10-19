@@ -29,13 +29,16 @@ namespace IronThrone.Core.Game
 
         public static void ProcessTurn(GameState state)
         {
-            // 1. глобальные ивенты
+            // 1. глобальные ивенты эпохи: разово на пороговом ходу и далее по периоду
+            var eraGlobals = state.Era.globalEvents ?? new List<string>();
             foreach (var ev in state.Content.Events.Where(e => e.type == "global"))
             {
-                if (ev.everyTurns > 0 && state.Turn % ev.everyTurns == 0 && state.Turn >= ev.minTurn)
-                {
-                    TriggerGlobal(state, ev);
-                }
+                if (eraGlobals.Count > 0 && !eraGlobals.Contains(ev.id)) continue;
+                if (state.Turn < ev.minTurn) continue;
+                if (ev.oncePerGame && state.firedEvents.Contains(ev.id)) continue;
+                bool threshold = state.Turn == ev.minTurn;
+                bool periodic = ev.everyTurns > 0 && ev.everyTurns < 500 && state.Turn % ev.everyTurns == 0;
+                if (threshold || periodic) TriggerGlobal(state, ev);
             }
 
             // 2. случайные события для фракций

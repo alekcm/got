@@ -21,6 +21,7 @@ namespace IronThrone.Core.AI
                 DiplomacySystem.AiConsiderWars(state, f);
                 MoveArmies(state, f);
                 ClaimLand(state, f);
+                SpendTreasury(state, f);
                 MinorDiplomacy(state, f);
                 UseAdvisors(state, f);
                 ManageTitles(state, f);
@@ -231,6 +232,25 @@ namespace IronThrone.Core.AI
             var improvements = TerritorySystem.Improvements(state, f, target);
             string pick = improvements.FirstOrDefault(b => b.maxPerEmpire > 1 || !state.Provinces.Values.Any(x => x.buildings.Contains(b.id)))?.id;
             TerritorySystem.Claim(state, f, target.id, pick, out _);
+        }
+
+        /// <summary>Богатые дома вкладывают излишки в землю, а не копят золото до бесконечности.</summary>
+        private static void SpendTreasury(GameState state, FactionState f)
+        {
+            if (f.gold >= 900 && (f.materials < 220 || f.food < 220) && f.gold >= EconomySystem.SuppliesGoldCost)
+                EconomySystem.BuySupplies(state, f, out _);
+            if (f.gold < 600) return;
+            int bought = 0;
+            foreach (var prov in state.Provinces.Values.Where(x => x.controller == f.id)
+                         .OrderByDescending(x => x.def.isCapital).ThenByDescending(x => x.def.level))
+            {
+                if (bought >= 2) break;
+                int count = prov.buildings.Count(id => state.Content.BuildingById.TryGetValue(id, out var bd) && bd.slot == TerritorySystem.ImprovementSlot);
+                if (count >= TerritorySystem.ImprovementLimit(state, prov)) continue;
+                var improv = TerritorySystem.Improvements(state, f, prov).FirstOrDefault();
+                if (improv == null) continue;
+                if (TerritorySystem.AddImprovement(state, f, prov, improv.id, false, out _)) bought++;
+            }
         }
 
         private static void MinorDiplomacy(GameState state, FactionState f)

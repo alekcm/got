@@ -239,6 +239,25 @@ namespace IronThrone.Core.Game
             }
         }
 
+        public const int SuppliesGoldCost = 300;
+
+        /// <summary>Закупка припасов на рынке: золото в материалы и продовольствие.</summary>
+        public static bool BuySupplies(GameState state, FactionState f, out string error)
+        {
+            error = null;
+            if (f == null || !f.alive) { error = "Дом пал"; return false; }
+            var cost = new ResourceCost { gold = SuppliesGoldCost };
+            if (!EffectEngine.CanAfford(f, cost)) { error = $"Нужно {SuppliesGoldCost} золота"; return false; }
+            EffectEngine.Pay(f, cost);
+            int materials = (int)(120 * f.ModPct(ModKeys.MaterialsIncome));
+            int food = (int)(90 * f.ModPct(ModKeys.FoodIncome));
+            f.materials += Math.Max(30, materials);
+            f.food += Math.Max(20, food);
+            state.AddLog("economy", $"{f.def.name}: закуплены припасы (+{Math.Max(30, materials)} материалов, +{Math.Max(20, food)} еды)", f.id);
+            if (f.isPlayer) state.Notify($"Закуплены припасы: +{Math.Max(30, materials)} материалов, +{Math.Max(20, food)} еды");
+            return true;
+        }
+
         public static string SlotName(string slot) => slot switch
         {
             "economy" => "экономика",

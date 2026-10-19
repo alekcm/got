@@ -582,7 +582,27 @@ namespace IronThrone.Core.Battle
             }
             result.attackerLosses = aLoss;
             result.defenderLosses = dLoss;
+
+            // опыт героев: победитель получает больше, проигравший — за упорство
+            AwardHeroXp(f.State, attacker, f.attackerWon, dLoss);
+            AwardHeroXp(f.State, defender, !f.attackerWon, aLoss);
             return result;
+        }
+
+        private static void AwardHeroXp(GameState state, ArmyState army, bool won, int enemyLosses)
+        {
+            if (state == null || army?.heroId == null) return;
+            if (!state.Heroes.TryGetValue(army.heroId, out var hero) || !hero.alive) return;
+            int gain = 10 + enemyLosses * 6 + (won ? 12 : 4) + (army.units.Count(u => u.alive) == 0 ? 0 : 3);
+            hero.xp += gain;
+            while (hero.level < 10 && hero.xp >= hero.level * 40)
+            {
+                hero.xp -= hero.level * 40;
+                hero.level++;
+                state.AddLog("hero", $"{hero.name} достигает {hero.level} уровня", army.faction);
+                if (state.Faction(army.faction)?.isPlayer == true)
+                    state.Notify($"{hero.name}: новый уровень ({hero.level})");
+            }
         }
 
         private static UnitInstance FindInstance(ArmyState army, BattleUnit bu)

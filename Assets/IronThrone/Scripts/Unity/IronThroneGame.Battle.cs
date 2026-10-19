@@ -253,6 +253,8 @@ namespace IronThrone.Unity
                     }
                 }
                 if (GUILayout.Button("Пропустить ход", _button)) { BattleEngine.EndUnitTurn(b); _battleDirty = true; }
+                if (active.movesLeft == 0 && active.attacksThisRound > 0)
+                    GUILayout.Label("Отряд исчерпал ход — нажмите «Пропустить».", _small);
             }
             else
             {
