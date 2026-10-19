@@ -1,0 +1,60 @@
+[
+  { "id": "hand", "name": "Десница Короля", "influencePerTurn": 4,
+    "shortEffect": "+4 влияния, +1 голос, +10% дипломатии",
+    "description": "Второй человек в королевстве. Голос короля — и его тень.",
+    "effects": [
+      { "op": "modifier", "key": "votePower", "value": 1 },
+      { "op": "modifier", "key": "influenceIncome", "value": 2 },
+      { "op": "modifier", "key": "lobbyCost.pct", "value": -0.1 }
+    ] },
+
+  { "id": "master_of_coin", "name": "Мастер над монетой", "influencePerTurn": 3,
+    "shortEffect": "+3 золота, +3 влияния",
+    "description": "Считает доходы короны и находит новые.",
+    "effects": [
+      { "op": "modifier", "key": "goldIncome", "value": 6 },
+      { "op": "modifier", "key": "influenceIncome", "value": 1 }
+    ] },
+
+  { "id": "master_of_whisperers", "name": "Мастер над шептунами", "influencePerTurn": 3,
+    "shortEffect": "+2 шпионажа, +1 сеть, +3 влияния",
+    "description": "Знает всё, что происходит в столице и за её стенами.",
+    "effects": [
+      { "op": "modifier", "key": "spyOffense", "value": 2 },
+      { "op": "modifier", "key": "spyNetwork", "value": 1 },
+      { "op": "modifier", "key": "spyDefense", "value": 1 }
+    ] },
+
+  { "id": "master_of_ships", "name": "Мастер над кораблями", "influencePerTurn": 2,
+    "shortEffect": "+3 флота, +2 золота",
+    "description": "Командует королевским флотом и морской торговлей.",
+    "effects": [
+      { "op": "modifier", "key": "navalPower", "value": 3 },
+      { "op": "modifier", "key": "goldIncome", "value": 3 }
+    ] },
+
+  { "id": "master_of_laws", "name": "Мастер над законами", "influencePerTurn": 3,
+    "shortEffect": "+2 голоса, -10% беспорядков",
+    "description": "Толкует законы и решает, кто прав.",
+    "effects": [
+      { "op": "modifier", "key": "votePower", "value": 1 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.1 }
+    ] },
+
+  { "id": "grand_maester", "name": "Великий мейстер", "influencePerTurn": 2,
+    "shortEffect": "+2 веры, +1 шпионаж, +1 влияние",
+    "description": "Голос Цитадели при дворе.",
+    "effects": [
+      { "op": "modifier", "key": "pietyIncome", "value": 2 },
+      { "op": "modifier", "key": "spyDefense", "value": 1 }
+    ] },
+
+  { "id": "lord_commander", "name": "Лорд-командующий Королевской гвардией", "influencePerTurn": 2,
+    "shortEffect": "+2 обороны армий, +1 атака",
+    "description": "Семь рыцарей, поклявшихся защищать короля.",
+    "effects": [
+      { "op": "modifier", "key": "armyDefense", "value": 2 },
+      { "op": "modifier", "key": "armyAttack", "value": 1 },
+      { "op": "modifier", "key": "heroPower", "value": 2 }
+    ] }
+]

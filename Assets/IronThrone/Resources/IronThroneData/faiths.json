@@ -1,0 +1,62 @@
+[
+  { "id": "seven", "name": "Вера в Семерых", "color": "#d9c27a", "playable": true,
+    "headProvince": "oldtown", "holySites": ["oldtown", "kings_landing"],
+    "description": "Отец, Мать, Воин, Дева, Кузнец, Старица и Незнакомец. Вера андалов и большей части Вестероса.",
+    "bonusText": "Септы и храмы дают влияние; снижается беспокойство.",
+    "tenets": [
+      { "name": "Семь ликов", "description": "+1 влияния за ход, −5% беспорядков.",
+        "modifiers": [ { "key": "influenceIncome", "value": 1 }, { "key": "unrestGlobal.pct", "value": -0.05 } ] },
+      { "name": "Святое воинство", "description": "+1 к морали армий.",
+        "modifiers": [ { "key": "armyMorale", "value": 4 } ] }
+    ] },
+
+  { "id": "oldgods", "name": "Старые боги", "color": "#7fa06b", "playable": true,
+    "headProvince": "winterfell", "holySites": ["winterfell", "raventree"],
+    "description": "Безмолвные боги лесов, камня и потоков. Их слушают Первые Люди и северяне.",
+    "bonusText": "Лесные провинции дают больше веры; армии лучше двигаются по лесам.",
+    "tenets": [
+      { "name": "Немые боги", "description": "+1 к движению армий, +2 к вере за ход в богорощах.",
+        "modifiers": [ { "key": "armyMove", "value": 1 }, { "key": "pietyIncome", "value": 1 } ] },
+      { "name": "Кровь Первых Людей", "description": "+1 к обороне армий.",
+        "modifiers": [ { "key": "armyDefense", "value": 1 } ] }
+    ] },
+
+  { "id": "drowned", "name": "Утонувший Бог", "color": "#5f8799", "playable": true,
+    "headProvince": "pyke", "holySites": ["pyke", "old_wyk"],
+    "description": "Бог моря и штормов, требующий утопления и железной цены. Вера Железных островов.",
+    "bonusText": "Набеги приносят больше добычи; флот сильнее.",
+    "tenets": [
+      { "name": "Что мертво, умереть не может", "description": "+15% к добыче набегов, +2 к морской силе.",
+        "modifiers": [ { "key": "raidLoot", "value": 0.15 }, { "key": "navalPower", "value": 2 } ] },
+      { "name": "Железная цена", "description": "+3 к морали армий.",
+        "modifiers": [ { "key": "armyMorale", "value": 3 } ] }
+    ] },
+
+  { "id": "rhllor", "name": "Р'глор, Владыка Света", "color": "#b34a3a", "playable": true,
+    "headProvince": "dragonstone", "holySites": ["dragonstone"],
+    "description": "Бог огня и света, борющийся с Великим Иным. Его жрецы видят будущее в пламени.",
+    "bonusText": "Больше веры и морали, но растут беспорядки в землях Семерых.",
+    "tenets": [
+      { "name": "Ночной огонь", "description": "+2 к вере за ход, +2 к шпионажу.",
+        "modifiers": [ { "key": "pietyIncome", "value": 2 }, { "key": "spyOffense", "value": 2 } ] },
+      { "name": "Огненное крещение", "description": "+6 к морали армий, но +5% беспорядков.",
+        "modifiers": [ { "key": "armyMorale", "value": 6 }, { "key": "unrestGlobal.pct", "value": 0.05 } ] }
+    ] },
+
+  { "id": "valyrian", "name": "Валирийские боги", "color": "#9b6bb3", "playable": true,
+    "headProvince": "dragonstone", "holySites": ["dragonstone"],
+    "description": "Древний пантеон Валирии, почти забытый. Драконьи короли чтут его по привычке.",
+    "bonusText": "Усиливает драконов и влияние древней крови.",
+    "tenets": [
+      { "name": "Кровь дракона", "description": "+15% к силе драконов, +1 к влиянию.",
+        "modifiers": [ { "key": "dragonPower", "value": 0.15 }, { "key": "influenceIncome", "value": 1 } ] },
+      { "name": "Наследие Валирии", "description": "+1 к шпионажу.",
+        "modifiers": [ { "key": "spyOffense", "value": 1 } ] }
+    ] },
+
+  { "id": "folk", "name": "Народные верования", "color": "#8c8c8c", "playable": false,
+    "headProvince": null, "holySites": [],
+    "description": "Суеверия простого люда: духи полей, речные девы и домашние божки.",
+    "bonusText": "Нейтральная вера большинства крестьян.",
+    "tenets": [] }
+]

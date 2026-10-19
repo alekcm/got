@@ -1,0 +1,75 @@
+{
+  "turnsPerYear": 12,
+  "maxTurns": 220,
+  "victory": {
+    "hegemonyProvinceShare": 0.55,
+    "hegemonyRegionCapitals": 5,
+    "politicalRecognition": 140,
+    "economicDominance": 100,
+    "religiousProvinceShare": 0.7,
+    "maxTurns": 220
+  },
+  "startingResources": {
+    "gold": 240,
+    "materials": 180,
+    "food": 140,
+    "influence": 24,
+    "piety": 0
+  },
+  "startingNeutralResources": {
+    "gold": 80,
+    "materials": 60,
+    "food": 60,
+    "influence": 0,
+    "piety": 0
+  },
+  "armyMaxUnits": 6,
+  "movementPerTurn": 1,
+  "roadMovement": 2,
+  "seaMovement": 2,
+  "recoveryRate": 0.5,
+  "spyNetworkBase": 1,
+  "maxArmies": 4,
+  "unrestRevoltThreshold": 60,
+  "armyUpkeepFood": 4,
+  "provinceBaseIncome": 6,
+  "raiderChance": 0.18,
+  "eventChancePercent": 45,
+  "councilSeats": 7,
+  "voteLobbyCost": 8,
+  "capitalSlots": [
+    {
+      "level": 3,
+      "slots": [
+        "economy"
+      ]
+    },
+    {
+      "level": 5,
+      "slots": [
+        "special"
+      ]
+    }
+  ],
+  "terrainModifiers": {
+    "plains": 0,
+    "forest": -1,
+    "hills": 1,
+    "mountains": 2,
+    "marsh": -2,
+    "desert": -2,
+    "snow": -1,
+    "river": 1
+  },
+  "seasonIncome": {
+    "Весна": 1.0,
+    "Лето": 1.1,
+    "Осень": 1.0,
+    "Зима": 0.8
+  },
+  "claimGrowth": 34,
+  "claimGold": 50,
+  "claimMaterials": 30,
+  "claimInfluence": 8,
+  "provinceImprovementLimit": 2
+}

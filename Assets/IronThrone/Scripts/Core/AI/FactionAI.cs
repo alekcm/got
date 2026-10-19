@@ -1,0 +1,281 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using IronThrone.Core.Content;
+using IronThrone.Core.Game;
+
+namespace IronThrone.Core.AI
+{
+    /// <summary>Простой утилитарный ИИ: экономика, армия, экспансия, дипломатия, вера.</summary>
+    public static class FactionAI
+    {
+        public static void TakeTurn(GameState state, FactionState f)
+        {
+            if (!f.alive) return;
+            try
+            {
+                ChooseResearch(state, f);
+                ChooseFocus(state, f);
+                Build(state, f);
+                Recruit(state, f);
+                DiplomacySystem.AiConsiderWars(state, f);
+                MoveArmies(state, f);
+                ClaimLand(state, f);
+                MinorDiplomacy(state, f);
+                UseAdvisors(state, f);
+                ManageTitles(state, f);
+            }
+            catch (Exception ex)
+            {
+                state.AddLog("ai", $"{f.def.name}: ошибка ИИ — {ex.Message}", f.id);
+            }
+        }
+
+        private static void ChooseResearch(GameState state, FactionState f)
+        {
+            if (f.currentResearch != null) return;
+            var options = ProgressSystem.AvailableTechs(state, f).ToList();
+            if (options.Count == 0) return;
+            var pick = options.OrderByDescending(t => ScoreTech(f, t)).First();
+            if (EffectEngine.CanAfford(f, pick.cost))
+                ProgressSystem.StartResearch(state, f, pick.id, out _);
+        }
+
+        private static float ScoreTech(FactionState f, TechDef t)
+        {
+            float s = t.tier;
+            foreach (var e in t.effects)
+            {
+                if (e.op == "modifier")
+                {
+                    if (e.key.Contains("Income")) s += e.value;
+                    if (e.key.Contains("Army")) s += e.value * 2;
+                    if (e.key.Contains("Vote")) s += e.value;
+                    if (e.key.Contains("Spy")) s += e.value;
+                }
+                if (e.op == "unlockunit" || e.op == "recruit") s += 2;
+            }
+            if (f.def.traits.Contains("war") && t.branch == "war") s += 2;
+            if (f.def.traits.Contains("trade") && t.branch == "economy") s += 2;
+            if (f.def.traits.Contains("intrigue") && t.branch == "intrigue") s += 2;
+            if (f.def.traits.Contains("faith") && t.branch == "faith") s += 2;
+            return s;
+        }
+
+        private static void ChooseFocus(GameState state, FactionState f)
+        {
+            if (f.currentFocus != null) return;
+            var options = ProgressSystem.FocusesOf(state, f)
+                .Where(fo => ProgressSystem.IsFocusAvailable(state, f, fo, out _))
+                .ToList();
+            if (options.Count == 0) return;
+            var pick = options.OrderByDescending(fo => fo.y * 10 + fo.x).First();
+            ProgressSystem.StartFocus(state, f, pick.id, out _);
+        }
+
+        private static void Build(GameState state, FactionState f)
+        {
+            var provs = state.Provinces.Values.Where(p => p.controller == f.id).ToList();
+            if (provs.Count == 0) return;
+            if (state.Rng.NextDouble() > 0.65) return;
+
+            var candidates = new List<(ProvinceState p, BuildingDef b, float score)>();
+            foreach (var p in provs)
+            {
+                foreach (var b in state.Content.Buildings)
+                {
+                    if (!EconomySystem.CanBuild(state, f, p, b.id, out _)) continue;
+                    float score = 0;
+                    foreach (var m in b.modifiers)
+                    {
+                        if (m.key.Contains("Income")) score += m.value;
+                        if (m.key.Contains("Army")) score += m.value * 3;
+                        if (m.key.Contains("Spy")) score += m.value * 2;
+                        if (m.key.Contains("Vote")) score += m.value * 2;
+                        if (m.key.Contains("Faith")) score += m.value * 1.5f;
+                    }
+                    score += b.effects.Count * 1.5f;
+                    if (p.def.isCapital) score += 2;
+                    if (p.unrest > 40 && b.id.Contains("guard") || b.id.Contains("sept")) score += 3;
+                    if (b.unique) score += 2;
+                    candidates.Add((p, b, score));
+                }
+            }
+            if (candidates.Count == 0) return;
+            var best = candidates.OrderByDescending(c => c.score + (float)state.Rng.NextDouble()).First();
+            EconomySystem.StartBuild(state, f, best.p, best.b.id, out _);
+        }
+
+        private static void Recruit(GameState state, FactionState f)
+        {
+            var army = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null)
+                .Where(a => a != null && a.alive).OrderByDescending(a => a.units.Count).FirstOrDefault();
+            int totalUnits = f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a.UnitCount : 0).Sum();
+            if (totalUnits >= state.Settings.armyMaxUnits + 2) return;
+
+            var options = state.Content.Units
+                .Where(u => (u.faction == "shared" || u.faction == f.house) &&
+                            (string.IsNullOrEmpty(u.requiresTech) || f.HasTech(u.requiresTech)))
+                .OrderByDescending(u => u.stats.attack + u.stats.defense)
+                .ToList();
+            if (options.Count == 0) return;
+            var pick = options[Math.Min(options.Count - 1, state.Rng.Next(0, Math.Min(3, options.Count)))];
+            var cost = pick.cost;
+            if (f.gold < cost.gold * 1.4f || f.food < cost.food * 1.4f) return;
+            string provinceId = army?.province;
+            if (provinceId == null || state.Province(provinceId)?.controller != f.id)
+            {
+                provinceId = state.Provinces.Values.Where(p => p.controller == f.id)
+                    .OrderByDescending(p => p.def.level).Select(p => p.id).FirstOrDefault();
+            }
+            if (provinceId == null) return;
+            if (army == null || army.units.Count < state.Settings.armyMaxUnits)
+                MilitarySystem.Recruit(state, f, pick.id, 1, provinceId, out _);
+        }
+
+        private static void MoveArmies(GameState state, FactionState f)
+        {
+            foreach (var armyId in f.armies.ToList())
+            {
+                if (!state.Armies.TryGetValue(armyId, out var army) || !army.alive) continue;
+                while (army.movementLeft > 0 && army.alive && !army.IsEmpty)
+                {
+                    var cur = state.Province(army.province);
+                    if (cur == null) break;
+                    var options = cur.def.neighbors
+                        .Concat(SeaNeighbors(state, army.province))
+                        .Distinct()
+                        .Where(id => state.Province(id) != null)
+                        .Select(id => state.Province(id))
+                        .Where(p => MilitarySystem.CanMove(state, army, p.id, out _))
+                        .ToList();
+                    if (options.Count == 0) break;
+                    var scored = options.Select(p => (p, score: ScoreTarget(state, f, army, p)))
+                        .OrderByDescending(t => t.score).ToList();
+                    if (scored[0].score <= 0) break;
+                    if (scored[0].score < 3 && state.Rng.NextDouble() < 0.4) break;
+                    int before = army.movementLeft;
+                    if (!MilitarySystem.MoveArmy(state, army, scored[0].p.id, out var msg))
+                    {
+                        if (army.movementLeft == before) break;
+                    }
+                    if (msg != null) state.AddLog("army", $"{f.def.name}: {msg}", f.id);
+                }
+            }
+        }
+
+        private static IEnumerable<string> SeaNeighbors(GameState state, string provinceId)
+        {
+            var p = state.Province(provinceId);
+            if (p == null || !p.def.port) yield break;
+            foreach (var route in state.Map.seaRoutes)
+            {
+                if (route.Count < 2) continue;
+                if (route[0] == provinceId) yield return route[1];
+                else if (route[1] == provinceId) yield return route[0];
+            }
+        }
+
+        private static float ScoreTarget(GameState state, FactionState f, ArmyState army, ProvinceState p)
+        {
+            if (p.controller == f.id) return -5;
+            float score = 2f;
+            if (p.controller == null) score += 6; // вольные земли
+            else
+            {
+                var owner = state.Faction(p.controller);
+                if (owner == null) score += 4;
+                else
+                {
+                    float rel = f.relations.TryGetValue(owner.id, out var r) ? r : 0;
+                    score += 4 - rel / 25f;
+                    if (rel > 40) score -= 10;
+                }
+            }
+            if (p.def.isCapital) score += 6;
+            if (p.def.region != null && state.Provinces.Values.Count(x => x.def.region == p.def.region && x.house == f.house) > 0)
+                score += 3;
+            if (p.def.port) score += 1;
+            int defenders = state.Armies.Values.Where(a => a.alive && a.province == p.id && a.faction != f.id)
+                .Select(a => MilitarySystem.EstimateStrength(a)).Sum();
+            defenders += p.garrison;
+            int myPower = MilitarySystem.EstimateStrength(army);
+            if (defenders > myPower) score -= 12;
+            else if (defenders > 0) score -= 2;
+            if (p.controller == null && p.garrison > myPower) score -= 6;
+            return score;
+        }
+
+        private static void ClaimLand(GameState state, FactionState f)
+        {
+            if (!f.growthReady) return;
+            var claims = TerritorySystem.Claimable(state, f);
+            if (claims.Count == 0)
+            {
+                // свободных земель нет — вкладываем освоение в улучшения своих провинций
+                foreach (var prov in state.Provinces.Values.Where(x => x.controller == f.id)
+                             .OrderByDescending(x => x.def.isCapital).ThenByDescending(x => x.def.level))
+                {
+                    int count = prov.buildings.Count(id => state.Content.BuildingById.TryGetValue(id, out var bd) && bd.slot == TerritorySystem.ImprovementSlot);
+                    if (count >= TerritorySystem.ImprovementLimit(state, prov)) continue;
+                    var improv = TerritorySystem.Improvements(state, f, prov).FirstOrDefault();
+                    if (improv == null) continue;
+                    if (TerritorySystem.AddImprovement(state, f, prov, improv.id, true, out _)) return;
+                }
+                return;
+            }
+            var target = claims.OrderByDescending(p => p.def.isCapital)
+                .ThenByDescending(p => p.def.level)
+                .FirstOrDefault();
+            if (target == null) return;
+            var improvements = TerritorySystem.Improvements(state, f, target);
+            string pick = improvements.FirstOrDefault(b => b.maxPerEmpire > 1 || !state.Provinces.Values.Any(x => x.buildings.Contains(b.id)))?.id;
+            TerritorySystem.Claim(state, f, target.id, pick, out _);
+        }
+
+        private static void MinorDiplomacy(GameState state, FactionState f)
+        {
+            var houses = state.MinorHouses.Values.Where(mh => !mh.annexed && mh.vassalOf == null).ToList();
+            if (houses.Count == 0) return;
+            foreach (var mh in houses.OrderByDescending(m => MinorHouseSystem.Relation(state, f, m.house)).Take(3))
+            {
+                int rel = MinorHouseSystem.Relation(state, f, mh.house);
+                if (rel >= 70 && f.influence >= 30 && state.Rng.NextDouble() < 0.25)
+                {
+                    MinorHouseSystem.Perform(state, f, mh.house, "vassalize", out _);
+                    continue;
+                }
+                if (rel < 62 && f.gold > 260 && state.Rng.NextDouble() < 0.3)
+                    MinorHouseSystem.Perform(state, f, mh.house, "gift", out _);
+            }
+        }
+
+        private static void UseAdvisors(GameState state, FactionState f)
+        {
+            foreach (var a in f.advisors)
+            {
+                if (a.cooldown > 0) continue;
+                if (state.Rng.NextDouble() < 0.18)
+                    ProgressSystem.UseAdvisor(state, f, a.defId, out _);
+            }
+        }
+
+        private static void ManageTitles(GameState state, FactionState f)
+        {
+            if (state.Council.throneHolder != f.id) return;
+            if (state.Rng.NextDouble() > 0.08) return;
+            // раздаёт титулы дружественным домам
+            var friendly = state.Factions.Values
+                .Where(x => x.id != f.id && x.alive && f.relations.TryGetValue(x.id, out var r) && r > 35)
+                .OrderByDescending(x => x.recognition)
+                .FirstOrDefault();
+            var vacant = state.Content.Titles.FirstOrDefault(t =>
+                !state.Council.seats.ContainsKey(t.id) || state.Council.seats[t.id] != f.id);
+            if (vacant == null || f.influence < 25) return;
+            // корона раздаёт должности своим людям, иногда — союзникам
+            string receiver = friendly != null && PoliticsSystem.SeatsOf(state, f.id) >= 3 && state.Rng.NextDouble() < 0.5
+                ? friendly.id : f.id;
+            PoliticsSystem.GrantTitle(state, vacant.id, receiver, out _);
+        }
+    }
+}
