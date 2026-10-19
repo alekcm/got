@@ -361,6 +361,17 @@ namespace IronThrone.Unity
             }
 
             GUILayout.Space(8);
+            GUILayout.Label("Столичный ансамбль", _h2);
+            var capProv = _state.Province(f.capital);
+            if (capProv == null || capProv.controller != f.id)
+                GUILayout.Label("Столица потеряна — ансамбль не действует.", _small);
+            else
+            {
+                var bonus = EconomySystem.CapitalSetBonus(_state, f, out _, out _, out _, out _);
+                GUILayout.Label(bonus ?? "Заполните однотипные слоты столицы, чтобы получить бонус (3 экономики, 3 военных, 2 храма, 2 порта, 2 особых).", _small);
+            }
+
+            GUILayout.Space(8);
             GUILayout.Label("Законы", _h2);
             foreach (var law in PoliticsSystem.AvailableLaws(_state, f))
             {

@@ -96,6 +96,13 @@ namespace IronThrone.Core.Game
             }
             if (state.Council.throneHolder == f.id) influence += 2;
 
+            // столичный ансамбль
+            var setText = CapitalSetBonus(state, f, out var setGold, out var setFood, out var setPiety, out var setInfluence);
+            if (setText != null)
+            {
+                gold += setGold; food += setFood; piety += setPiety; influence += setInfluence;
+            }
+
             // вассальные малые дома платят дань
             foreach (var mh in state.MinorHouses.Values.Where(m => m.vassalOf == f.id))
             {
@@ -240,6 +247,36 @@ namespace IronThrone.Core.Game
         }
 
         public const int SuppliesGoldCost = 300;
+
+        /// <summary>
+        /// Бонусы столичного ансамбля: за заполненные однотипные слоты в столице дом получает
+        /// дополнительные ресурсы. Это и есть «бонусы за постройки» из Dune: Spice Wars.
+        /// </summary>
+        public static string CapitalSetBonus(GameState state, FactionState f, out int gold, out int food, out int piety, out int influence)
+        {
+            gold = food = piety = influence = 0;
+            var cap = state.Province(f?.capital);
+            if (cap == null || cap.controller != f.id) return null;
+            var counts = new Dictionary<string, int>();
+            foreach (var id in cap.buildings)
+            {
+                if (!state.Content.BuildingById.TryGetValue(id, out var b)) continue;
+                counts.TryGetValue(b.slot, out var n);
+                counts[b.slot] = n + 1;
+            }
+            var parts = new List<string>();
+            if (counts.TryGetValue("economy", out var eco) && eco >= 3)
+            { gold += 8; food += 4; parts.Add("торговый посад (+8 золота, +4 еды)"); }
+            if (counts.TryGetValue("military", out var mil) && mil >= 3)
+            { gold += 2; influence += 1; parts.Add("военный квартал (+2 золота, +1 влияния)"); }
+            if (counts.TryGetValue("temple", out var tem) && tem >= 2)
+            { piety += 3; parts.Add("соборный двор (+3 веры)"); }
+            if (counts.TryGetValue("port", out var por) && por >= 2)
+            { gold += 5; parts.Add("торговая гавань (+5 золота)"); }
+            if (counts.TryGetValue("special", out var spc) && spc >= 2)
+            { influence += 1; piety += 1; parts.Add("двор учёных (+1 влияния, +1 веры)"); }
+            return parts.Count == 0 ? null : string.Join("; ", parts);
+        }
 
         /// <summary>Закупка припасов на рынке: золото в материалы и продовольствие.</summary>
         public static bool BuySupplies(GameState state, FactionState f, out string error)

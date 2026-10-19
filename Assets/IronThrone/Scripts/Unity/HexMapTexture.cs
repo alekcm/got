@@ -126,7 +126,7 @@ namespace IronThrone.Unity
             FlipRows(pixels, w, h);
             var texture = new Texture2D(w, h, TextureFormat.RGBA32, false);
             texture.SetPixels32(pixels);
-            texture.filterMode = FilterMode.Bilinear;
+            texture.filterMode = FilterMode.Point;
             texture.Apply();
             tex.Texture = texture;
             return tex;
