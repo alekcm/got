@@ -73,6 +73,41 @@ namespace IronThrone.UnitySmoke
             });
 
             Step("OnGUI игровой экран", () => Call(game, "OnGUI"));
+
+            Step("попадание по гексу (TileAt/ProvinceAt)", () =>
+            {
+                var map = Get(game, "_map");
+                var state = (GameState)Get(game, "_state");
+                var tileAt = map.GetType().GetMethod("TileAt", Flags);
+                var provinceAt = map.GetType().GetMethod("ProvinceAt", Flags);
+                var hexCenter = map.GetType().GetMethod("HexCenter", Flags);
+                int bad = 0, checkedTiles = 0;
+                foreach (var t in state.Map.tiles)
+                {
+                    var center = (Vector2)hexCenter.Invoke(map, new object[] { t.c, t.r });
+                    var args = new object[] { center, null, null };
+                    bool ok = (bool)tileAt.Invoke(map, args);
+                    int c = (int)args[1], r = (int)args[2];
+                    checkedTiles++;
+                    if (!ok || c != t.c || r != t.r) bad++;
+                    if (t.sea) continue;
+                    var pargs = new object[] { state, center };
+                    var prov = (string)provinceAt.Invoke(map, pargs);
+                    if (!ok || prov == null) bad++;
+                }
+                Console.WriteLine($"    проверено гексов: {checkedTiles}, ошибок: {bad}");
+                if (bad > 0) throw new Exception("координаты гексов расходятся с отрисовкой");
+            });
+
+            Step("рендер карты в PNG", () =>
+            {
+                var map = Get(game, "_map");
+                var tex = (Texture2D)Get(map, "Texture");
+                if (tex?.pixels == null) throw new Exception("текстура карты пуста");
+                Directory.CreateDirectory("/home/user/got/tools");
+                Png.Write("/home/user/got/tools/unity_map_preview.png", tex.width, tex.height, tex.pixels);
+                Console.WriteLine($"    {tex.width}x{tex.height} → tools/unity_map_preview.png");
+            });
             for (int tab = 0; tab < 9; tab++)
             {
                 int t = tab;
@@ -149,6 +184,9 @@ namespace IronThrone.UnitySmoke
                 for (int i = 0; i < 12; i++) Call(game, "TickBattle");
                 Call(game, "RebuildBattleTexture");
                 Call(game, "OnGUI");
+                var btex = (Texture2D)Get(game, "_battleTex");
+                if (btex?.pixels != null)
+                    Png.Write("/home/user/got/tools/unity_battle_preview.png", btex.width, btex.height, btex.pixels);
                 Call(game, "FinishBattle");
                 if (Get(game, "_battle") != null) throw new Exception("бой не закрылся");
                 Console.WriteLine($"    боёв в хронике: {state.Battles.Count}, армий игрока: {player.armies.Count}");

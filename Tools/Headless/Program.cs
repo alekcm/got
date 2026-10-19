@@ -339,9 +339,9 @@ namespace IronThrone.Headless
                     while (q.Count > 0)
                     {
                         var cur = q.Dequeue();
-                        foreach (var d in new[] { (1,0),(1,-1),(0,-1),(-1,0),(-1,1),(0,1) })
+                        foreach (var d in MapGenerator.OddRNeighborOffsets(cur.Item2))
                         {
-                            var n = (cur.Item1 + d.Item1, cur.Item2 + d.Item2);
+                            var n = (cur.Item1 + d.dc, cur.Item2 + d.dr);
                             if (set.Contains(n) && seen.Add(n)) q.Enqueue(n);
                         }
                     }

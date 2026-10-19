@@ -13,6 +13,7 @@ namespace IronThrone.Unity
     /// </summary>
     public class HexMapTexture
     {
+
         public Texture2D Texture;
         public int HexSize = 22;
         public float HexWidth;
@@ -20,10 +21,19 @@ namespace IronThrone.Unity
         public int Width;
         public int Height;
 
-        private static readonly (int dc, int dr)[] Dirs =
+        // odd-r offset: смещения и индексы рёбер зависят от чётности ряда.
+        private static readonly (int dc, int dr)[] DirsEven =
         {
-            (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)
+            (1, 0), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1)
         };
+
+        private static readonly (int dc, int dr)[] DirsOdd =
+        {
+            (1, 0), (1, 1), (0, 1), (-1, 0), (0, -1), (1, -1)
+        };
+
+        // Порядок направлений (E, SE, SW, W, NW, NE) совпадает с порядком рёбер 0..5:
+        // ребро i соединяет вершины i и i+1, поэтому отдельных таблиц рёбер не нужно.
 
         private readonly Dictionary<(int, int), string> _provinceByTile = new Dictionary<(int, int), string>();
 
@@ -76,9 +86,11 @@ namespace IronThrone.Unity
             {
                 if (t.sea) continue;
                 var center = tex.HexCenter(t.c, t.r);
+                bool odd = (t.r & 1) == 1;
+                var dirs = odd ? DirsOdd : DirsEven;
                 for (int i = 0; i < 6; i++)
                 {
-                    var d = Dirs[i];
+                    var d = dirs[i];
                     int nc = t.c + d.dc, nr = t.r + d.dr;
                     tileByCoord.TryGetValue((nc, nr), out var nt);
                     bool draw = false;
@@ -109,12 +121,29 @@ namespace IronThrone.Unity
                 }
             }
 
+            // Texture2D хранит пиксели снизу вверх, а карта рисуется сверху вниз — переворачиваем строки,
+            // иначе Вестерос окажется вверх ногами (Старки на юге).
+            FlipRows(pixels, w, h);
             var texture = new Texture2D(w, h, TextureFormat.RGBA32, false);
             texture.SetPixels32(pixels);
             texture.filterMode = FilterMode.Bilinear;
             texture.Apply();
             tex.Texture = texture;
             return tex;
+        }
+
+        public static void FlipRows(Color32[] pixels, int w, int h)
+        {
+            for (int y = 0; y < h / 2; y++)
+            {
+                int top = y * w, bottom = (h - 1 - y) * w;
+                for (int x = 0; x < w; x++)
+                {
+                    var tmp = pixels[top + x];
+                    pixels[top + x] = pixels[bottom + x];
+                    pixels[bottom + x] = tmp;
+                }
+            }
         }
 
         public Vector2 HexCenter(int c, int r) => new Vector2(
@@ -161,19 +190,21 @@ namespace IronThrone.Unity
         }
 
         // ------------------------------------------------------------------ примитивы
-        private static void FillHex(Color32[] px, int w, int h, float cx, float cy, int size, Color32 color)
+        /// <summary>Заливка pointy-top гекса: вертикальные боковые стороны и скосы к вершинам.</summary>
+        private static void FillHex(Color32[] px, int w, int h, float cx, float cy, float size, Color32 color)
         {
-            int minX = Math.Max(0, (int)(cx - size)), maxX = Math.Min(w - 1, (int)(cx + size));
-            int minY = Math.Max(0, (int)(cy - size)), maxY = Math.Min(h - 1, (int)(cy + size));
+            float halfWidth = size * 0.8660254f;
+            int minX = Math.Max(0, (int)(cx - halfWidth - 1)), maxX = Math.Min(w - 1, (int)(cx + halfWidth + 1));
+            int minY = Math.Max(0, (int)(cy - size - 1)), maxY = Math.Min(h - 1, (int)(cy + size + 1));
             for (int y = minY; y <= maxY; y++)
-                for (int x = minX; x <= maxX; x++)
-                {
-                    float dx = x + 0.5f - cx, dy = y + 0.5f - cy;
-                    double q = (Math.Sqrt(3) / 3.0 * dx - 1.0 / 3.0 * dy) / size;
-                    double r = (2.0 / 3.0 * dy) / size;
-                    if (Math.Abs(q) <= 1.0 && Math.Abs(r) <= 1.0 && Math.Abs(q + r) <= 1.0)
-                        px[y * w + x] = color;
-                }
+            {
+                float dy = Math.Abs(y + 0.5f - cy);
+                if (dy > size) continue;
+                float allowed = dy <= size * 0.5f ? halfWidth : halfWidth * (1f - (dy - size * 0.5f) / (size * 0.5f));
+                int from = Math.Max(minX, (int)(cx - allowed));
+                int to = Math.Min(maxX, (int)(cx + allowed));
+                for (int x = from; x <= to; x++) px[y * w + x] = color;
+            }
         }
 
         private static void FillCircle(Color32[] px, int w, int h, float cx, float cy, float radius, Color32 color)

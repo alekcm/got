@@ -70,9 +70,11 @@ namespace UnityEngine
     {
         public int width, height;
         public FilterMode filterMode;
+        public Color32[] pixels;
         public Texture2D(int w, int h) { width = w; height = h; }
         public Texture2D(int w, int h, TextureFormat f, bool mip) { width = w; height = h; }
-        public void SetPixels32(Color32[] px) { }
+        public void SetPixels32(Color32[] data) { pixels = (Color32[])data.Clone(); }
+        public Color32[] GetPixels32() => pixels;
         public void Apply() { }
     }
 

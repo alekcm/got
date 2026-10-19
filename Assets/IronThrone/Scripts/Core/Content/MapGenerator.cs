@@ -12,10 +12,31 @@ namespace IronThrone.Core.Content
     /// </summary>
     public static class MapGenerator
     {
-        private static readonly (int dc, int dr)[] OddRDirs =
+        // Соседние смещения зависят от чётности ряда: карта — odd-r offset, а не axial.
+        private static readonly (int dc, int dr)[] OddRDirsEven =
         {
-            (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)
+            (1, 0), (0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1)
         };
+
+        private static readonly (int dc, int dr)[] OddRDirsOdd =
+        {
+            (1, 0), (1, 1), (0, 1), (-1, 0), (0, -1), (1, -1)
+        };
+
+        /// <summary>Смещения соседей для ряда r (odd-r offset): порядок — E, SE, SW, W, NW, NE.</summary>
+        public static (int dc, int dr)[] OddRNeighborOffsets(int r) => (r & 1) == 0 ? OddRDirsEven : OddRDirsOdd;
+
+        public static bool AreAdjacent(int c1, int r1, int c2, int r2, int width)
+        {
+            foreach (var d in OddRNeighborOffsets(r1))
+            {
+                int nc = c1 + d.dc;
+                if (nc < 0) nc += width;
+                if (nc >= width) nc -= width;
+                if (nc == c2 && r1 + d.dr == r2) return true;
+            }
+            return false;
+        }
 
         // Ориентиры регионов в долях карты (x, y). Ограничения мира держатся здесь.
         private static readonly Dictionary<string, (float x, float y)> Anchors = new Dictionary<string, (float, float)>
@@ -186,7 +207,7 @@ namespace IronThrone.Core.Content
                 foreach (var t in p.tiles)
                 {
                     int c = t[0], r = t[1];
-                    foreach (var d in OddRDirs)
+                    foreach (var d in OddRNeighborOffsets(r))
                     {
                         int nc = c + d.dc, nr = r + d.dr;
                         if (nr < 0 || nr >= height) continue;
@@ -419,7 +440,7 @@ namespace IronThrone.Core.Content
                 {
                     if (kv.Value != over) continue;
                     bool touches = false;
-                    foreach (var d in OddRDirs)
+                    foreach (var d in OddRNeighborOffsets(kv.Key.Item2))
                     {
                         int nc = kv.Key.Item1 + d.dc, nr = kv.Key.Item2 + d.dr;
                         if (nr < 0 || nr >= height) continue;
@@ -534,7 +555,7 @@ namespace IronThrone.Core.Content
             for (int i = 0; i < seeds.Count; i++)
             {
                 frontier[i] = new List<(int, int)>();
-                foreach (var d in OddRDirs)
+                foreach (var d in OddRNeighborOffsets(seeds[i].r))
                 {
                     var n = (seeds[i].c + d.dc, seeds[i].r + d.dr);
                     if (tileSet.Contains(n)) frontier[i].Add(n);
@@ -553,7 +574,7 @@ namespace IronThrone.Core.Content
                     frontier[i].RemoveAt(pick);
                     if (result.ContainsKey(t)) continue;
                     result[t] = i; progressed = true;
-                    foreach (var d in OddRDirs)
+                    foreach (var d in OddRNeighborOffsets(t.r))
                     {
                         var n = (t.c + d.dc, t.r + d.dr);
                         if (tileSet.Contains(n) && !result.ContainsKey(n)) frontier[i].Add(n);
@@ -585,7 +606,7 @@ namespace IronThrone.Core.Content
                         while (q.Count > 0)
                         {
                             var cur = q.Dequeue(); comp.Add(cur);
-                            foreach (var d in OddRDirs)
+                            foreach (var d in OddRNeighborOffsets(cur.Item2))
                             {
                                 var n = (cur.Item1 + d.dc, cur.Item2 + d.dr);
                                 if (set.Contains(n) && seen.Add(n)) q.Enqueue(n);
@@ -651,7 +672,7 @@ namespace IronThrone.Core.Content
 
         private static IEnumerable<(int c, int r)> Neighbors((int c, int r) t, int width, int height)
         {
-            foreach (var d in OddRDirs)
+            foreach (var d in OddRNeighborOffsets(t.r))
             {
                 int nc = t.c + d.dc, nr = t.r + d.dr;
                 if (nr < 0 || nr >= height) continue;
@@ -663,7 +684,7 @@ namespace IronThrone.Core.Content
 
         private static bool HasSeaNeighbor(bool[,] land, int width, int height, (int c, int r) t)
         {
-            foreach (var d in OddRDirs)
+            foreach (var d in OddRNeighborOffsets(t.r))
             {
                 int nc = t.c + d.dc, nr = t.r + d.dr;
                 if (nr < 0 || nr >= height) continue;

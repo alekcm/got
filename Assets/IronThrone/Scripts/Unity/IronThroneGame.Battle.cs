@@ -14,6 +14,7 @@ namespace IronThrone.Unity
     /// </summary>
     public partial class IronThroneGame
     {
+
         private Battlefield _battle;
         private ArmyState _battleAttacker;
         private ArmyState _battleDefender;
@@ -370,8 +371,8 @@ namespace IronThrone.Unity
                 if (!hex.passable) fill = new Color32(20, 25, 30, 255);
                 if (reachable.Contains((hex.q, hex.r))) fill = Mix(fill, new Color32(235, 205, 110, 255), 0.35f);
                 if (targets.Contains((hex.q, hex.r))) fill = Mix(fill, new Color32(190, 60, 50, 255), 0.4f);
-                FillHex(px, w, h, c.x, c.y, s - 1, fill);
-                if (hex.terrain == BattleTerrain.Walls) FillHex(px, w, h, c.x, c.y, s - 8, new Color32(140, 132, 118, 255));
+                FillHex(px, w, h, c.x, c.y, s, fill);
+                if (hex.terrain == BattleTerrain.Walls) FillHex(px, w, h, c.x, c.y, s - 7f, new Color32(140, 132, 118, 255));
             }
 
             foreach (var u in b.units)
@@ -398,6 +399,7 @@ namespace IronThrone.Unity
                     hpK > 0.6f ? new Color32(90, 190, 90, 255) : hpK > 0.3f ? new Color32(220, 180, 60, 255) : new Color32(200, 70, 60, 255));
             }
 
+            HexMapTexture.FlipRows(px, w, h);
             if (_battleTex != null) UnityEngine.Object.Destroy(_battleTex);
             _battleTex = new Texture2D(w, h, TextureFormat.RGBA32, false);
             _battleTex.SetPixels32(px);
@@ -418,19 +420,20 @@ namespace IronThrone.Unity
             _ => new Color32(108, 124, 84, 255)
         };
 
+        /// <summary>Заливка pointy-top гекса: вертикальные боковые стороны и скосы к вершинам.</summary>
         private static void FillHex(Color32[] px, int w, int h, float cx, float cy, float size, Color32 color)
         {
-            int minX = Math.Max(0, (int)(cx - size - 1)), maxX = Math.Min(w - 1, (int)(cx + size + 1));
+            float halfWidth = size * 0.8660254f;
+            int minX = Math.Max(0, (int)(cx - halfWidth - 1)), maxX = Math.Min(w - 1, (int)(cx + halfWidth + 1));
             int minY = Math.Max(0, (int)(cy - size - 1)), maxY = Math.Min(h - 1, (int)(cy + size + 1));
             for (int y = minY; y <= maxY; y++)
             {
-                for (int x = minX; x <= maxX; x++)
-                {
-                    float dx = Math.Abs(x - cx), dy = Math.Abs(y - cy);
-                    float limit = size * 0.866f;
-                    bool inside = dy <= size * 0.5f ? dx <= limit : dx <= limit * (1f - (dy - size * 0.5f) / (size * 0.5f));
-                    if (inside) px[y * w + x] = color;
-                }
+                float dy = Math.Abs(y + 0.5f - cy);
+                if (dy > size) continue;
+                float allowed = dy <= size * 0.5f ? halfWidth : halfWidth * (1f - (dy - size * 0.5f) / (size * 0.5f));
+                int from = Math.Max(minX, (int)(cx - allowed));
+                int to = Math.Min(maxX, (int)(cx + allowed));
+                for (int x = from; x <= to; x++) px[y * w + x] = color;
             }
         }
 
