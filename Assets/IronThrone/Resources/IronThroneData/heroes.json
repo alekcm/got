@@ -1,0 +1,1429 @@
+[
+ {
+  "id": "aegon",
+  "name": "Эйгон Таргариен",
+  "house": "targaryen",
+  "era": "conquest",
+  "titleRu": "Эйгон Завоеватель",
+  "description": "Всадник Балериона, основатель Железного трона. Холоден, расчётлив и не знает сомнений.",
+  "stats": {
+   "hp": 100,
+   "attack": 26,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 100,
+   "initiative": 14
+  },
+  "abilities": [
+   "rally",
+   "dragon_breath"
+  ],
+  "traits": [
+   "dragonlord",
+   "conqueror"
+  ],
+  "traitText": "Драконы вдохновляют армию; +10% к атаке драконьих отрядов."
+ },
+ {
+  "id": "visenya",
+  "name": "Висенья Таргариен",
+  "house": "targaryen",
+  "era": "conquest",
+  "titleRu": "Королева-воительница",
+  "description": "Старшая сестра Эйгона, воительница и колдунья. Её клинок — Тёмная Сестра.",
+  "stats": {
+   "hp": 100,
+   "attack": 24,
+   "defense": 18,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 16
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "warrior",
+   "cunning"
+  ],
+  "traitText": "Ускоряет подготовку войск и повышает дисциплину."
+ },
+ {
+  "id": "rhaenys",
+  "name": "Рейнис Таргариен",
+  "house": "targaryen",
+  "era": "conquest",
+  "titleRu": "Королева-поэтесса",
+  "description": "Младшая сестра Эйгона. Любит музыку, путешествия и своего дракона Мераксеса.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 10,
+   "range": 2,
+   "move": 4,
+   "morale": 90,
+   "initiative": 15
+  },
+  "abilities": [
+   "volley"
+  ],
+  "traits": [
+   "diplomat"
+  ],
+  "traitText": "Снижает стоимость дипломатии и улучшает отношения."
+ },
+ {
+  "id": "orys_baratheon",
+  "name": "Орис Баратеон",
+  "house": "baratheon",
+  "era": "conquest",
+  "titleRu": "Полководец Эйгона",
+  "description": "Незаконнорождённый воин, которому Эйгон доверил армию. Основатель дома Баратеонов.",
+  "stats": {
+   "hp": 100,
+   "attack": 25,
+   "defense": 15,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 13
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "commander"
+  ],
+  "traitText": "+2 к атаке всех отрядов в бою."
+ },
+ {
+  "id": "torrhen_stark",
+  "name": "Торрхен Старк",
+  "house": "stark",
+  "era": "conquest",
+  "titleRu": "Король Севера",
+  "description": "Король, который встал на колени, чтобы сохранить свой народ. Мудрость или трусость — решать потомкам.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 16,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 10
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "tactician",
+   "honor"
+  ],
+  "traitText": "Снижает потери при отступлении и обороне."
+ },
+ {
+  "id": "brandon_snow",
+  "name": "Брандон Сноу",
+  "house": "stark",
+  "era": "conquest",
+  "titleRu": "Бастард Винтерфелла",
+  "description": "Незаконнорождённый сын Торрхена, командир конницы.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 12,
+   "range": 1,
+   "move": 5,
+   "morale": 88,
+   "initiative": 14
+  },
+  "abilities": [
+   "charge",
+   "swift"
+  ],
+  "traits": [
+   "cavalry"
+  ],
+  "traitText": "+1 к движению армии с героем."
+ },
+ {
+  "id": "rickard_stark_c",
+  "name": "Рикард Старк",
+  "house": "stark",
+  "era": "conquest",
+  "titleRu": "Старший сын",
+  "description": "Наследник Винтерфелла, суровый северный лорд.",
+  "stats": {
+   "hp": 100,
+   "attack": 21,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 11
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "warrior"
+  ],
+  "traitText": "Укрепляет оборону провинции."
+ },
+ {
+  "id": "ronnel_arryn",
+  "name": "Роннел Аррен",
+  "house": "arryn",
+  "era": "conquest",
+  "titleRu": "Король Горы и Долины",
+  "description": "Мальчик-король, который пролетал на драконе и остался королём.",
+  "stats": {
+   "hp": 100,
+   "attack": 16,
+   "defense": 12,
+   "range": 1,
+   "move": 4,
+   "morale": 80,
+   "initiative": 9
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "diplomat"
+  ],
+  "traitText": "Лучше договаривается с малыми домами."
+ },
+ {
+  "id": "sharra_arryn",
+  "name": "Шарра Аррен",
+  "house": "arryn",
+  "era": "conquest",
+  "titleRu": "Королева-мать",
+  "description": "Мать Роннела, умная и властная регентша.",
+  "stats": {
+   "hp": 100,
+   "attack": 12,
+   "defense": 10,
+   "range": 2,
+   "move": 3,
+   "morale": 80,
+   "initiative": 10
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "intrigue"
+  ],
+  "traitText": "+2 к защите от шпионов."
+ },
+ {
+  "id": "yohn_royce_c",
+  "name": "Йон Ройс",
+  "house": "arryn",
+  "era": "conquest",
+  "titleRu": "Бронзовый лорд",
+  "description": "Лорд Рунного Камня, хранитель древних рун.",
+  "stats": {
+   "hp": 100,
+   "attack": 23,
+   "defense": 17,
+   "range": 1,
+   "move": 4,
+   "morale": 88,
+   "initiative": 11
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "warrior"
+  ],
+  "traitText": "+1 к обороне армии."
+ },
+ {
+  "id": "harren_hoare",
+  "name": "Харрен Чёрный",
+  "house": "hoare",
+  "era": "conquest",
+  "titleRu": "Король Островов и Рек",
+  "description": "Строитель Харренхола и тиран Речных земель. Его ненавидят все, но боятся ещё больше.",
+  "stats": {
+   "hp": 100,
+   "attack": 24,
+   "defense": 13,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 12
+  },
+  "abilities": [
+   "berserk"
+  ],
+  "traits": [
+   "tyrant"
+  ],
+  "traitText": "Беспорядки растут быстрее, но доход с запуганных земель выше."
+ },
+ {
+  "id": "harren_son",
+  "name": "Харрен-младший",
+  "house": "hoare",
+  "era": "conquest",
+  "titleRu": "Наследник Харренхола",
+  "description": "Сын тирана, мечтающий превзойти отца в жестокости.",
+  "stats": {
+   "hp": 100,
+   "attack": 21,
+   "defense": 11,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 12
+  },
+  "abilities": [
+   "berserk"
+  ],
+  "traits": [
+   "tyrant"
+  ],
+  "traitText": "Повышает страх, но снижает лояльность."
+ },
+ {
+  "id": "the_drowned_priest",
+  "name": "Утонувший жрец",
+  "house": "hoare",
+  "era": "conquest",
+  "titleRu": "Голос Утонувшего Бога",
+  "description": "Жрец, благословляющий железнорождённых перед набегом.",
+  "stats": {
+   "hp": 100,
+   "attack": 10,
+   "defense": 8,
+   "range": 2,
+   "move": 3,
+   "morale": 100,
+   "initiative": 8
+  },
+  "abilities": [
+   "rally",
+   "heal"
+  ],
+  "traits": [
+   "priest"
+  ],
+  "traitText": "+10 к морали флота и набегов."
+ },
+ {
+  "id": "loren_lannister",
+  "name": "Лорен I Ланнистер",
+  "house": "lannister",
+  "era": "conquest",
+  "titleRu": "Король Запада",
+  "description": "Богатейший король Вестероса. Его армия блестит золотом, пока не встречает дракона.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 16,
+   "range": 1,
+   "move": 4,
+   "morale": 82,
+   "initiative": 10
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "steward"
+  ],
+  "traitText": "+3 к доходу золота."
+ },
+ {
+  "id": "lannister_heir_c",
+  "name": "Тион Ланнистер",
+  "house": "lannister",
+  "era": "conquest",
+  "titleRu": "Наследник Утёса",
+  "description": "Молодой наследник, обученный счёту и мечу.",
+  "stats": {
+   "hp": 100,
+   "attack": 21,
+   "defense": 13,
+   "range": 1,
+   "move": 4,
+   "morale": 80,
+   "initiative": 11
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "warrior"
+  ],
+  "traitText": "Снижает цену найма рыцарей."
+ },
+ {
+  "id": "reyne_lord",
+  "name": "Рейн из Кастамере",
+  "house": "lannister",
+  "era": "conquest",
+  "titleRu": "Красный лев",
+  "description": "Могучий вассал, чья верность всегда имеет цену.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 11
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "proud"
+  ],
+  "traitText": "Даёт бонус к атаке, но требует уважения."
+ },
+ {
+  "id": "mern_gardener",
+  "name": "Мерн IX Гарднер",
+  "house": "gardener",
+  "era": "conquest",
+  "titleRu": "Король Простора",
+  "description": "Последний король из дома Гарднеров. Его армия была велика — пока не пришёл огонь.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 15,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 9
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "beloved"
+  ],
+  "traitText": "+5 к морали всех отрядов."
+ },
+ {
+  "id": "gardener_prince",
+  "name": "Принц Простора",
+  "house": "gardener",
+  "era": "conquest",
+  "titleRu": "Наследник Хайгардена",
+  "description": "Сын Мерна, командующий авангардом.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 12,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 12
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "cavalry"
+  ],
+  "traitText": "Усиливает рыцарскую конницу."
+ },
+ {
+  "id": "hightower_lord",
+  "name": "Лорд Хайтауэр",
+  "house": "gardener",
+  "era": "conquest",
+  "titleRu": "Голос Староместа",
+  "description": "Хозяин Староместа и Цитадели. Мудрость древнее корон.",
+  "stats": {
+   "hp": 100,
+   "attack": 14,
+   "defense": 14,
+   "range": 2,
+   "move": 3,
+   "morale": 80,
+   "initiative": 9
+  },
+  "abilities": [
+   "heal"
+  ],
+  "traits": [
+   "maester"
+  ],
+  "traitText": "+1 к исследованиям и вере."
+ },
+ {
+  "id": "argilac",
+  "name": "Аргилак Наглый",
+  "house": "durrandon",
+  "era": "conquest",
+  "titleRu": "Штормовой Король",
+  "description": "Последний Штормовой Король. Отправил Эйгону издевательский ответ и погиб, но не склонился.",
+  "stats": {
+   "hp": 100,
+   "attack": 26,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 13
+  },
+  "abilities": [
+   "charge",
+   "berserk"
+  ],
+  "traits": [
+   "berserker"
+  ],
+  "traitText": "+3 к атаке, но выше потери."
+ },
+ {
+  "id": "argella",
+  "name": "Аргелла Дюрандон",
+  "house": "durrandon",
+  "era": "conquest",
+  "titleRu": "Дочь Штормового Короля",
+  "description": "Наследница, которую выдали за Ориса, чтобы узаконить завоевание.",
+  "stats": {
+   "hp": 100,
+   "attack": 16,
+   "defense": 12,
+   "range": 2,
+   "move": 3,
+   "morale": 85,
+   "initiative": 11
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "proud"
+  ],
+  "traitText": "Даёт влияние каждый ход."
+ },
+ {
+  "id": "durrandon_son",
+  "name": "Принц Дюрандон",
+  "house": "durrandon",
+  "era": "conquest",
+  "titleRu": "Наследник Штормового Предела",
+  "description": "Сын Аргилака, сражавшийся рядом с отцом.",
+  "stats": {
+   "hp": 100,
+   "attack": 23,
+   "defense": 12,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 12
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "warrior"
+  ],
+  "traitText": "+1 к атаке в первой битве."
+ },
+ {
+  "id": "meria_martell",
+  "name": "Мерия Мартелл",
+  "house": "martell",
+  "era": "conquest",
+  "titleRu": "Княгиня Дорна",
+  "description": "Правительница, которая ответила Эйгону: «Приходи и возьми». Дорн не был покорён.",
+  "stats": {
+   "hp": 100,
+   "attack": 14,
+   "defense": 16,
+   "range": 2,
+   "move": 3,
+   "morale": 90,
+   "initiative": 11
+  },
+  "abilities": [
+   "rally",
+   "heal"
+  ],
+  "traits": [
+   "guerrilla"
+  ],
+  "traitText": "Снижает потери в пустыне и повышает беспорядки врага."
+ },
+ {
+  "id": "nymor_martell",
+  "name": "Нимер Мартелл",
+  "house": "martell",
+  "era": "conquest",
+  "titleRu": "Наследник Дорна",
+  "description": "Сын Мерьи, продолживший войну теней.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 13,
+   "range": 1,
+   "move": 4,
+   "morale": 85,
+   "initiative": 12
+  },
+  "abilities": [
+   "swift"
+  ],
+  "traits": [
+   "cunning"
+  ],
+  "traitText": "+2 к шпионажу."
+ },
+ {
+  "id": "dornish_guard",
+  "name": "Капитан дорнийской стражи",
+  "house": "martell",
+  "era": "conquest",
+  "titleRu": "Копьё Солнечного Копья",
+  "description": "Ветеран, знающий каждую песчаную тропу.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 14,
+   "range": 1,
+   "move": 5,
+   "morale": 88,
+   "initiative": 14
+  },
+  "abilities": [
+   "swift"
+  ],
+  "traits": [
+   "scout"
+  ],
+  "traitText": "Позволяет армии отступать без потерь."
+ },
+ {
+  "id": "nw_commander_conquest",
+  "name": "Лорд-командующий Дозора",
+  "house": "nightswatch",
+  "era": "conquest",
+  "titleRu": "Лорд-командующий",
+  "description": "Командир, чья война никогда не заканчивается.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 18,
+   "range": 1,
+   "move": 3,
+   "morale": 90,
+   "initiative": 9
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "watchman"
+  ],
+  "traitText": "+4 к обороне Стены."
+ },
+ {
+  "id": "robb_stark",
+  "name": "Робб Старк",
+  "house": "stark",
+  "era": "fivekings",
+  "titleRu": "Король Севера",
+  "description": "Шестнадцатилетний волк, который выигрывает битвы, но проигрывает политику.",
+  "stats": {
+   "hp": 100,
+   "attack": 25,
+   "defense": 14,
+   "range": 1,
+   "move": 5,
+   "morale": 95,
+   "initiative": 15
+  },
+  "abilities": [
+   "charge",
+   "rally"
+  ],
+  "traits": [
+   "tactician",
+   "honor"
+  ],
+  "traitText": "Выигранные битвы дают признание; нарушенные клятвы бьют вдвое сильнее."
+ },
+ {
+  "id": "jon_snow",
+  "name": "Джон Сноу",
+  "house": "stark",
+  "era": "fivekings",
+  "titleRu": "Лорд-командующий",
+  "description": "Бастард, который знает, что настоящая война — не за трон.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 15,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 13
+  },
+  "abilities": [
+   "shield_wall",
+   "rally"
+  ],
+  "traits": [
+   "watchman"
+  ],
+  "traitText": "+2 к защите от одичалых и Иных."
+ },
+ {
+  "id": "catelyn_stark",
+  "name": "Кейтилин Старк",
+  "house": "stark",
+  "era": "fivekings",
+  "titleRu": "Леди Винтерфелла",
+  "description": "Мать, которая пойдёт на всё ради детей — и этим всё погубит.",
+  "stats": {
+   "hp": 100,
+   "attack": 10,
+   "defense": 10,
+   "range": 2,
+   "move": 3,
+   "morale": 85,
+   "initiative": 8
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "mother"
+  ],
+  "traitText": "Улучшает отношения с Талли и Арренами."
+ },
+ {
+  "id": "greatjon",
+  "name": "Большой Джон Амбер",
+  "house": "stark",
+  "era": "fivekings",
+  "titleRu": "Лорд Последнего Очага",
+  "description": "Первый, кто крикнул «Король Севера!» — и последний, кто покинет поле боя.",
+  "stats": {
+   "hp": 100,
+   "attack": 27,
+   "defense": 12,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 10
+  },
+  "abilities": [
+   "berserk"
+  ],
+  "traits": [
+   "berserker"
+  ],
+  "traitText": "+3 к атаке авангарда."
+ },
+ {
+  "id": "tywin",
+  "name": "Тайвин Ланнистер",
+  "house": "lannister",
+  "era": "fivekings",
+  "titleRu": "Десница Короля",
+  "description": "Человек, который платит долги — и берёт проценты. Наследие важнее любви.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 18,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 12
+  },
+  "abilities": [
+   "rally",
+   "shield_wall"
+  ],
+  "traits": [
+   "schemer",
+   "commander"
+  ],
+  "traitText": "+3 к доходу золота и +2 к шпионажу."
+ },
+ {
+  "id": "jaime",
+  "name": "Джейме Ланнистер",
+  "house": "lannister",
+  "era": "fivekings",
+  "titleRu": "Цареубийца",
+  "description": "Лучший меч Семи Королевств, который не может решить, кто он.",
+  "stats": {
+   "hp": 100,
+   "attack": 30,
+   "defense": 15,
+   "range": 1,
+   "move": 5,
+   "morale": 90,
+   "initiative": 16
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "swordsman"
+  ],
+  "traitText": "+4 к атаке отряда героя."
+ },
+ {
+  "id": "tyrion",
+  "name": "Тирион Ланнистер",
+  "house": "lannister",
+  "era": "fivekings",
+  "titleRu": "Бесу",
+  "description": "Карлик с умом великана. Книги и вино заменяют ему меч.",
+  "stats": {
+   "hp": 100,
+   "attack": 12,
+   "defense": 10,
+   "range": 2,
+   "move": 3,
+   "morale": 85,
+   "initiative": 11
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "diplomat",
+   "intrigue"
+  ],
+  "traitText": "Снижает стоимость построек и улучшает дипломатию."
+ },
+ {
+  "id": "joffrey",
+  "name": "Джоффри Баратеон",
+  "house": "lannister",
+  "era": "fivekings",
+  "titleRu": "Король на Железном троне",
+  "description": "Король-мальчик, чья жестокость опаснее любой армии — для собственных подданных.",
+  "stats": {
+   "hp": 100,
+   "attack": 14,
+   "defense": 8,
+   "range": 2,
+   "move": 3,
+   "morale": 70,
+   "initiative": 7
+  },
+  "abilities": [],
+  "traits": [
+   "cruel"
+  ],
+  "traitText": "Растёт беспорядок, но и страх."
+ },
+ {
+  "id": "renly",
+  "name": "Ренли Баратеон",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Король Штормовых земель",
+  "description": "Самый обаятельный из Баратеонов. Армия любит его, но любовь не заменяет опыт.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 12,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 11
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "charming"
+  ],
+  "traitText": "Дешевле лоббирование и дипломатия."
+ },
+ {
+  "id": "stannis",
+  "name": "Станнис Баратеон",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Король на Драконьем Камне",
+  "description": "Законный наследник, который скорее сожжёт племянника, чем нарушит закон.",
+  "stats": {
+   "hp": 100,
+   "attack": 21,
+   "defense": 17,
+   "range": 1,
+   "move": 3,
+   "morale": 100,
+   "initiative": 9
+  },
+  "abilities": [
+   "shield_wall",
+   "rally"
+  ],
+  "traits": [
+   "iron_will"
+  ],
+  "traitText": "Армия почти не теряет мораль."
+ },
+ {
+  "id": "shireen",
+  "name": "Ширин Баратеон",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Принцесса Драконьего Камня",
+  "description": "Дочь Станниса, чья доброта — единственный свет в мрачной крепости.",
+  "stats": {
+   "hp": 100,
+   "attack": 8,
+   "defense": 8,
+   "range": 2,
+   "move": 3,
+   "morale": 80,
+   "initiative": 6
+  },
+  "abilities": [
+   "heal"
+  ],
+  "traits": [
+   "kind"
+  ],
+  "traitText": "Снижает беспорядки."
+ },
+ {
+  "id": "davos",
+  "name": "Давос Сиворт",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Луковый рыцарь",
+  "description": "Контрабандист, ставший совестью короля. Не умеет читать — но умеет видеть правду.",
+  "stats": {
+   "hp": 100,
+   "attack": 16,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 10
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "loyal"
+  ],
+  "traitText": "+1 к доходу и снабжению армий."
+ },
+ {
+  "id": "melisandre",
+  "name": "Мелисандра",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Красная жрица",
+  "description": "Служительница Р'глора, видящая будущее в огне.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 8,
+   "range": 3,
+   "move": 3,
+   "morale": 95,
+   "initiative": 13
+  },
+  "abilities": [
+   "flaming",
+   "heal"
+  ],
+  "traits": [
+   "priest"
+  ],
+  "traitText": "+3 к вере и +2 к шпионажу."
+ },
+ {
+  "id": "loras",
+  "name": "Лорас Тирелл",
+  "house": "tyrell",
+  "era": "fivekings",
+  "titleRu": "Рыцарь Цветов",
+  "description": "Молодой рыцарь, чья слава на турнирах ещё не проверена в настоящей войне.",
+  "stats": {
+   "hp": 100,
+   "attack": 24,
+   "defense": 13,
+   "range": 1,
+   "move": 5,
+   "morale": 90,
+   "initiative": 15
+  },
+  "abilities": [
+   "charge"
+  ],
+  "traits": [
+   "knight"
+  ],
+  "traitText": "+2 к атаке конницы."
+ },
+ {
+  "id": "mace",
+  "name": "Мейс Тирелл",
+  "house": "tyrell",
+  "era": "fivekings",
+  "titleRu": "Лорд Хайгардена",
+  "description": "Тщеславный лорд, который хочет короны для дочери и славы для себя.",
+  "stats": {
+   "hp": 100,
+   "attack": 16,
+   "defense": 14,
+   "range": 1,
+   "move": 3,
+   "morale": 80,
+   "initiative": 8
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "proud"
+  ],
+  "traitText": "+2 к влиянию каждый ход."
+ },
+ {
+  "id": "margaery",
+  "name": "Маргери Тирелл",
+  "house": "tyrell",
+  "era": "fivekings",
+  "titleRu": "Королева-консорт",
+  "description": "Королева, которая правит через любовь народа и умеет ждать.",
+  "stats": {
+   "hp": 100,
+   "attack": 9,
+   "defense": 9,
+   "range": 2,
+   "move": 3,
+   "morale": 85,
+   "initiative": 9
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "charming"
+  ],
+  "traitText": "Снижает беспорядки и повышает признание."
+ },
+ {
+  "id": "olenna",
+  "name": "Оленна Тирелл",
+  "house": "tyrell",
+  "era": "fivekings",
+  "titleRu": "Королева Шипов",
+  "description": "Старуха, которая видит все ходы за три шага до противника.",
+  "stats": {
+   "hp": 100,
+   "attack": 8,
+   "defense": 10,
+   "range": 2,
+   "move": 2,
+   "morale": 90,
+   "initiative": 10
+  },
+  "abilities": [
+   "heal"
+  ],
+  "traits": [
+   "schemer"
+  ],
+  "traitText": "+3 к шпионажу и +2 к голосам в совете."
+ },
+ {
+  "id": "doran",
+  "name": "Доран Мартелл",
+  "house": "martell",
+  "era": "fivekings",
+  "titleRu": "Князь Дорна",
+  "description": "Терпеливый правитель, чья месть растянута на годы.",
+  "stats": {
+   "hp": 100,
+   "attack": 8,
+   "defense": 14,
+   "range": 2,
+   "move": 2,
+   "morale": 85,
+   "initiative": 8
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "patient"
+  ],
+  "traitText": "+2 к признанию каждый ход."
+ },
+ {
+  "id": "oberyn",
+  "name": "Оберын Мартелл",
+  "house": "martell",
+  "era": "fivekings",
+  "titleRu": "Красный Змей",
+  "description": "Ядовитый клинок Дорна. Живёт ради мести и не боится смерти.",
+  "stats": {
+   "hp": 100,
+   "attack": 28,
+   "defense": 12,
+   "range": 1,
+   "move": 5,
+   "morale": 95,
+   "initiative": 17
+  },
+  "abilities": [
+   "berserk"
+  ],
+  "traits": [
+   "duelist"
+  ],
+  "traitText": "+5 к атаке отряда героя."
+ },
+ {
+  "id": "arianne",
+  "name": "Арианна Мартелл",
+  "house": "martell",
+  "era": "fivekings",
+  "titleRu": "Наследница Дорна",
+  "description": "Дочь Дорана, нетерпеливая и амбициозная.",
+  "stats": {
+   "hp": 100,
+   "attack": 14,
+   "defense": 11,
+   "range": 2,
+   "move": 4,
+   "morale": 85,
+   "initiative": 12
+  },
+  "abilities": [
+   "rally"
+  ],
+  "traits": [
+   "intrigue"
+  ],
+  "traitText": "+2 к шпионажу."
+ },
+ {
+  "id": "sand_snakes",
+  "name": "Песчаные Змеи",
+  "house": "martell",
+  "era": "fivekings",
+  "titleRu": "Дочери Оберына",
+  "description": "Восемь дочерей Красного Змея, каждая — оружие.",
+  "stats": {
+   "hp": 100,
+   "attack": 20,
+   "defense": 10,
+   "range": 1,
+   "move": 5,
+   "morale": 90,
+   "initiative": 15
+  },
+  "abilities": [
+   "swift"
+  ],
+  "traits": [
+   "vengeful"
+  ],
+  "traitText": "Успешные покушения дают влияние."
+ },
+ {
+  "id": "balon",
+  "name": "Бейлон Грейджой",
+  "house": "greyjoy",
+  "era": "fivekings",
+  "titleRu": "Король Железных островов",
+  "description": "Старый кракен, который хочет вернуть то, что потерял.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 11
+  },
+  "abilities": [
+   "berserk"
+  ],
+  "traits": [
+   "reaper"
+  ],
+  "traitText": "+5% к добыче набегов."
+ },
+ {
+  "id": "asha",
+  "name": "Аша Грейджой",
+  "house": "greyjoy",
+  "era": "fivekings",
+  "titleRu": "Капитан «Чёрного Ветра»",
+  "description": "Лучший капитан Железного флота и самый здравомыслящий из Грейджоев.",
+  "stats": {
+   "hp": 100,
+   "attack": 23,
+   "defense": 13,
+   "range": 1,
+   "move": 5,
+   "morale": 92,
+   "initiative": 14
+  },
+  "abilities": [
+   "swift"
+  ],
+  "traits": [
+   "captain"
+  ],
+  "traitText": "+1 к движению по морю."
+ },
+ {
+  "id": "theon",
+  "name": "Теон Грейджой",
+  "house": "greyjoy",
+  "era": "fivekings",
+  "titleRu": "Принц-заложник",
+  "description": "Разрывается между двумя семьями и не принадлежит ни одной.",
+  "stats": {
+   "hp": 100,
+   "attack": 18,
+   "defense": 11,
+   "range": 2,
+   "move": 4,
+   "morale": 75,
+   "initiative": 12
+  },
+  "abilities": [
+   "volley"
+  ],
+  "traits": [
+   "divided"
+  ],
+  "traitText": "Может переманивать северных вассалов."
+ },
+ {
+  "id": "aeron",
+  "name": "Эйрон Мокроголовый",
+  "house": "greyjoy",
+  "era": "fivekings",
+  "titleRu": "Жрец Утонувшего Бога",
+  "description": "Фанатик, который топит людей и называет это благословением.",
+  "stats": {
+   "hp": 100,
+   "attack": 12,
+   "defense": 10,
+   "range": 2,
+   "move": 3,
+   "morale": 100,
+   "initiative": 8
+  },
+  "abilities": [
+   "rally",
+   "heal"
+  ],
+  "traits": [
+   "priest"
+  ],
+  "traitText": "+3 к вере."
+ },
+ {
+  "id": "lysa",
+  "name": "Лиза Аррен",
+  "house": "arryn",
+  "era": "fivekings",
+  "titleRu": "Леди-протектор Долины",
+  "description": "Нервная и подозрительная вдова, слушающая только Мизинца.",
+  "stats": {
+   "hp": 100,
+   "attack": 8,
+   "defense": 9,
+   "range": 2,
+   "move": 2,
+   "morale": 75,
+   "initiative": 7
+  },
+  "abilities": [],
+  "traits": [
+   "paranoid"
+  ],
+  "traitText": "-1 к дипломатии, +2 к обороне."
+ },
+ {
+  "id": "robert_arryn",
+  "name": "Роберт Аррен",
+  "house": "arryn",
+  "era": "fivekings",
+  "titleRu": "Лорд Орлиного Гнезда",
+  "description": "Больной мальчик, чьё имя держит Долину вместе.",
+  "stats": {
+   "hp": 100,
+   "attack": 6,
+   "defense": 6,
+   "range": 1,
+   "move": 2,
+   "morale": 70,
+   "initiative": 5
+  },
+  "abilities": [],
+  "traits": [
+   "child"
+  ],
+  "traitText": "Наследник. Смерть героя может расколоть Долину."
+ },
+ {
+  "id": "yohn_royce",
+  "name": "Йон Ройс",
+  "house": "arryn",
+  "era": "fivekings",
+  "titleRu": "Бронзовый лорд",
+  "description": "Один из немногих честных лордов Долины.",
+  "stats": {
+   "hp": 100,
+   "attack": 24,
+   "defense": 17,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 12
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "honor"
+  ],
+  "traitText": "+2 к обороне и чести."
+ },
+ {
+  "id": "littlefinger",
+  "name": "Петир Бейлиш",
+  "house": "arryn",
+  "era": "fivekings",
+  "titleRu": "Мизинец",
+  "description": "Мастер над монетой, который покупает людей, как книги.",
+  "stats": {
+   "hp": 100,
+   "attack": 10,
+   "defense": 8,
+   "range": 2,
+   "move": 3,
+   "morale": 80,
+   "initiative": 13
+  },
+  "abilities": [
+   "heal"
+  ],
+  "traits": [
+   "schemer"
+  ],
+  "traitText": "+4 к шпионажу и +10% к доходу."
+ },
+ {
+  "id": "jeor_mormont",
+  "name": "Джиор Мормонт",
+  "house": "nightswatch",
+  "era": "fivekings",
+  "titleRu": "Лорд-командующий",
+  "description": "Старый медведь, который держит Стену, пока юг играет в престолы.",
+  "stats": {
+   "hp": 100,
+   "attack": 22,
+   "defense": 18,
+   "range": 1,
+   "move": 3,
+   "morale": 95,
+   "initiative": 10
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "watchman"
+  ],
+  "traitText": "+4 к обороне Стены."
+ },
+ {
+  "id": "jon_snow_nw",
+  "name": "Джон Сноу",
+  "house": "nightswatch",
+  "era": "fivekings",
+  "titleRu": "Стюард Дозора",
+  "description": "Бастард, нашедший свой дом на Стене.",
+  "stats": {
+   "hp": 100,
+   "attack": 21,
+   "defense": 14,
+   "range": 1,
+   "move": 4,
+   "morale": 90,
+   "initiative": 13
+  },
+  "abilities": [
+   "swift"
+  ],
+  "traits": [
+   "watchman"
+  ],
+  "traitText": "+2 к переговорам с одичалыми."
+ },
+ {
+  "id": "samwell",
+  "name": "Сэмвелл Тарли",
+  "house": "nightswatch",
+  "era": "fivekings",
+  "titleRu": "Мейстер Дозора",
+  "description": "Трусливый на вид, но храбрый в библиотеке.",
+  "stats": {
+   "hp": 100,
+   "attack": 8,
+   "defense": 8,
+   "range": 2,
+   "move": 2,
+   "morale": 75,
+   "initiative": 6
+  },
+  "abilities": [
+   "heal"
+  ],
+  "traits": [
+   "maester"
+  ],
+  "traitText": "+2 к исследованиям."
+ },
+ {
+  "id": "brienne",
+  "name": "Бриенна Тарт",
+  "house": "baratheon",
+  "era": "fivekings",
+  "titleRu": "Дева Тарта",
+  "description": "Рыцарь без посвящения, чья верность крепче любой клятвы.",
+  "stats": {
+   "hp": 100,
+   "attack": 26,
+   "defense": 16,
+   "range": 1,
+   "move": 4,
+   "morale": 95,
+   "initiative": 13
+  },
+  "abilities": [
+   "shield_wall"
+  ],
+  "traits": [
+   "loyal"
+  ],
+  "traitText": "+3 к обороне отряда героя."
+ }
+]

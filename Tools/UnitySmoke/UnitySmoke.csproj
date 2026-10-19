@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AssemblyName>IronThrone.UnitySmoke</AssemblyName>
+    <RootNamespace>IronThrone.UnitySmoke</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../UnityShim/UnityShim.cs" />
+    <Compile Include="../../Assets/IronThrone/Scripts/Core/**/*.cs" />
+    <Compile Include="../../Assets/IronThrone/Scripts/Unity/**/*.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Png.cs" />
+  </ItemGroup>
+</Project>

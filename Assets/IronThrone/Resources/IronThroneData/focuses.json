@@ -1,0 +1,2775 @@
+[
+  {
+    "id": "targ_dragons",
+    "name": "Драконье пламя",
+    "faction": "targaryen",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Драконы должны расти и слушаться. Чем крупнее зверь, тем короче войны.",
+    "rewardText": "+25% к силе драконов, +5 к морали армии",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "dragonPower",
+        "value": 0.25
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "targ_rule",
+    "name": "Право завоевателя",
+    "faction": "targaryen",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Вестерос должен узнать, кто здесь король. Огнём и сталью — как Эйгон.",
+    "rewardText": "+3 к атаке, +20% к скорости осад",
+    "requires": [
+      "targ_dragons"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeSpeed",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "targ_throne",
+    "name": "Железный трон",
+    "faction": "targaryen",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 4,
+    "description": "Королевская Гавань — не просто город. Это трон, и он должен быть вашим.",
+    "rewardText": "+15 признания, +2 влияния за ход",
+    "requires": [
+      "targ_rule"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "targ_valyria",
+    "name": "Наследие Валирии",
+    "faction": "targaryen",
+    "branch": "economy",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Старая Валирия знала камень, огонь и сталь лучше всех. Драконье логово — первый шаг.",
+    "rewardText": "+5 золота, +200 материалов, −10% к стоимости построек",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "resource",
+        "res": "materials",
+        "amount": 200
+      }
+    ]
+  },
+  {
+    "id": "targ_mint",
+    "name": "Королевский монетный двор",
+    "faction": "targaryen",
+    "branch": "economy",
+    "x": 0,
+    "y": 2,
+    "turns": 3,
+    "description": "Завоевание стоит денег. Пусть монету чеканят от имени короля.",
+    "rewardText": "Монетный двор в столице, +6 золота, +8 торгового господства",
+    "requires": [
+      "targ_valyria"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "mint"
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "tradedominance",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "id": "targ_incest",
+    "name": "Кровь дракона превыше всего",
+    "faction": "targaryen",
+    "branch": "faith",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Брак с чужаком разбавит кровь. Таргариены женятся на своих — так завещано Валирией.",
+    "rewardText": "+15% к силе драконов, +10 признания, но −12 отношений со всеми домами",
+    "requires": [],
+    "exclusive": [
+      "targ_reform"
+    ],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "dragonPower",
+        "value": 0.15
+      },
+      {
+        "op": "recognition",
+        "amount": 10
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -12
+      },
+      {
+        "op": "flag",
+        "flag": "incest_path"
+      }
+    ]
+  },
+  {
+    "id": "targ_pureblood",
+    "name": "Чистая кровь",
+    "faction": "targaryen",
+    "branch": "faith",
+    "x": 2,
+    "y": 1,
+    "turns": 5,
+    "description": "Брат и сестра на троне — залог того, что дракон не выродится. Двор шепчется, но молчит.",
+    "rewardText": "+25% к силе драконов, +20% к приросту признания, −8 отношений со всеми",
+    "requires": [
+      "targ_incest"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "dragonPower",
+        "value": 0.25
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.2
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -8
+      }
+    ]
+  },
+  {
+    "id": "targ_reform",
+    "name": "Новый курс",
+    "faction": "targaryen",
+    "branch": "faith",
+    "x": 1,
+    "y": 2,
+    "turns": 4,
+    "description": "Век драконов кончился. Пора породниться с великими домами и стать королями Вестероса, а не чужаками.",
+    "rewardText": "+18 отношений со всеми домами, +6 признания, но −10% к силе драконов",
+    "requires": [],
+    "exclusive": [
+      "targ_incest"
+    ],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 18
+      },
+      {
+        "op": "recognition",
+        "amount": 6
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      },
+      {
+        "op": "modifier",
+        "key": "dragonPower",
+        "value": -0.1
+      },
+      {
+        "op": "flag",
+        "flag": "reform_path"
+      }
+    ]
+  },
+  {
+    "id": "targ_newdynasty",
+    "name": "Новая династия",
+    "faction": "targaryen",
+    "branch": "faith",
+    "x": 2,
+    "y": 2,
+    "turns": 5,
+    "description": "Брак с домом-союзником превращает завоевателей в законных государей.",
+    "rewardText": "+3 влияния за ход, +12 отношений со всеми, +15% к приросту признания",
+    "requires": [
+      "targ_reform"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 3
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 12
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.15
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "stark_banners",
+    "name": "Собрать знамёна",
+    "faction": "stark",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Север отвечает на зов Винтерфелла. Каждый лорд приведёт людей — если позвать правильно.",
+    "rewardText": "Два отряда северной пехоты, +4 к морали",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "northern_infantry",
+        "count": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "stark_wolfpack",
+    "name": "Волчья стая",
+    "faction": "stark",
+    "branch": "power",
+    "x": 1,
+    "y": 1,
+    "turns": 3,
+    "description": "Лютоволки идут впереди войска, находя тропы и врагов.",
+    "rewardText": "Лютоволк в армию, +2 к атаке",
+    "requires": [
+      "stark_banners"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "direwolves",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "stark_march",
+    "name": "Поход на юг",
+    "faction": "stark",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Север может остаться Севером — или пойти на юг и решить судьбу Вестероса.",
+    "rewardText": "+2 к атаке, +1 к движению",
+    "requires": [
+      "stark_banners"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "movement",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "stark_king",
+    "name": "Король Севера",
+    "faction": "stark",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 5,
+    "description": "Король в Северном крае не склоняет колено. Старые боги и старые клятвы — превыше Железного трона.",
+    "rewardText": "+18 признания, +1 голос, +2 к обороне; путь служения трону закрыт",
+    "requires": [
+      "stark_march"
+    ],
+    "exclusive": [
+      "stark_bend"
+    ],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 18
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "flag",
+        "flag": "king_in_the_north"
+      }
+    ]
+  },
+  {
+    "id": "stark_bend",
+    "name": "Склонить колено",
+    "faction": "stark",
+    "branch": "power",
+    "x": 2,
+    "y": 1,
+    "turns": 4,
+    "description": "Север устал от войны. Дом Старков может стать Хранителем Севера под рукой Железного трона — и сохранить lives.",
+    "rewardText": "+14 признания, +10 отношений со всеми, +2 влияния за ход; путь короля закрыт",
+    "requires": [
+      "stark_march"
+    ],
+    "exclusive": [
+      "stark_king"
+    ],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 14
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 10
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.15
+      },
+      {
+        "op": "flag",
+        "flag": "bent_knee"
+      }
+    ]
+  },
+  {
+    "id": "stark_winter",
+    "name": "Заготовить припасы",
+    "faction": "stark",
+    "branch": "economy",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Зима близко. Амбары и дровяные склады важнее золота.",
+    "rewardText": "+4 еды, +3 материалов",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "stark_hold",
+    "name": "Держать Север",
+    "faction": "stark",
+    "branch": "economy",
+    "x": 0,
+    "y": 2,
+    "turns": 4,
+    "description": "Каждый замок должен выстоять в осаду, каждый перевал — быть закрыт.",
+    "rewardText": "+2 к обороне, +5 к гарнизонам, −10% к беспорядкам, +10% к освоению",
+    "requires": [
+      "stark_winter"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "unrestGlobal.pct",
+        "value": -0.1
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 10
+      }
+    ]
+  },
+  {
+    "id": "stark_oldgods",
+    "name": "Старые боги",
+    "faction": "stark",
+    "branch": "faith",
+    "x": 1,
+    "y": 2,
+    "turns": 3,
+    "description": "Богороща и лица деревьев — вера Севера, которую не заменит ни один септон.",
+    "rewardText": "+2 веры, +10% к распространению веры, +3 к морали",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "stark_wall",
+    "name": "Щит Севера",
+    "faction": "stark",
+    "branch": "faith",
+    "x": 1,
+    "y": 3,
+    "turns": 4,
+    "description": "Стена — не граница королевства, а граница мира. Дозор получает людей и припасы.",
+    "rewardText": "+3 к обороне, +2 к защите осад, +8 отношений со всеми",
+    "requires": [
+      "stark_oldgods"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 2
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "id": "lannister_gold",
+    "name": "Золото течёт",
+    "faction": "lannister",
+    "branch": "economy",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Утёс Кастерли богаче всех. Вопрос лишь в том, куда направить поток.",
+    "rewardText": "+6 золота, +4 торгового господства",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "tradedominance",
+        "amount": 4
+      }
+    ]
+  },
+  {
+    "id": "lannister_debts",
+    "name": "Долги должны быть уплачены",
+    "faction": "lannister",
+    "branch": "economy",
+    "x": 0,
+    "y": 1,
+    "turns": 4,
+    "description": "Ланнистеры платят свои долги. И чужие — тоже, но по своим правилам.",
+    "rewardText": "+10% к доходу золота, −10% к стоимости построек, +2 влияния",
+    "requires": [
+      "lannister_gold"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome.pct",
+        "value": 0.1
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lannister_rock",
+    "name": "Утёс Кастерли",
+    "faction": "lannister",
+    "branch": "economy",
+    "x": 0,
+    "y": 2,
+    "turns": 4,
+    "description": "Сокровищница, вырубленная в скале, и стены, которые не брали ни драконы, ни боги.",
+    "rewardText": "Сокровищница в столице, +2 к обороне, +3 к защите осад",
+    "requires": [
+      "lannister_debts"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "treasury"
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "lannister_army",
+    "name": "Красные плащи",
+    "faction": "lannister",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Красный плащ — не тряпка, а знак того, что тебе платят больше всех.",
+    "rewardText": "Красные плащи в армию, +2 к обороне",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "red_cloaks",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lannister_throne",
+    "name": "Железный трон",
+    "faction": "lannister",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 4,
+    "description": "Трон принадлежит тому, у кого хватит золота купить всех остальных.",
+    "rewardText": "+15 признания, +2 влияния за ход",
+    "requires": [
+      "lannister_army"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lannister_intrigue",
+    "name": "Шептуны",
+    "faction": "lannister",
+    "branch": "intrigue",
+    "x": 3,
+    "y": 0,
+    "turns": 3,
+    "description": "Слова дешевле золота, но иногда стоят целых армий.",
+    "rewardText": "+2 к шпионажу, +1 к сети шептунов, −10% к стоимости лобби",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyNetwork",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "lobbyCost.pct",
+        "value": -0.1
+      }
+    ]
+  },
+  {
+    "id": "lannister_ruthless",
+    "name": "Уничтожить врагов",
+    "faction": "lannister",
+    "branch": "intrigue",
+    "x": 3,
+    "y": 1,
+    "turns": 4,
+    "description": "Милосердие — роскошь. Льву она не к лицу: врагов надо ломать, пока они не сломали вас.",
+    "rewardText": "+2 к шпионажу, +8 признания, но −10 отношений со всеми",
+    "requires": [
+      "lannister_intrigue"
+    ],
+    "exclusive": [
+      "lannister_mercy"
+    ],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "recognition",
+        "amount": 8
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -10
+      },
+      {
+        "op": "flag",
+        "flag": "ruthless_path"
+      }
+    ]
+  },
+  {
+    "id": "lannister_mercy",
+    "name": "Простить долги",
+    "faction": "lannister",
+    "branch": "intrigue",
+    "x": 3,
+    "y": 2,
+    "turns": 4,
+    "description": "Великодушие тоже оружие: должники помнят доброту дольше, чем страх.",
+    "rewardText": "+15 отношений со всеми, +2 влияния, +4 торгового господства",
+    "requires": [
+      "lannister_intrigue"
+    ],
+    "exclusive": [
+      "lannister_ruthless"
+    ],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "tradedominance",
+        "amount": 4
+      },
+      {
+        "op": "flag",
+        "flag": "mercy_path"
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_fleet",
+    "name": "Железный флот",
+    "faction": "greyjoy",
+    "branch": "navy",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Длинные корабли — дом железнорождённого. Без флота нет ни добычи, ни славы.",
+    "rewardText": "Верфь в столице, +4 к морской силе",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "shipyard"
+      },
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_reave",
+    "name": "Набеги",
+    "faction": "greyjoy",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Мы не сеем. Мы берём — и море уносит нас прежде, чем поднимется ополчение.",
+    "rewardText": "+20% к добыче, +150 золота, +100 материалов",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.2
+      },
+      {
+        "op": "resource",
+        "res": "gold",
+        "amount": 150
+      },
+      {
+        "op": "resource",
+        "res": "materials",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_kraken",
+    "name": "Кракен поднимается",
+    "faction": "greyjoy",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 4,
+    "description": "Пока зелёные лорды воюют за трон, железные люди воюют за всё остальное.",
+    "rewardText": "+2 к атаке, +2 к морской силе, +15% к добыче",
+    "requires": [
+      "greyjoy_reave"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.15
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_oldway",
+    "name": "Старый путь",
+    "faction": "greyjoy",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 5,
+    "description": "Старый путь — соль, сталь и рабы. Железнорождённые не склоняются перед зелёными.",
+    "rewardText": "+35% к добыче, +3 к атаке, но −12 отношений со всеми",
+    "requires": [
+      "greyjoy_kraken"
+    ],
+    "exclusive": [
+      "greyjoy_newway"
+    ],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.35
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -12
+      },
+      {
+        "op": "flag",
+        "flag": "old_way"
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_newway",
+    "name": "Новый путь",
+    "faction": "greyjoy",
+    "branch": "power",
+    "x": 2,
+    "y": 1,
+    "turns": 5,
+    "description": "Можно грабить берега. А можно построить флот, который будет торговать с ними — и брать больше.",
+    "rewardText": "+10 торгового господства, +6 золота, +12 отношений со всеми, −10% к стройке",
+    "requires": [
+      "greyjoy_kraken"
+    ],
+    "exclusive": [
+      "greyjoy_oldway"
+    ],
+    "effects": [
+      {
+        "op": "tradedominance",
+        "amount": 10
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 12
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "flag",
+        "flag": "new_way"
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_drowned",
+    "name": "Благословение Утонувшего",
+    "faction": "greyjoy",
+    "branch": "faith",
+    "x": 1,
+    "y": 1,
+    "turns": 3,
+    "description": "Утонувший Бог даёт смелость тем, кто не боится утонуть.",
+    "rewardText": "+3 веры, +5 к морали, отряд Утонувших",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 5
+      },
+      {
+        "op": "recruit",
+        "id": "drowned_men",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "id": "greyjoy_moot",
+    "name": "Вече на Старом Вике",
+    "faction": "greyjoy",
+    "branch": "faith",
+    "x": 2,
+    "y": 2,
+    "turns": 4,
+    "description": "Королей выбирают на вече. Пусть выберут вас — или пусть не выберут никого.",
+    "rewardText": "+3 влияния за ход, +1 голос, +10 признания",
+    "requires": [
+      "greyjoy_drowned"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "recognition",
+        "amount": 10
+      }
+    ]
+  },
+  {
+    "id": "martell_patience",
+    "name": "Терпение Дорана",
+    "faction": "martell",
+    "branch": "intrigue",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Дорн умеет ждать. Месть — блюдо, которое подают холодным.",
+    "rewardText": "+2 к контрразведке, +2 влияния, +10% к приросту признания",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "martell_vengeance",
+    "name": "Месть за Элию",
+    "faction": "martell",
+    "branch": "intrigue",
+    "x": 0,
+    "y": 1,
+    "turns": 4,
+    "description": "Элия и её дети не будут отомщены словами. Огонь и яд — вот язык Дорна.",
+    "rewardText": "+2 к шпионажу, +2 к атаке, но −8 отношений со всеми",
+    "requires": [
+      "martell_patience"
+    ],
+    "exclusive": [
+      "martell_peace"
+    ],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -8
+      },
+      {
+        "op": "flag",
+        "flag": "vengeance_path"
+      }
+    ]
+  },
+  {
+    "id": "martell_unbowed",
+    "name": "Непокорённый Дорн",
+    "faction": "martell",
+    "branch": "intrigue",
+    "x": 0,
+    "y": 2,
+    "turns": 5,
+    "description": "Дорн не покорился ни драконам, ни трону. Он не покорится и вам.",
+    "rewardText": "+3 к обороне, +3 к защите осад, +12 признания, +1 голос",
+    "requires": [
+      "martell_vengeance"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      },
+      {
+        "op": "recognition",
+        "amount": 12
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "martell_peace",
+    "name": "Мир с троном",
+    "faction": "martell",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Мир выгоднее мести: Дорн может торговать, а не хоронить сыновей.",
+    "rewardText": "+15 отношений со всеми, +10 признания, +5 торгового господства",
+    "requires": [
+      "martell_patience"
+    ],
+    "exclusive": [
+      "martell_vengeance"
+    ],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 15
+      },
+      {
+        "op": "recognition",
+        "amount": 10
+      },
+      {
+        "op": "tradedominance",
+        "amount": 5
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "flag",
+        "flag": "peace_path"
+      }
+    ]
+  },
+  {
+    "id": "martell_prosperity",
+    "name": "Цветущий Дорн",
+    "faction": "martell",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 2,
+    "turns": 4,
+    "description": "Вода в пустыне — золото. Торговля водой — власть.",
+    "rewardText": "+5 золота, +4 еды, +10% к освоению",
+    "requires": [
+      "martell_peace"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 10
+      }
+    ]
+  },
+  {
+    "id": "martell_water",
+    "name": "Вода — жизнь",
+    "faction": "martell",
+    "branch": "economy",
+    "x": 2,
+    "y": 0,
+    "turns": 3,
+    "description": "Кто держит источники, тот держит Дорн.",
+    "rewardText": "+6 еды, +8% к освоению",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 8
+      }
+    ]
+  },
+  {
+    "id": "martell_spears",
+    "name": "Копья Дорна",
+    "faction": "martell",
+    "branch": "power",
+    "x": 3,
+    "y": 0,
+    "turns": 3,
+    "description": "Дорнийское копьё легче рыцарского меча и бьёт первым.",
+    "rewardText": "Два отряда дорнийских копейщиков, +2 к обороне, +1 к движению",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "dornish_spears",
+        "count": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "movement",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "baratheon_banners",
+    "name": "Собрать бурю",
+    "faction": "baratheon",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Штормовые земли поднимутся за того, кто громче всех назовёт себя королём.",
+    "rewardText": "Штормовые рыцари в армию, +2 к атаке",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "storm_knights",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "baratheon_stormlords",
+    "name": "Штормовые лорды",
+    "faction": "baratheon",
+    "branch": "power",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Лорды идут за знаменем, а не за правом. Дайте им знамя.",
+    "rewardText": "+6 к морали, +2 к обороне, +1 влияния",
+    "requires": [
+      "baratheon_banners"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "baratheon_king",
+    "name": "Король Ренли",
+    "faction": "baratheon",
+    "branch": "power",
+    "x": 0,
+    "y": 2,
+    "turns": 5,
+    "description": "Ренли был красив, щедр и любим. Этого должно хватить, чтобы стать королём.",
+    "rewardText": "+18 признания, +2 голоса, +2 влияния",
+    "requires": [
+      "baratheon_stormlords"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 18
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "baratheon_heroism",
+    "name": "Рыцарская слава",
+    "faction": "baratheon",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 3,
+    "description": "Песни о храбрости стоят дороже золота. Пусть о вас поют в каждом трактире.",
+    "rewardText": "+2 к атаке, +20% к силе героев",
+    "requires": [
+      "baratheon_banners"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "baratheon_charm",
+    "name": "Обаяние короля",
+    "faction": "baratheon",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Улыбка и вино открывают ворота быстрее тарана.",
+    "rewardText": "+10 отношений со всеми, −15% к стоимости лобби, +2 влияния",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 10
+      },
+      {
+        "op": "modifier",
+        "key": "lobbyCost.pct",
+        "value": -0.15
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "baratheon_reach",
+    "name": "Союз с Простором",
+    "faction": "baratheon",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Брак с Тиреллами даёт хлеб, войска и законность — всё сразу.",
+    "rewardText": "+5 еды, +3 золота, +8 отношений со всеми",
+    "requires": [
+      "baratheon_charm"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 3
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "id": "baratheon_margaery",
+    "name": "Королева Маргери",
+    "faction": "baratheon",
+    "branch": "intrigue",
+    "x": 2,
+    "y": 1,
+    "turns": 4,
+    "description": "Королева, которую любят, стоит трёх армий. И она это знает.",
+    "rewardText": "+12 признания, +3 влияния, +1 голос",
+    "requires": [
+      "baratheon_reach"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 12
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "tyrell_harvest",
+    "name": "Жатва",
+    "faction": "tyrell",
+    "branch": "economy",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Простор кормит Вестерос. Тот, кто кормит, может диктовать условия.",
+    "rewardText": "+6 еды, +100 золота",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 6
+      },
+      {
+        "op": "resource",
+        "res": "gold",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "id": "tyrell_glory",
+    "name": "Слава Хайгардена",
+    "faction": "tyrell",
+    "branch": "economy",
+    "x": 0,
+    "y": 1,
+    "turns": 4,
+    "description": "Хайгарден — не просто замок, а сад, в котором зреют союзы.",
+    "rewardText": "+12% к освоению, +4 золота, −8% к стройке",
+    "requires": [
+      "tyrell_harvest"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 12
+      },
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.08
+      }
+    ]
+  },
+  {
+    "id": "tyrell_knights",
+    "name": "Рыцари Простора",
+    "faction": "tyrell",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 3,
+    "description": "Цвет рыцарства идёт за Тиреллами — не из любви, а из тщеславия.",
+    "rewardText": "Рыцари Простора в армию, +2 к атаке, +3 к морали",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "reach_knights",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "tyrell_marriage",
+    "name": "Королевский брак",
+    "faction": "tyrell",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Тиреллы не воюют за трон. Они в него вступают — через спальню.",
+    "rewardText": "+10 отношений со всеми, +2 влияния, +10% к признанию",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 10
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "tyrell_margaery",
+    "name": "Королева Маргери",
+    "faction": "tyrell",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Королева-роза умеет улыбаться так, что её враги сами пьют яд.",
+    "rewardText": "+15 признания, +1 голос, +2 влияния",
+    "requires": [
+      "tyrell_marriage"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "tyrell_court",
+    "name": "Тени сада",
+    "faction": "tyrell",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 2,
+    "turns": 4,
+    "description": "В саду Хайгардена даже шипы знают, где чьи тайны.",
+    "rewardText": "+2 к шпионажу, −15% к лобби, +8 признания",
+    "requires": [
+      "tyrell_margaery"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "lobbyCost.pct",
+        "value": -0.15
+      },
+      {
+        "op": "recognition",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "id": "tyrell_garden",
+    "name": "Сады Семерых",
+    "faction": "tyrell",
+    "branch": "faith",
+    "x": 3,
+    "y": 0,
+    "turns": 3,
+    "description": "Вера растёт в Просторе, как виноград: тихо и обильно.",
+    "rewardText": "Септа в столице, +3 веры, +10% к распространению веры",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "sept"
+      },
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "arryn_gates",
+    "name": "Закрыть Ворота",
+    "faction": "arryn",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Кровавые Врата узки. За ними — Долина, и в неё не войдёт никто.",
+    "rewardText": "+3 к обороне, +3 к защите осад",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "arryn_knights",
+    "name": "Собрать рыцарей",
+    "faction": "arryn",
+    "branch": "power",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Рыцари Долины не спешат на войну. Но если позвать — придут все.",
+    "rewardText": "Рыцари Долины в армию, +2 к атаке",
+    "requires": [
+      "arryn_gates"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "vale_knights",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "arryn_mountains",
+    "name": "Горные кланы",
+    "faction": "arryn",
+    "branch": "power",
+    "x": 0,
+    "y": 2,
+    "turns": 3,
+    "description": "Горцы грабят путников. Пусть грабят чужих — для этого их надо нанять.",
+    "rewardText": "+1 к движению, +2 к обороне, +5 к гарнизонам",
+    "requires": [
+      "arryn_gates"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "movement",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "arryn_intrigue",
+    "name": "Соколы и мыши",
+    "faction": "arryn",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Долина тиха. Но тишина — лучший друг тех, кто слушает.",
+    "rewardText": "+2 к контрразведке, +1 к шпионажу, +1 к сети шептунов",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "spyNetwork",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "arryn_littlefinger",
+    "name": "Сделка с Мизинцем",
+    "faction": "arryn",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Мизинец продаст кого угодно. Вопрос лишь в цене — и в том, кто заплатит первым.",
+    "rewardText": "+6 золота, +3 влияния, +8 признания, но −6 отношений со всеми",
+    "requires": [
+      "arryn_intrigue"
+    ],
+    "exclusive": [
+      "arryn_honor"
+    ],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 3
+      },
+      {
+        "op": "recognition",
+        "amount": 8
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -6
+      },
+      {
+        "op": "flag",
+        "flag": "littlefinger_path"
+      }
+    ]
+  },
+  {
+    "id": "arryn_honor",
+    "name": "Честь Долины",
+    "faction": "arryn",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 2,
+    "turns": 4,
+    "description": "Джон Аррен был честен — и умер. Но честность всё ещё чего-то стоит.",
+    "rewardText": "+15 отношений со всеми, +10 признания, +2 к обороне",
+    "requires": [
+      "arryn_intrigue"
+    ],
+    "exclusive": [
+      "arryn_littlefinger"
+    ],
+    "effects": [
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 15
+      },
+      {
+        "op": "recognition",
+        "amount": 10
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "op": "flag",
+        "flag": "honor_path"
+      }
+    ]
+  },
+  {
+    "id": "arryn_neutral",
+    "name": "Нейтралитет",
+    "faction": "arryn",
+    "branch": "economy",
+    "x": 2,
+    "y": 0,
+    "turns": 3,
+    "description": "Долина может переждать войну, торгуя с обеими сторонами.",
+    "rewardText": "+5 золота, +8 отношений со всеми, +3 торгового господства",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 5
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 8
+      },
+      {
+        "op": "tradedominance",
+        "amount": 3
+      }
+    ]
+  },
+  {
+    "id": "durrandon_storm",
+    "name": "Призвать бурю",
+    "faction": "durrandon",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Штормовые короли рождались в грозу и умирали с мечом в руке.",
+    "rewardText": "+3 к атаке, +3 к морали",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "durrandon_axemen",
+    "name": "Топорники",
+    "faction": "durrandon",
+    "branch": "power",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Топор не требует рыцарского посвящения. Он просто рубит.",
+    "rewardText": "Два отряда топорников, +1 к атаке",
+    "requires": [
+      "durrandon_storm"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "storm_axemen",
+        "count": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "durrandon_last",
+    "name": "Последний рубеж",
+    "faction": "durrandon",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 4,
+    "description": "Аргелла защищала Штормовой Предел до последнего. Дом Дюррандонов поступит так же.",
+    "rewardText": "+3 к обороне, +3 к защите осад, +5 к гарнизонам",
+    "requires": [
+      "durrandon_storm"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "garrisonBonus",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "durrandon_argella",
+    "name": "Наследие Аргеллы",
+    "faction": "durrandon",
+    "branch": "intrigue",
+    "x": 2,
+    "y": 0,
+    "turns": 4,
+    "description": "Женщина на троне Штормовых земель — не слабость, а расчёт.",
+    "rewardText": "+2 влияния, +15% к признанию, +8 отношений со всеми",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.15
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 8
+      }
+    ]
+  },
+  {
+    "id": "durrandon_marches",
+    "name": "Дорнийские марки",
+    "faction": "durrandon",
+    "branch": "economy",
+    "x": 1,
+    "y": 1,
+    "turns": 3,
+    "description": "Марки — щит Штормовых земель и вечная головная боль.",
+    "rewardText": "+3 еды, +3 материалов, +1 к обороне",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "durrandon_stormlands",
+    "name": "Штормовые земли",
+    "faction": "durrandon",
+    "branch": "economy",
+    "x": 1,
+    "y": 2,
+    "turns": 4,
+    "description": "Земля, политая дождём, кормит тех, кто умеет ждать.",
+    "rewardText": "+4 золота, +8% к освоению",
+    "requires": [
+      "durrandon_marches"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 8
+      }
+    ]
+  },
+  {
+    "id": "gardener_greenhand",
+    "name": "Дар Зелёной Руки",
+    "faction": "gardener",
+    "branch": "economy",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Зелёная Рука касалась земли — и та расцветала. Простор помнит.",
+    "rewardText": "+6 еды, +1 к размеру ополчения",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "gardener_harvest",
+    "name": "Тучные годы",
+    "faction": "gardener",
+    "branch": "economy",
+    "x": 0,
+    "y": 1,
+    "turns": 4,
+    "description": "Амбары ломятся, а значит, можно кормить армии дольше всех.",
+    "rewardText": "+4 золота, +10% к освоению, +3 еды",
+    "requires": [
+      "gardener_greenhand"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 10
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "gardener_knights",
+    "name": "Рыцари короля",
+    "faction": "gardener",
+    "branch": "power",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Рыцари Зелёной Руки служат королю Простора, а не трону.",
+    "rewardText": "Рыцари Зелёной Руки в армию, +2 к атаке",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "greenhand_knights",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "gardener_banners",
+    "name": "Знамёна Простора",
+    "faction": "gardener",
+    "branch": "power",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Каждый лорд Простора выставит людей — если знамя поднято вовремя.",
+    "rewardText": "+1 к размеру ополчения, −10% к найму, +4 к морали",
+    "requires": [
+      "gardener_knights"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "recruitCost.pct",
+        "value": -0.1
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "gardener_lastking",
+    "name": "Последний король Простора",
+    "faction": "gardener",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 5,
+    "description": "Мерн Гарденер погиб, не склонив колена. Дом Гарденеров может выбрать иначе — или так же.",
+    "rewardText": "+15 признания, +1 голос, +2 к обороне",
+    "requires": [
+      "gardener_knights"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "gardener_oldtown",
+    "name": "Старомест",
+    "faction": "gardener",
+    "branch": "faith",
+    "x": 0,
+    "y": 2,
+    "turns": 3,
+    "description": "Старомест — сердце Веры и цитадель мейстеров. Кто держит его, держит слово.",
+    "rewardText": "Септа в столице, +3 веры, +1 влияния",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "sept"
+      },
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "hoare_harrenhal",
+    "name": "Харренхол",
+    "faction": "hoare",
+    "branch": "economy",
+    "x": 0,
+    "y": 0,
+    "turns": 4,
+    "description": "Харренхол — самая большая крепость Вестероса. И самая проклятая.",
+    "rewardText": "−15% к стройке, +5 материалов",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "buildCost.pct",
+        "value": -0.15
+      },
+      {
+        "op": "modifier",
+        "key": "materialsIncome",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "hoare_reavers",
+    "name": "Разорители",
+    "faction": "hoare",
+    "branch": "power",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Железные люди берут то, что не могут вырастить.",
+    "rewardText": "Разоритель в армию, +25% к добыче, +1 к атаке",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "iron_reavers",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "raidLoot",
+        "value": 0.25
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "hoare_rivers",
+    "name": "Речные земли",
+    "faction": "hoare",
+    "branch": "economy",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Реки кормят, поят и перевозят. Если не бунтуют.",
+    "rewardText": "+5 золота, +4 еды, +8% к освоению",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 5
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "growthBonus",
+        "value": 8
+      }
+    ]
+  },
+  {
+    "id": "hoare_fleet",
+    "name": "Флот Харрена",
+    "faction": "hoare",
+    "branch": "navy",
+    "x": 0,
+    "y": 2,
+    "turns": 3,
+    "description": "Харрен построил не только замок. Его флот должен был затмить всё.",
+    "rewardText": "Верфь в столице, +4 к морской силе",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "shipyard"
+      },
+      {
+        "op": "modifier",
+        "key": "navalPower",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "hoare_fear",
+    "name": "Правление страхом",
+    "faction": "hoare",
+    "branch": "intrigue",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Речные лорды подчиняются, пока боятся. Страх — тоже налог.",
+    "rewardText": "+2 влияния, +1 к шпионажу, +6 признания",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 1
+      },
+      {
+        "op": "recognition",
+        "amount": 6
+      }
+    ]
+  },
+  {
+    "id": "hoare_ironking",
+    "name": "Железный король",
+    "faction": "hoare",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 5,
+    "description": "Король на Железном троне должен быть железным. Иначе его сломают.",
+    "rewardText": "+15 признания, +2 к атаке, +1 к размеру ополчения",
+    "requires": [
+      "hoare_fear"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "nightswatch_wall",
+    "name": "Укрепить Стену",
+    "faction": "nightswatch",
+    "branch": "defense",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Стена стоит, пока стоит хоть один её камень. И пока есть кому его положить.",
+    "rewardText": "+3 к обороне, +4 к защите осад",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "siegeDefense",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "nightswatch_oldbear",
+    "name": "Старый Медведь",
+    "faction": "nightswatch",
+    "branch": "defense",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Мормонт знал Стену лучше, чем собственный замок.",
+    "rewardText": "+20% к силе героев, +1 к обороне",
+    "requires": [
+      "nightswatch_wall"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "heroPower",
+        "value": 0.2
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "nightswatch_rangers",
+    "name": "Дальняя разведка",
+    "faction": "nightswatch",
+    "branch": "power",
+    "x": 2,
+    "y": 0,
+    "turns": 4,
+    "description": "Разведчики уходят за Стену и возвращаются с вестями. Не все.",
+    "rewardText": "Два разведчика, +1 к движению, +2 к контрразведке",
+    "requires": [
+      "nightswatch_wall"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "rangers",
+        "count": 2
+      },
+      {
+        "op": "modifier",
+        "key": "movement",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "spyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "nightswatch_steel",
+    "name": "Дозорная сталь",
+    "faction": "nightswatch",
+    "branch": "power",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "У Дозора нет золота, есть только сталь и клятва.",
+    "rewardText": "+2 к атаке, +4 к морали",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "nightswatch_wildlings",
+    "name": "Принять одичалых",
+    "faction": "nightswatch",
+    "branch": "economy",
+    "x": 4,
+    "y": 0,
+    "turns": 4,
+    "description": "Одичалые не враги. Они люди, которым некуда идти, кроме как за Стену.",
+    "rewardText": "+1 к размеру ополчения, +3 еды, +100 золота",
+    "requires": [
+      "nightswatch_rangers"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "levySize",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 3
+      },
+      {
+        "op": "resource",
+        "res": "gold",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "id": "stannis_claim",
+    "name": "Право по крови",
+    "faction": "stannis",
+    "branch": "power",
+    "x": 0,
+    "y": 0,
+    "turns": 3,
+    "description": "Роберт был королём. Станнис — его наследник. Остальное — узурпация.",
+    "rewardText": "+12 признания, +1 голос, +1 к атаке",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 12
+      },
+      {
+        "op": "modifier",
+        "key": "votePower",
+        "value": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "stannis_stormlords",
+    "name": "Штормовые лорды",
+    "faction": "stannis",
+    "branch": "power",
+    "x": 0,
+    "y": 1,
+    "turns": 3,
+    "description": "Штормовые земли должны помнить, кому присягали.",
+    "rewardText": "Штормовые рыцари в армию, +2 к обороне",
+    "requires": [
+      "stannis_claim"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recruit",
+        "id": "storm_knights",
+        "count": 1
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "stannis_north",
+    "name": "Север помнит",
+    "faction": "stannis",
+    "branch": "power",
+    "x": 0,
+    "y": 2,
+    "turns": 4,
+    "description": "Север присягнёт тому, кто защитит его от мертвецов и людей.",
+    "rewardText": "+1 к движению, +8 отношений со всеми, +2 к обороне",
+    "requires": [
+      "stannis_stormlords"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "movement",
+        "value": 1
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 8
+      },
+      {
+        "op": "modifier",
+        "key": "armyDefense",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "stannis_light",
+    "name": "Владыка Света",
+    "faction": "stannis",
+    "branch": "faith",
+    "x": 1,
+    "y": 0,
+    "turns": 3,
+    "description": "Рглор — не добрый бог. Но он даёт свет тем, кто идёт в темноту.",
+    "rewardText": "+4 веры, +6 к морали, +10% к распространению веры",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "pietyIncome",
+        "value": 4
+      },
+      {
+        "op": "modifier",
+        "key": "armyMorale",
+        "value": 6
+      },
+      {
+        "op": "modifier",
+        "key": "faithSpread",
+        "value": 0.1
+      }
+    ]
+  },
+  {
+    "id": "stannis_redwoman",
+    "name": "Красная жрица",
+    "faction": "stannis",
+    "branch": "faith",
+    "x": 1,
+    "y": 1,
+    "turns": 4,
+    "description": "Мелисандра видит в огне королей и мертвецов. Её слово стоит армии.",
+    "rewardText": "Храм Рглора в столице, +2 к атаке, +1 к шпионажу, но −8 отношений со всеми",
+    "requires": [
+      "stannis_light"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "capitalbuilding",
+        "id": "fire_temple"
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 2
+      },
+      {
+        "op": "modifier",
+        "key": "spyOffense",
+        "value": 1
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": -8
+      }
+    ]
+  },
+  {
+    "id": "stannis_azor",
+    "name": "Азор Ахай",
+    "faction": "stannis",
+    "branch": "faith",
+    "x": 1,
+    "y": 2,
+    "turns": 5,
+    "description": "Легенда говорит: герой вернётся с горящим мечом. Пусть легенда указывает на вас.",
+    "rewardText": "+15 признания, +3 к атаке, +20% к приросту признания",
+    "requires": [
+      "stannis_redwoman"
+    ],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "recognition",
+        "amount": 15
+      },
+      {
+        "op": "modifier",
+        "key": "armyAttack",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "recognitionGain",
+        "value": 0.2
+      }
+    ]
+  },
+  {
+    "id": "stannis_davos",
+    "name": "Луковый рыцарь",
+    "faction": "stannis",
+    "branch": "intrigue",
+    "x": 2,
+    "y": 0,
+    "turns": 3,
+    "description": "Давос не умеет читать, но умеет считать людей. Иногда это важнее.",
+    "rewardText": "+3 золота, +3 еды, +6 отношений со всеми",
+    "requires": [],
+    "exclusive": [],
+    "effects": [
+      {
+        "op": "modifier",
+        "key": "goldIncome",
+        "value": 3
+      },
+      {
+        "op": "modifier",
+        "key": "foodIncome",
+        "value": 3
+      },
+      {
+        "op": "relation",
+        "target": "all",
+        "amount": 6
+      }
+    ]
+  }
+]

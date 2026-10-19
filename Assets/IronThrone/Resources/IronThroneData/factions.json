@@ -1,0 +1,1672 @@
+[
+  {
+    "id": "conquest_targaryen",
+    "era": "conquest",
+    "house": "targaryen",
+    "name": "Дом Таргариенов",
+    "shortName": "Таргариены",
+    "color": "#8d1f2b",
+    "leaderName": "Эйгон I Таргариен",
+    "leaderTitle": "Король Вестероса",
+    "leaderHero": "aegon",
+    "heirHero": "visenya",
+    "extraHeroes": [
+      "rhaenys"
+    ],
+    "capital": "dragonstone",
+    "ownedRegions": [],
+    "extraProvinces": [
+      "dragonstone"
+    ],
+    "priority": 20,
+    "vassalHouses": [
+      "velaryon",
+      "sunglass",
+      "baratheon"
+    ],
+    "faith": "valyrian",
+    "playable": true,
+    "difficulty": 1,
+    "bonuses": [
+      {
+        "key": "dragonPower",
+        "value": 0.25,
+        "description": "Драконы Старой Валирии"
+      },
+      {
+        "key": "armyAttack",
+        "value": 2,
+        "description": "Огненная тактика"
+      },
+      {
+        "key": "buildCost.pct",
+        "value": 0.05,
+        "description": "Чужой камень"
+      },
+      {
+        "key": "influenceIncome",
+        "value": 1,
+        "description": "Столица за морем"
+      }
+    ],
+    "traits": [
+      "dragon",
+      "conquest"
+    ],
+    "techTree": "targaryen",
+    "focusTree": "targaryen",
+    "advisorPool": [
+      "adv_orys",
+      "adv_valyrian_scribe",
+      "adv_maester",
+      "adv_captain"
+    ],
+    "startArmies": [
+      "Балерион|men_at_arms*2,archers*2,dragon_balerion*1",
+      "Войско Висеньи|spearmen*2,knights*2,dragon_vhagar*1",
+      "Войско Рейнис|longbowmen*2,light_cavalry*2,dragon_meraxes*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "fire_temple",
+      "port"
+    ],
+    "startResources": {
+      "gold": 480,
+      "materials": 220,
+      "food": 170,
+      "influence": 40,
+      "piety": 30
+    },
+    "availableLaws": [
+      "law_dragon_rule",
+      "law_fire_and_blood",
+      "law_royal_decrees",
+      "law_golden_treasury"
+    ],
+    "description": "Три дракона против семи королевств. Дом Таргариенов начинает с одним островом, но с силой, которой в Вестеросе ещё не видели.",
+    "uniqueMechanicName": "Драконы",
+    "uniqueMechanicText": "Драконьи отряды бьют по площади и невосприимчивы к обычным стенам: осада крепости с драконом — вопрос одного хода."
+  },
+  {
+    "id": "conquest_stark",
+    "era": "conquest",
+    "house": "stark",
+    "name": "Королевство Севера",
+    "shortName": "Старки",
+    "color": "#8aa9bd",
+    "leaderName": "Торрхен Старк",
+    "leaderTitle": "Король Севера",
+    "leaderHero": "torrhen_stark",
+    "heirHero": "brandon_snow",
+    "extraHeroes": [
+      "rickard_stark_c"
+    ],
+    "capital": "winterfell",
+    "ownedRegions": [
+      "north"
+    ],
+    "priority": 25,
+    "vassalHouses": [
+      "manderly",
+      "bolton",
+      "karstark",
+      "umber",
+      "glover",
+      "mormont",
+      "dustin",
+      "hornwood"
+    ],
+    "faith": "oldgods",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 2,
+        "description": "Суровая дисциплина"
+      },
+      {
+        "key": "foodIncome.pct",
+        "value": -0.1,
+        "description": "Короткое лето"
+      },
+      {
+        "key": "researchSpeed",
+        "value": 1,
+        "description": "Старые знания"
+      },
+      {
+        "key": "unrestGlobal.pct",
+        "value": -0.1,
+        "description": "Покорный Север"
+      }
+    ],
+    "traits": [
+      "defense",
+      "honor"
+    ],
+    "techTree": "stark",
+    "focusTree": "stark",
+    "advisorPool": [
+      "adv_northern_lord",
+      "adv_maester",
+      "adv_captain",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Строй Севера|men_at_arms*2,northern_infantry*2,archers*2",
+      "Лютоволки|direwolves*2,light_cavalry*1,levy*2",
+      "Молот Зимы|northern_infantry*3,spearmen*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "godswood",
+      "barracks"
+    ],
+    "startResources": {
+      "gold": 390,
+      "materials": 260,
+      "food": 210,
+      "influence": 26,
+      "piety": 20
+    },
+    "availableLaws": [
+      "law_northern_levy",
+      "law_king_in_the_north",
+      "law_old_gods"
+    ],
+    "description": "Последнее из старых королевств, чьи короли помнят Долгую ночь. Торрхен стоит перед выбором: сгореть или преклонить колено.",
+    "uniqueMechanicName": "Север помнит",
+    "uniqueMechanicText": "Лютоволки и Старые боги: +2 к обороне в снегах и лесах, а недовольство в северных землях растёт медленнее."
+  },
+  {
+    "id": "conquest_arryn",
+    "era": "conquest",
+    "house": "arryn",
+    "name": "Королевство Орлиного гнезда",
+    "shortName": "Аррены",
+    "color": "#5f8fc1",
+    "leaderName": "Роннел Аррен",
+    "leaderTitle": "Король Горы и Долины",
+    "leaderHero": "ronnel_arryn",
+    "heirHero": "sharra_arryn",
+    "extraHeroes": [
+      "yohn_royce_c"
+    ],
+    "capital": "eyrie",
+    "ownedRegions": [
+      "vale"
+    ],
+    "priority": 22,
+    "vassalHouses": [
+      "grafton",
+      "royce",
+      "waynwood",
+      "redfort",
+      "belmore",
+      "corbray",
+      "hunter",
+      "sunderland"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 1,
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 3,
+        "description": "Кровавые Врата"
+      },
+      {
+        "key": "siegeDefense",
+        "value": 2,
+        "description": "Неприступность"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": -0.05,
+        "description": "Горные дороги"
+      }
+    ],
+    "traits": [
+      "defense",
+      "diplomacy"
+    ],
+    "techTree": "arryn",
+    "focusTree": "arryn",
+    "advisorPool": [
+      "adv_valley_lord",
+      "adv_maester",
+      "adv_septon",
+      "adv_captain"
+    ],
+    "startArmies": [
+      "Рыцари Долины|knights*2,vale_knights*2,archers*1",
+      "Горные лучники|mountain_archers*3,spearmen*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "sept",
+      "watchtower"
+    ],
+    "startResources": {
+      "gold": 360,
+      "materials": 230,
+      "food": 170,
+      "influence": 28,
+      "piety": 24
+    },
+    "availableLaws": [
+      "law_knights_of_vale",
+      "law_chivalry",
+      "law_mountain_pass"
+    ],
+    "description": "Долина Арренов не пала ни разу за тысячи лет. Пока внизу горит Вестерос, здесь считают, что стены сделаны не зря.",
+    "uniqueMechanicName": "Кровавые Врата",
+    "uniqueMechanicText": "Оборона в горах и ущельях усилена, а штурм Орлиного гнезда требует вдвое больше сил."
+  },
+  {
+    "id": "conquest_hoare",
+    "era": "conquest",
+    "house": "hoare",
+    "name": "Королевство островов и рек",
+    "shortName": "Хоары",
+    "color": "#4a6b72",
+    "leaderName": "Харрен Чёрный",
+    "leaderTitle": "Король островов и рек",
+    "leaderHero": "harren_hoare",
+    "heirHero": "harren_son",
+    "extraHeroes": [
+      "the_drowned_priest"
+    ],
+    "capital": "harrenhal",
+    "ownedRegions": [
+      "islands",
+      "riverlands"
+    ],
+    "priority": 24,
+    "vassalHouses": [
+      "greyjoy",
+      "goodbrother",
+      "wyk",
+      "harlaw",
+      "blacktyde",
+      "saltcliffe",
+      "tully",
+      "strong",
+      "frey",
+      "mallister",
+      "mooton",
+      "piper",
+      "blackwood",
+      "bracken",
+      "darry",
+      "roote"
+    ],
+    "faith": "drowned",
+    "playable": true,
+    "difficulty": 4,
+    "bonuses": [
+      {
+        "key": "navalPower",
+        "value": 3,
+        "description": "Железный флот"
+      },
+      {
+        "key": "raidLoot",
+        "value": 0.25,
+        "description": "Соль и железо"
+      },
+      {
+        "key": "unrestGlobal.pct",
+        "value": 0.2,
+        "description": "Порабощённые реки"
+      },
+      {
+        "key": "buildCost.pct",
+        "value": -0.15,
+        "description": "Рука Харрена"
+      }
+    ],
+    "traits": [
+      "war",
+      "raid"
+    ],
+    "techTree": "hoare",
+    "focusTree": "hoare",
+    "advisorPool": [
+      "adv_drowned_priest",
+      "adv_captain",
+      "adv_maester",
+      "adv_spymaster"
+    ],
+    "startArmies": [
+      "Гарнизон Харренхолла|iron_reavers*4,men_at_arms*2",
+      "Железный прилив|raiders*3,iron_reavers*2",
+      "Речная плеть|spearmen*3,archers*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "drowned_shrine",
+      "great_hall"
+    ],
+    "startResources": {
+      "gold": 390,
+      "materials": 300,
+      "food": 140,
+      "influence": 22,
+      "piety": 26
+    },
+    "availableLaws": [
+      "law_iron_price",
+      "law_iron_fleet",
+      "law_river_submission",
+      "law_salt_wife"
+    ],
+    "description": "Харрен построил величайшую крепость Вестероса из камня и рабского труда. Теперь он удерживает Речные земли — и ждёт драконов.",
+    "uniqueMechanicName": "Железная власть",
+    "uniqueMechanicText": "Речные земли поднимают мятежи, но дают больше ресурсов; Харренхолл невозможно взять обычной осадой."
+  },
+  {
+    "id": "conquest_lannister",
+    "era": "conquest",
+    "house": "lannister",
+    "name": "Королевство Утёса",
+    "shortName": "Ланнистеры",
+    "color": "#b8862d",
+    "leaderName": "Лорен I Ланнистер",
+    "leaderTitle": "Король Утёса",
+    "leaderHero": "loren_lannister",
+    "heirHero": "lannister_heir_c",
+    "extraHeroes": [
+      "reyne_lord"
+    ],
+    "capital": "casterly",
+    "ownedRegions": [
+      "westerlands"
+    ],
+    "priority": 23,
+    "vassalHouses": [
+      "lefford",
+      "marbrand",
+      "crakehall",
+      "banefort",
+      "serrett",
+      "farman",
+      "swyft",
+      "brax",
+      "deep_den"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "goldIncome.pct",
+        "value": 0.35,
+        "description": "Золото Кастерли"
+      },
+      {
+        "key": "buildCost.pct",
+        "value": -0.1,
+        "description": "Долги платят другие"
+      },
+      {
+        "key": "spyOffense",
+        "value": 1,
+        "description": "Купленные клинки"
+      },
+      {
+        "key": "upkeep.pct",
+        "value": 0.2,
+        "description": "Золотая гвардия: содержание войск дороже"
+      },
+      {
+        "key": "recruitCost.pct",
+        "value": 0.1,
+        "description": "Лучшее снаряжение стоит дорого"
+      }
+    ],
+    "traits": [
+      "trade",
+      "intrigue"
+    ],
+    "techTree": "lannister",
+    "focusTree": "lannister",
+    "advisorPool": [
+      "adv_golden_lord",
+      "adv_trader",
+      "adv_maester",
+      "adv_captain"
+    ],
+    "startArmies": [
+      "Львиная гвардия|red_cloaks*3,men_at_arms*2,knights*1",
+      "Западный клин|westerland_knights*2,light_cavalry*2,archers*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "mine",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 520,
+      "materials": 250,
+      "food": 170,
+      "influence": 30,
+      "piety": 22
+    },
+    "availableLaws": [
+      "law_golden_treasury",
+      "law_feudal_contract",
+      "law_royal_decrees"
+    ],
+    "description": "Ланнистеры платят свои долги — и чужие тоже, если те выгодны. Их золото купит армию, а их армия добудет золото.",
+    "uniqueMechanicName": "Золото Утёса",
+    "uniqueMechanicText": "Каждый порт и рынок приносит больше золота, а стоимость строительства ниже: экономическая победа ближе, чем кажется. Войска Запада сильнее, но их содержание заметно дороже."
+  },
+  {
+    "id": "conquest_gardener",
+    "era": "conquest",
+    "house": "gardener",
+    "name": "Королевство Простора",
+    "shortName": "Гарднеры",
+    "color": "#4f7f42",
+    "leaderName": "Мерн IX Гарднер",
+    "leaderTitle": "Король Простора",
+    "leaderHero": "mern_gardener",
+    "heirHero": "gardener_prince",
+    "extraHeroes": [
+      "hightower_lord"
+    ],
+    "capital": "highgarden",
+    "ownedRegions": [
+      "reach"
+    ],
+    "priority": 21,
+    "vassalHouses": [
+      "tyrell",
+      "hightower",
+      "tarly",
+      "redwyne",
+      "florent",
+      "cobb",
+      "footly",
+      "ashford",
+      "oakheart",
+      "bulwer",
+      "cuy",
+      "merryweather",
+      "beesbury",
+      "rowan",
+      "ball",
+      "crane"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "foodIncome.pct",
+        "value": 0.3,
+        "description": "Житница Вестероса"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": 0.1,
+        "description": "Торговля Мандера"
+      },
+      {
+        "key": "levySize",
+        "value": 1,
+        "description": "Многолюдный край"
+      }
+    ],
+    "traits": [
+      "economy",
+      "levy"
+    ],
+    "techTree": "gardener",
+    "focusTree": "gardener",
+    "advisorPool": [
+      "adv_reach_lord",
+      "adv_trader",
+      "adv_septon",
+      "adv_maester"
+    ],
+    "startArmies": [
+      "Цвет Простора|greenhand_knights*2,knights*2,spearmen*2",
+      "Ополчение Мандера|levy*3,longbowmen*2,light_cavalry*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "granary",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 360,
+      "materials": 210,
+      "food": 280,
+      "influence": 26,
+      "piety": 24
+    },
+    "availableLaws": [
+      "law_chivalry",
+      "law_harvest_levy",
+      "law_great_alliance"
+    ],
+    "description": "Простор кормит Вестерос. Его короли не любят воевать, но их поля способны выставить армию, которой хватит на всех.",
+    "uniqueMechanicName": "Житница",
+    "uniqueMechanicText": "Продовольствие приносит дополнительный доход, а найм и восполнение потерь обходятся дешевле."
+  },
+  {
+    "id": "conquest_durrandon",
+    "era": "conquest",
+    "house": "durrandon",
+    "name": "Королевство Штормов",
+    "shortName": "Дюррандоны",
+    "color": "#a6822f",
+    "leaderName": "Аргилак Наглый",
+    "leaderTitle": "Король Шторма",
+    "leaderHero": "argilac",
+    "heirHero": "argella",
+    "extraHeroes": [
+      "durrandon_son"
+    ],
+    "capital": "storms_end",
+    "ownedRegions": [
+      "stormlands"
+    ],
+    "priority": 19,
+    "vassalHouses": [
+      "connington",
+      "morrigen",
+      "caron",
+      "dondarrion",
+      "tarth",
+      "swann",
+      "grandison",
+      "fell",
+      "estermont"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 3,
+    "bonuses": [
+      {
+        "key": "armyAttack",
+        "value": 2,
+        "description": "Штормовые клинки"
+      },
+      {
+        "key": "armyMorale",
+        "value": 5,
+        "description": "Ярость Дюррандонов"
+      },
+      {
+        "key": "siegeDefense",
+        "value": 1,
+        "description": "Стены Штормового Предела"
+      }
+    ],
+    "traits": [
+      "war",
+      "honor"
+    ],
+    "techTree": "durrandon",
+    "focusTree": "durrandon",
+    "advisorPool": [
+      "adv_storm_lord",
+      "adv_captain",
+      "adv_maester",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Штормовая гвардия|storm_axemen*3,men_at_arms*2,archers*1",
+      "Конница Штормов|knights*2,light_cavalry*2,levy*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "barracks",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 330,
+      "materials": 230,
+      "food": 180,
+      "influence": 26,
+      "piety": 22
+    },
+    "availableLaws": [
+      "law_storm_banners",
+      "law_standing_army",
+      "law_chivalry"
+    ],
+    "description": "Штормовые короли воюют с тех пор, как помнят люди. Аргилак отказал Таргариенам — и это решение определит судьбу дома.",
+    "uniqueMechanicName": "Наглость Шторма",
+    "uniqueMechanicText": "Войска дешевле содержать во время войны, но мирные договоры дают меньше влияния."
+  },
+  {
+    "id": "conquest_martell",
+    "era": "conquest",
+    "house": "martell",
+    "name": "Дорн",
+    "shortName": "Мартеллы",
+    "color": "#b25a2a",
+    "leaderName": "Мерия Мартелл",
+    "leaderTitle": "Принцесса Дорна",
+    "leaderHero": "meria_martell",
+    "heirHero": "nymor_martell",
+    "extraHeroes": [
+      "dornish_guard"
+    ],
+    "capital": "sunspear",
+    "ownedRegions": [
+      "dorne"
+    ],
+    "priority": 18,
+    "vassalHouses": [
+      "yronwood",
+      "dayne",
+      "fowler",
+      "uller",
+      "allyrion",
+      "vaith",
+      "dalt",
+      "qorgyle",
+      "gargalen",
+      "toland"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 4,
+    "bonuses": [
+      {
+        "key": "armyMove",
+        "value": 1,
+        "description": "Дорнийские перевалы"
+      },
+      {
+        "key": "armyDefense",
+        "value": 1,
+        "description": "Война в песках"
+      },
+      {
+        "key": "foodIncome.pct",
+        "value": -0.15,
+        "description": "Пустыня"
+      },
+      {
+        "key": "recoveryCost.pct",
+        "value": -0.15,
+        "description": "Своя земля"
+      }
+    ],
+    "traits": [
+      "guerrilla",
+      "defense"
+    ],
+    "techTree": "martell",
+    "focusTree": "martell",
+    "advisorPool": [
+      "adv_dornish_lord",
+      "adv_maester",
+      "adv_captain",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Копья Дорна|dornish_spears*3,men_at_arms*2",
+      "Песчаные всадники|sand_riders*3,light_cavalry*1,archers*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "watchtower",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 340,
+      "materials": 200,
+      "food": 140,
+      "influence": 26,
+      "piety": 22
+    },
+    "availableLaws": [
+      "law_dornish_independence",
+      "law_water_gardens",
+      "law_sand_snakes"
+    ],
+    "description": "Дорн не покорился ни андалам, ни драконам. Пустыня — его стена, а упрямство — его армия.",
+    "uniqueMechanicName": "Непокорённый Дорн",
+    "uniqueMechanicText": "Враг платит двойную цену за каждый ход в песках, а восполнение потерь на своей земле дешевле."
+  },
+  {
+    "id": "conquest_nightswatch",
+    "era": "conquest",
+    "house": "nightswatch",
+    "name": "Ночной Дозор",
+    "shortName": "Дозор",
+    "color": "#5a6b78",
+    "leaderName": "Лорд-командующий",
+    "leaderTitle": "Лорд-командующий",
+    "leaderHero": "nw_commander_conquest",
+    "capital": "castle_black",
+    "ownedRegions": [
+      "wall"
+    ],
+    "vassalHouses": [],
+    "faith": "oldgods",
+    "playable": false,
+    "difficulty": 5,
+    "priority": 10,
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 4,
+        "description": "Стена"
+      },
+      {
+        "key": "siegeDefense",
+        "value": 4,
+        "description": "Ледяная стена"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": -0.35,
+        "description": "Нищие земли"
+      }
+    ],
+    "traits": [
+      "defense"
+    ],
+    "techTree": "nightswatch",
+    "focusTree": "nightswatch",
+    "advisorPool": [
+      "adv_maester",
+      "adv_captain",
+      "adv_ranger",
+      "adv_builder"
+    ],
+    "startArmies": [
+      "Дозор у Стены|rangers*3,men_at_arms*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "godswood",
+      "barracks"
+    ],
+    "startResources": {
+      "gold": 120,
+      "materials": 160,
+      "food": 90,
+      "influence": 10,
+      "piety": 15
+    },
+    "availableLaws": [],
+    "nightWatch": true,
+    "description": "Братство, охраняющее Стену. Не играет за трон — но без него трон не значит ничего.",
+    "uniqueMechanicName": "Стена",
+    "uniqueMechanicText": "Дозор не может объявлять войны великим домам и не участвует в политике, но его крепости почти невозможно взять."
+  },
+  {
+    "id": "five_stark",
+    "era": "fivekings",
+    "house": "stark",
+    "name": "Королевство Севера",
+    "shortName": "Старки",
+    "color": "#8aa9bd",
+    "leaderName": "Робб Старк",
+    "leaderTitle": "Король Севера",
+    "leaderHero": "robb_stark",
+    "heirHero": "jon_snow",
+    "extraHeroes": [
+      "catelyn_stark",
+      "greatjon"
+    ],
+    "capital": "winterfell",
+    "ownedRegions": [
+      "north"
+    ],
+    "priority": 25,
+    "vassalHouses": [
+      "manderly",
+      "bolton",
+      "karstark",
+      "umber",
+      "glover",
+      "mormont",
+      "dustin",
+      "hornwood"
+    ],
+    "faith": "oldgods",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "armyAttack",
+        "value": 1,
+        "description": "Северный натиск"
+      },
+      {
+        "key": "armyDefense",
+        "value": 2,
+        "description": "Стойкость"
+      },
+      {
+        "key": "foodIncome.pct",
+        "value": -0.05,
+        "description": "Долгая зима"
+      },
+      {
+        "key": "unrestGlobal.pct",
+        "value": -0.1,
+        "description": "Верность Северу"
+      }
+    ],
+    "traits": [
+      "honor",
+      "war"
+    ],
+    "techTree": "stark",
+    "focusTree": "stark",
+    "advisorPool": [
+      "adv_northern_lord",
+      "adv_maester",
+      "adv_captain",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Северный строй|northern_infantry*3,men_at_arms*2,archers*1",
+      "Лютоволки|direwolves*2,light_cavalry*2,levy*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "godswood",
+      "barracks"
+    ],
+    "startResources": {
+      "gold": 390,
+      "materials": 260,
+      "food": 220,
+      "influence": 24,
+      "piety": 18
+    },
+    "availableLaws": [
+      "law_northern_levy",
+      "law_king_in_the_north",
+      "law_old_gods"
+    ],
+    "description": "Робб Старк идёт на юг мстить за отца, но Север помнит и другое: зима уже близко.",
+    "uniqueMechanicName": "Король в Северном крае",
+    "uniqueMechanicText": "Провинции Севера почти не бунтуют, а лютоволки дают армии мобильность и урон."
+  },
+  {
+    "id": "five_lannister",
+    "era": "fivekings",
+    "house": "lannister",
+    "name": "Железный трон",
+    "shortName": "Ланнистеры",
+    "color": "#c9a227",
+    "leaderName": "Тайвин Ланнистер",
+    "leaderTitle": "Десница Короля",
+    "leaderHero": "tywin",
+    "heirHero": "jaime",
+    "extraHeroes": [
+      "tyrion",
+      "joffrey"
+    ],
+    "capital": "kings_landing",
+    "ownedRegions": [
+      "westerlands"
+    ],
+    "extraProvinces": [
+      "kings_landing",
+      "rosby",
+      "duskendale",
+      "stokeworth",
+      "hayford",
+      "rooks_rest",
+      "antlers",
+      "crackclaw",
+      "sweetport"
+    ],
+    "priority": 30,
+    "vassalHouses": [
+      "lefford",
+      "marbrand",
+      "crakehall",
+      "banefort",
+      "serrett",
+      "farman",
+      "swyft",
+      "deep_den",
+      "brax",
+      "darklyn",
+      "rosby",
+      "stokeworth",
+      "hayford",
+      "staunton",
+      "sunglass",
+      "crabb",
+      "buckwell"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 0,
+    "bonuses": [
+      {
+        "key": "goldIncome.pct",
+        "value": 0.35,
+        "description": "Золото Кастерли"
+      },
+      {
+        "key": "spyOffense",
+        "value": 2,
+        "description": "Шептуны и купленные клинки"
+      },
+      {
+        "key": "buildCost.pct",
+        "value": -0.1,
+        "description": "Долги платят другие"
+      },
+      {
+        "key": "upkeep.pct",
+        "value": 0.2,
+        "description": "Золотая гвардия: содержание войск дороже"
+      },
+      {
+        "key": "recruitCost.pct",
+        "value": 0.1,
+        "description": "Лучшее снаряжение стоит дорого"
+      }
+    ],
+    "traits": [
+      "intrigue",
+      "trade"
+    ],
+    "techTree": "lannister",
+    "focusTree": "lannister",
+    "advisorPool": [
+      "adv_golden_lord",
+      "adv_trader",
+      "adv_spymaster",
+      "adv_captain",
+      "adv_septon",
+      "adv_maester"
+    ],
+    "startArmies": [
+      "Львиная гвардия|red_cloaks*3,men_at_arms*2,knights*1",
+      "Западная конница|westerland_knights*2,light_cavalry*2,archers*1",
+      "Гарнизон Красного замка|men_at_arms*2,longbowmen*2,sellswords*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "mine",
+      "sept",
+      "spy_network",
+      "great_hall"
+    ],
+    "startResources": {
+      "gold": 610,
+      "materials": 300,
+      "food": 220,
+      "influence": 36,
+      "piety": 26
+    },
+    "availableLaws": [
+      "law_golden_treasury",
+      "law_royal_decrees",
+      "law_feudal_contract",
+      "law_standing_army"
+    ],
+    "description": "Ланнистеры держат трон, казну и шептунов. Война для них — ещё одна статья расходов, которую платят другие.",
+    "uniqueMechanicName": "Золото и шептуны",
+    "uniqueMechanicText": "Больше золота, дешевле стройка и сильнее шпионаж: чужие технологии и законы переходят к вам быстрее. Войска Запада сильнее, но их содержание заметно дороже."
+  },
+  {
+    "id": "five_baratheon",
+    "era": "fivekings",
+    "house": "baratheon",
+    "name": "Штормовые земли",
+    "shortName": "Баратеоны",
+    "color": "#a6822f",
+    "leaderName": "Ренли Баратеон",
+    "leaderTitle": "Король Штормов",
+    "leaderHero": "renly",
+    "heirHero": "brienne",
+    "extraHeroes": [
+      "brienne"
+    ],
+    "capital": "storms_end",
+    "ownedRegions": [
+      "stormlands"
+    ],
+    "priority": 18,
+    "vassalHouses": [
+      "connington",
+      "morrigen",
+      "caron",
+      "dondarrion",
+      "tarth",
+      "swann",
+      "grandison",
+      "fell",
+      "estermont"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "armyMorale",
+        "value": 6,
+        "description": "Любимец солдат"
+      },
+      {
+        "key": "recruitCost.pct",
+        "value": -0.15,
+        "description": "Знамя с оленем"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": 0.1,
+        "description": "Торговля Штормов"
+      }
+    ],
+    "traits": [
+      "charisma",
+      "levy"
+    ],
+    "techTree": "baratheon",
+    "focusTree": "baratheon",
+    "advisorPool": [
+      "adv_storm_lord",
+      "adv_captain",
+      "adv_septon",
+      "adv_maester"
+    ],
+    "startArmies": [
+      "Штормовая гвардия|storm_knights*2,men_at_arms*3,archers*1",
+      "Оленье ополчение|levy*3,spearmen*2,light_cavalry*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "barracks",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 330,
+      "materials": 240,
+      "food": 190,
+      "influence": 24,
+      "piety": 22
+    },
+    "availableLaws": [
+      "law_storm_banners",
+      "law_standing_army",
+      "law_chivalry"
+    ],
+    "description": "Ренли красив, щедр и любим. В Вестеросе этого достаточно, чтобы получить корону — но не достаточно, чтобы её удержать.",
+    "uniqueMechanicName": "Любовь солдат",
+    "uniqueMechanicText": "Найм и содержание армий дешевле, а мораль выше — но признание двора растёт медленнее."
+  },
+  {
+    "id": "five_tyrell",
+    "era": "fivekings",
+    "house": "tyrell",
+    "name": "Простор",
+    "shortName": "Тиреллы",
+    "color": "#4f7f42",
+    "leaderName": "Мейс Тирелл",
+    "leaderTitle": "Хранитель Юга",
+    "leaderHero": "mace",
+    "heirHero": "loras",
+    "extraHeroes": [
+      "margaery",
+      "olenna"
+    ],
+    "capital": "highgarden",
+    "ownedRegions": [
+      "reach"
+    ],
+    "priority": 21,
+    "vassalHouses": [
+      "hightower",
+      "tarly",
+      "redwyne",
+      "florent",
+      "cobb",
+      "footly",
+      "ashford",
+      "oakheart",
+      "bulwer",
+      "cuy",
+      "merryweather",
+      "beesbury",
+      "rowan",
+      "ball",
+      "crane"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 1,
+    "bonuses": [
+      {
+        "key": "foodIncome.pct",
+        "value": 0.3,
+        "description": "Житница Вестероса"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": 0.15,
+        "description": "Торговый Простор"
+      },
+      {
+        "key": "levySize",
+        "value": 1,
+        "description": "Многолюдный край"
+      },
+      {
+        "key": "armyAttack",
+        "value": -1,
+        "description": "Изнеженные лорды"
+      }
+    ],
+    "traits": [
+      "economy",
+      "diplomacy"
+    ],
+    "techTree": "tyrell",
+    "focusTree": "tyrell",
+    "advisorPool": [
+      "adv_reach_lord",
+      "adv_trader",
+      "adv_septon",
+      "adv_maester"
+    ],
+    "startArmies": [
+      "Рыцари Простора|reach_knights*2,tyrell_guard*2,knights*1",
+      "Ополчение Простора|levy*3,longbowmen*2,light_cavalry*1",
+      "Флот Хайгардена|men_at_arms*3,archers*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "granary",
+      "sept",
+      "tourney_grounds"
+    ],
+    "startResources": {
+      "gold": 355,
+      "materials": 220,
+      "food": 300,
+      "influence": 24,
+      "piety": 26
+    },
+    "availableLaws": [
+      "law_chivalry",
+      "law_harvest_levy",
+      "law_great_alliance"
+    ],
+    "description": "Тиреллы не самые древние и не самые воинственные — зато они лучше всех знают, кого стоит кормить.",
+    "uniqueMechanicName": "Житница и интрига",
+    "uniqueMechanicText": "Огромные запасы продовольствия и дешёвый найм; военная атака слабее, зато экономическая победа близка."
+  },
+  {
+    "id": "five_martell",
+    "era": "fivekings",
+    "house": "martell",
+    "name": "Дорн",
+    "shortName": "Мартеллы",
+    "color": "#b25a2a",
+    "leaderName": "Доран Мартелл",
+    "leaderTitle": "Принц Дорна",
+    "leaderHero": "doran",
+    "heirHero": "oberyn",
+    "extraHeroes": [
+      "arianne",
+      "sand_snakes"
+    ],
+    "capital": "sunspear",
+    "ownedRegions": [
+      "dorne"
+    ],
+    "priority": 18,
+    "vassalHouses": [
+      "yronwood",
+      "dayne",
+      "fowler",
+      "uller",
+      "allyrion",
+      "vaith",
+      "dalt",
+      "qorgyle",
+      "gargalen",
+      "toland"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 3,
+    "bonuses": [
+      {
+        "key": "armyMove",
+        "value": 1,
+        "description": "Дорнийские перевалы"
+      },
+      {
+        "key": "armyDefense",
+        "value": 1,
+        "description": "Война в песках"
+      },
+      {
+        "key": "foodIncome.pct",
+        "value": -0.15,
+        "description": "Пустыня"
+      },
+      {
+        "key": "recoveryCost.pct",
+        "value": -0.15,
+        "description": "Своя земля"
+      }
+    ],
+    "traits": [
+      "guerrilla",
+      "intrigue"
+    ],
+    "techTree": "martell",
+    "focusTree": "martell",
+    "advisorPool": [
+      "adv_dornish_lord",
+      "adv_maester",
+      "adv_spymaster",
+      "adv_captain"
+    ],
+    "startArmies": [
+      "Копья Дорна|dornish_spears*3,men_at_arms*2",
+      "Песчаные всадники|sand_riders*3,light_cavalry*1,archers*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "watchtower",
+      "sept"
+    ],
+    "startResources": {
+      "gold": 315,
+      "materials": 200,
+      "food": 150,
+      "influence": 28,
+      "piety": 22
+    },
+    "availableLaws": [
+      "law_dornish_independence",
+      "law_water_gardens",
+      "law_sand_snakes"
+    ],
+    "description": "Доран выжидает, Оберын хочет крови, а песок помнит всё. Дорн вступает в войну только тогда, когда это выгодно.",
+    "uniqueMechanicName": "Непокорённый Дорн",
+    "uniqueMechanicText": "Пески изматывают врага, а ваши отряды движутся быстрее и дешевле восполняются дома."
+  },
+  {
+    "id": "five_greyjoy",
+    "era": "fivekings",
+    "house": "greyjoy",
+    "name": "Железные острова",
+    "shortName": "Грейджои",
+    "color": "#3f5560",
+    "leaderName": "Бейлон Грейджой",
+    "leaderTitle": "Король Железных островов",
+    "leaderHero": "balon",
+    "heirHero": "asha",
+    "extraHeroes": [
+      "theon",
+      "aeron"
+    ],
+    "capital": "pyke",
+    "ownedRegions": [
+      "islands"
+    ],
+    "priority": 16,
+    "vassalHouses": [
+      "goodbrother",
+      "wyk",
+      "harlaw",
+      "blacktyde",
+      "saltcliffe"
+    ],
+    "faith": "drowned",
+    "playable": true,
+    "difficulty": 3,
+    "bonuses": [
+      {
+        "key": "navalPower",
+        "value": 4,
+        "description": "Железный флот"
+      },
+      {
+        "key": "raidLoot",
+        "value": 0.35,
+        "description": "Мы не сеем"
+      },
+      {
+        "key": "armyAttack",
+        "value": 2,
+        "description": "Железнорождённые"
+      },
+      {
+        "key": "foodIncome.pct",
+        "value": -0.2,
+        "description": "Острова бедны"
+      }
+    ],
+    "traits": [
+      "raid",
+      "war"
+    ],
+    "techTree": "greyjoy",
+    "focusTree": "greyjoy",
+    "advisorPool": [
+      "adv_drowned_priest",
+      "adv_iron_lord",
+      "adv_captain",
+      "adv_maester"
+    ],
+    "startArmies": [
+      "Железный флот|ironborn_reavers*3,raiders*2",
+      "Добыча Пайка|drowned_men*2,raiders*2,men_at_arms*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "drowned_shrine",
+      "shipyard"
+    ],
+    "startResources": {
+      "gold": 300,
+      "materials": 240,
+      "food": 120,
+      "influence": 20,
+      "piety": 24
+    },
+    "availableLaws": [
+      "law_iron_price",
+      "law_iron_fleet",
+      "law_salt_wife"
+    ],
+    "description": "Грейджои берут то, что не могут вырастить. Их сила — море, их слабость — море же.",
+    "uniqueMechanicName": "Мы не сеем",
+    "uniqueMechanicText": "Набеги приносят больше добычи, а морские переходы дешевле; на суше войска слабее."
+  },
+  {
+    "id": "five_arryn",
+    "era": "fivekings",
+    "house": "arryn",
+    "name": "Долина Аррен",
+    "shortName": "Аррены",
+    "color": "#5f8fc1",
+    "leaderName": "Лиза Аррен",
+    "leaderTitle": "Леди Орлиного гнезда",
+    "leaderHero": "lysa",
+    "heirHero": "robert_arryn",
+    "extraHeroes": [
+      "yohn_royce",
+      "littlefinger"
+    ],
+    "capital": "eyrie",
+    "ownedRegions": [
+      "vale"
+    ],
+    "priority": 20,
+    "vassalHouses": [
+      "grafton",
+      "royce",
+      "waynwood",
+      "redfort",
+      "belmore",
+      "corbray",
+      "waxley",
+      "hunter",
+      "arwyn",
+      "sunderland"
+    ],
+    "faith": "seven",
+    "playable": true,
+    "difficulty": 2,
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 3,
+        "description": "Кровавые Врата"
+      },
+      {
+        "key": "siegeDefense",
+        "value": 2,
+        "description": "Неприступность"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": -0.05,
+        "description": "Горные дороги"
+      },
+      {
+        "key": "spyOffense",
+        "value": 1,
+        "description": "Мизинец"
+      }
+    ],
+    "traits": [
+      "defense",
+      "intrigue"
+    ],
+    "techTree": "arryn",
+    "focusTree": "arryn",
+    "advisorPool": [
+      "adv_valley_lord",
+      "adv_spymaster",
+      "adv_maester",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Рыцари Долины|vale_knights*2,knights*2,archers*1",
+      "Горные лучники|mountain_archers*3,spearmen*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "sept",
+      "watchtower"
+    ],
+    "startResources": {
+      "gold": 315,
+      "materials": 230,
+      "food": 190,
+      "influence": 26,
+      "piety": 24
+    },
+    "availableLaws": [
+      "law_knights_of_vale",
+      "law_chivalry",
+      "law_mountain_pass"
+    ],
+    "description": "Долина не вступает в войну — но каждый, кто идёт через горы, узнаёт, почему это мудро.",
+    "uniqueMechanicName": "Врата Долины",
+    "uniqueMechanicText": "Оборона в горах и осадах усилена; шпионы Мизинца дают бонус к краже технологий."
+  },
+  {
+    "id": "five_stannis",
+    "era": "fivekings",
+    "house": "baratheon",
+    "name": "Драконий Камень",
+    "shortName": "Станнис",
+    "color": "#b08a3a",
+    "leaderName": "Станнис Баратеон",
+    "leaderTitle": "Король на Драконьем Камне",
+    "leaderHero": "stannis",
+    "heirHero": "shireen",
+    "extraHeroes": [
+      "davos",
+      "melisandre"
+    ],
+    "capital": "dragonstone",
+    "ownedRegions": [],
+    "extraProvinces": [
+      "dragonstone",
+      "sweetport",
+      "crackclaw"
+    ],
+    "priority": 35,
+    "vassalHouses": [
+      "velaryon",
+      "sunglass",
+      "connington",
+      "swann",
+      "dondarrion"
+    ],
+    "faith": "rhllor",
+    "playable": true,
+    "difficulty": 4,
+    "bonuses": [
+      {
+        "key": "armyMorale",
+        "value": 8,
+        "description": "Железная воля Станниса"
+      },
+      {
+        "key": "pietyIncome",
+        "value": 2,
+        "description": "Владыка Света"
+      },
+      {
+        "key": "armyDefense",
+        "value": 1,
+        "description": "Дисциплина"
+      },
+      {
+        "key": "navalPower",
+        "value": 2,
+        "description": "Королевский флот"
+      }
+    ],
+    "traits": [
+      "faith",
+      "war"
+    ],
+    "techTree": "baratheon",
+    "focusTree": "stannis",
+    "advisorPool": [
+      "adv_maester",
+      "adv_red_priest",
+      "adv_davos",
+      "adv_spymaster",
+      "adv_captain",
+      "adv_septon"
+    ],
+    "startArmies": [
+      "Дружина Драконьего Камня|men_at_arms*2,archers*2",
+      "Наёмники Давоса|sellswords*1,men_at_arms*1",
+      "Флот Драконьего Камня|men_at_arms*2,archers*1,sellswords*1"
+    ],
+    "startBuildings": [
+      "castle",
+      "market",
+      "fire_temple"
+    ],
+    "startResources": {
+      "gold": 180,
+      "materials": 140,
+      "food": 110,
+      "influence": 20,
+      "piety": 34
+    },
+    "availableLaws": [
+      "law_red_god",
+      "law_fire_and_blood",
+      "law_standing_army"
+    ],
+    "description": "Единственный законный король — по его собственному мнению. У Станниса мало людей, но много упрямства и один красный бог.",
+    "uniqueMechanicName": "Владыка Света",
+    "uniqueMechanicText": "Вера даёт армии стойкость, а миссионеры Р'глора распространяются быстрее; но дом ненавидят почти все."
+  },
+  {
+    "id": "five_nightswatch",
+    "era": "fivekings",
+    "house": "nightswatch",
+    "name": "Ночной Дозор",
+    "shortName": "Дозор",
+    "color": "#5a6b78",
+    "leaderName": "Джиор Мормонт",
+    "leaderTitle": "Лорд-командующий",
+    "leaderHero": "jeor_mormont",
+    "heirHero": "jon_snow_nw",
+    "extraHeroes": [
+      "samwell"
+    ],
+    "capital": "castle_black",
+    "ownedRegions": [
+      "wall"
+    ],
+    "vassalHouses": [],
+    "faith": "oldgods",
+    "playable": false,
+    "difficulty": 5,
+    "priority": 10,
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 4,
+        "description": "Стена"
+      },
+      {
+        "key": "siegeDefense",
+        "value": 4,
+        "description": "Ледяная стена"
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": -0.35,
+        "description": "Нищие земли"
+      }
+    ],
+    "traits": [
+      "defense"
+    ],
+    "techTree": "nightswatch",
+    "focusTree": "nightswatch",
+    "advisorPool": [
+      "adv_maester",
+      "adv_captain",
+      "adv_ranger",
+      "adv_builder"
+    ],
+    "startArmies": [
+      "Дозор у Стены|rangers*3,men_at_arms*2"
+    ],
+    "startBuildings": [
+      "castle",
+      "godswood",
+      "barracks"
+    ],
+    "startResources": {
+      "gold": 120,
+      "materials": 160,
+      "food": 90,
+      "influence": 10,
+      "piety": 15
+    },
+    "availableLaws": [],
+    "nightWatch": true,
+    "description": "Братство у Стены. Не претендует на трон, но именно оно первым увидит настоящую угрозу.",
+    "uniqueMechanicName": "Стена",
+    "uniqueMechanicText": "Дозор не участвует в политике и не объявляет войны, но его крепости почти невозможно взять."
+  }
+]

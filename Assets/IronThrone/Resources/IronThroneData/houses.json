@@ -1,0 +1,1042 @@
+[
+  {
+    "id": "stark",
+    "name": "Старки",
+    "words": "Зима близко",
+    "color": "#8aa9bd",
+    "description": "Короли Севера, чей род восходит к Первым Людям и Брандону-Строителю.",
+    "major": true,
+    "region": "north",
+    "seat": "winterfell"
+  },
+  {
+    "id": "manderly",
+    "name": "Мандерли",
+    "words": "Верные слуги",
+    "color": "#7fa9c9",
+    "description": "Богатый дом Белой Гавани, пришедший с юга после гибели своего королевства.",
+    "major": false,
+    "region": "north",
+    "seat": "white_harbor",
+    "bonuses": [
+      {
+        "key": "goldIncome",
+        "value": 2,
+        "description": "Белая Гавань — торговые пути"
+      }
+    ]
+  },
+  {
+    "id": "bolton",
+    "name": "Болтоны",
+    "words": "Наши клинки остры",
+    "color": "#b5a5a5",
+    "description": "Дредфортские лорды, чья кожа бледна, а обычаи — жестоки.",
+    "major": false,
+    "region": "north",
+    "seat": "dreadfort",
+    "bonuses": [
+      {
+        "key": "spyOffense",
+        "value": 1,
+        "description": "Тихие люди Дредфорта"
+      }
+    ]
+  },
+  {
+    "id": "karstark",
+    "name": "Карстарки",
+    "words": "Солнце Севера",
+    "color": "#8d9fb0",
+    "description": "Дом Кархолда, родственный Старкам по крови.",
+    "major": false,
+    "region": "north",
+    "seat": "karhold"
+  },
+  {
+    "id": "umber",
+    "name": "Амберы",
+    "words": "Неукротимые",
+    "color": "#9c8b6b",
+    "description": "Великаны Севера, чья сила вошла в поговорки.",
+    "major": false,
+    "region": "north",
+    "seat": "last_hearth"
+  },
+  {
+    "id": "glover",
+    "name": "Гловеры",
+    "words": "Честь и древесина",
+    "color": "#6f8f6f",
+    "description": "Хозяева Дремучего леса, чьи корабли ходят и на запад, и на восток.",
+    "major": false,
+    "region": "north",
+    "seat": "deepwood"
+  },
+  {
+    "id": "mormont",
+    "name": "Мормонты",
+    "words": "Здесь мы стоим",
+    "color": "#7c93a8",
+    "description": "Медвежий остров, дом женщин-воинов и Старого Медведя.",
+    "major": false,
+    "region": "north",
+    "seat": "bear_island"
+  },
+  {
+    "id": "dustin",
+    "name": "Дастины",
+    "words": "Первый среди равных",
+    "color": "#9b8a72",
+    "description": "Лорды Барроутона, чьи курганы древнее королей.",
+    "major": false,
+    "region": "north",
+    "seat": "barrowton"
+  },
+  {
+    "id": "hornwood",
+    "name": "Хорнвуды",
+    "words": "За Север",
+    "color": "#8a9b7a",
+    "description": "Лесной дом, чьё имя носят леса к югу от Дредфорта.",
+    "major": false,
+    "region": "north",
+    "seat": "hornwood"
+  },
+  {
+    "id": "nightswatch",
+    "name": "Ночной Дозор",
+    "words": "И теперь наша стража начинается",
+    "color": "#5a6b78",
+    "description": "Братство, охраняющее Стену от того, что живёт за ней.",
+    "major": true,
+    "region": "wall",
+    "seat": "castle_black"
+  },
+  {
+    "id": "greyjoy",
+    "name": "Грейджои",
+    "words": "Мы не сеем",
+    "color": "#4c6478",
+    "description": "Лорды-жнецы Железных островов, потомки Серого Короля.",
+    "major": true,
+    "region": "islands",
+    "seat": "pyke"
+  },
+  {
+    "id": "goodbrother",
+    "name": "Гудбразеры",
+    "words": "Мы не сеем",
+    "color": "#6b7f8a",
+    "description": "Большой Вик, дом железнорождённых.",
+    "major": false,
+    "region": "islands",
+    "seat": "great_wyk"
+  },
+  {
+    "id": "wyk",
+    "name": "Вики",
+    "words": "Старый Вик",
+    "color": "#7f7f8a",
+    "description": "Старый Вик, дом, чьи лорды помнят Серого Короля.",
+    "major": false,
+    "region": "islands",
+    "seat": "old_wyk"
+  },
+  {
+    "id": "harlaw",
+    "name": "Харлоу",
+    "words": "Дитя волн",
+    "color": "#8a8a9b",
+    "description": "Харлоу, дом учёных железнорождённых.",
+    "major": false,
+    "region": "islands",
+    "seat": "harlaw",
+    "bonuses": [
+      {
+        "key": "spyDefense",
+        "value": 1,
+        "description": "Учёные железнорождённые"
+      }
+    ]
+  },
+  {
+    "id": "blacktyde",
+    "name": "Блэктайды",
+    "words": "Чёрный прилив",
+    "color": "#5a6b7f",
+    "description": "Чёрный Прилив, дом морских разбойников.",
+    "major": false,
+    "region": "islands",
+    "seat": "blacktyde"
+  },
+  {
+    "id": "saltcliffe",
+    "name": "Солтклиффы",
+    "words": "Соль и камень",
+    "color": "#8a7f7a",
+    "description": "Солтклифф, дом утёсов.",
+    "major": false,
+    "region": "islands",
+    "seat": "saltcliffe"
+  },
+  {
+    "id": "tully",
+    "name": "Талли",
+    "words": "Семья, долг, честь",
+    "color": "#4f7fa8",
+    "description": "Верховные лорды Речных земель, хранители Риверрана.",
+    "major": true,
+    "region": "riverlands",
+    "seat": "riverrun"
+  },
+  {
+    "id": "strong",
+    "name": "Стронги",
+    "words": "Сильные руками",
+    "color": "#8a8a8a",
+    "description": "Харренхол, чьи башни помнят ужас Харрена Чёрного.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "harrenhal"
+  },
+  {
+    "id": "frey",
+    "name": "Фреи",
+    "words": "Мы держим слово",
+    "color": "#8b8f9b",
+    "description": "Переправщики Близнецов, разбогатевшие на мостах и осторожности.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "twins",
+    "bonuses": [
+      {
+        "key": "goldIncome",
+        "value": 1,
+        "description": "Мосты и переправы"
+      }
+    ]
+  },
+  {
+    "id": "mallister",
+    "name": "Маллистеры",
+    "words": "Орёл над водами",
+    "color": "#7d9ec0",
+    "description": "Сигардские лорды, щит Запада от железнорождённых.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "seagard"
+  },
+  {
+    "id": "mooton",
+    "name": "Мутоны",
+    "words": "Мудрость над мечом",
+    "color": "#7f9bb3",
+    "description": "Девичий Пруд, торговый дом у Трезубца.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "maidenpool"
+  },
+  {
+    "id": "piper",
+    "name": "Пайперы",
+    "words": "Отважные",
+    "color": "#c08a8a",
+    "description": "Розовый Девичник, дом весёлых воинов.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "pinkmaiden"
+  },
+  {
+    "id": "blackwood",
+    "name": "Блэквуды",
+    "words": "Старые боги живы",
+    "color": "#6b7f5e",
+    "description": "Древний дом Чёрного Древа, хранители богорощ.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "raventree"
+  },
+  {
+    "id": "bracken",
+    "name": "Бракены",
+    "words": "Сила и честь",
+    "color": "#a08a5a",
+    "description": "Каменная Изгородь, вечные соперники Блэквудов.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "stone_hedge"
+  },
+  {
+    "id": "darry",
+    "name": "Дарри",
+    "words": "Мы пашем и сражаемся",
+    "color": "#9a9f7a",
+    "description": "Старинный дом, чьи земли лежат у переправ.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "darry"
+  },
+  {
+    "id": "roote",
+    "name": "Руты",
+    "words": "Соляные корни",
+    "color": "#a8a89a",
+    "description": "Соляные Ямы, бедный, но гордый дом.",
+    "major": false,
+    "region": "riverlands",
+    "seat": "saltpans"
+  },
+  {
+    "id": "arryn",
+    "name": "Аррены",
+    "words": "Высоки как честь",
+    "color": "#8fa6d6",
+    "description": "Короли Горы и Долины, чьё гнездо — Орлиное Гнездо.",
+    "major": true,
+    "region": "vale",
+    "seat": "eyrie"
+  },
+  {
+    "id": "grafton",
+    "name": "Графтоны",
+    "words": "Чаячий полёт",
+    "color": "#7fa3b8",
+    "description": "Чаячий город, главный порт Долины.",
+    "major": false,
+    "region": "vale",
+    "seat": "gulltown"
+  },
+  {
+    "id": "royce",
+    "name": "Ройсы",
+    "words": "Мы помним",
+    "color": "#8b9dc0",
+    "description": "Рунный камень, первый дом андалов в Долине.",
+    "major": false,
+    "region": "vale",
+    "seat": "runestone",
+    "bonuses": [
+      {
+        "key": "armyDefense",
+        "value": 1,
+        "description": "Рунная сталь"
+      }
+    ]
+  },
+  {
+    "id": "waynwood",
+    "name": "Уэйнвуды",
+    "words": "Честь превыше всего",
+    "color": "#8fa87f",
+    "description": "Железные Дубы, древний дом рыцарей Долины.",
+    "major": false,
+    "region": "vale",
+    "seat": "ironoaks"
+  },
+  {
+    "id": "redfort",
+    "name": "Редфорты",
+    "words": "Крепки как камень",
+    "color": "#a87f7f",
+    "description": "Красный замок, стражи каменных дорог.",
+    "major": false,
+    "region": "vale",
+    "seat": "redfort"
+  },
+  {
+    "id": "belmore",
+    "name": "Белморы",
+    "words": "Крепкая песня",
+    "color": "#9c93b0",
+    "description": "Крепкая Песня, дом менестрелей и воинов.",
+    "major": false,
+    "region": "vale",
+    "seat": "strongsong"
+  },
+  {
+    "id": "corbray",
+    "name": "Корбреи",
+    "words": "Наши клинки остры",
+    "color": "#7f7f9c",
+    "description": "Домашний Очаг, дом, чей меч — реликвия.",
+    "major": false,
+    "region": "vale",
+    "seat": "hearths_home"
+  },
+  {
+    "id": "waxley",
+    "name": "Уэсли",
+    "words": "Свет во тьме",
+    "color": "#b0a87f",
+    "description": "Викенден, дом свечей и морской торговли.",
+    "major": false,
+    "region": "vale",
+    "seat": "wickenden"
+  },
+  {
+    "id": "hunter",
+    "name": "Хантеры",
+    "words": "Длинный лук",
+    "color": "#8a9b6b",
+    "description": "Зал Длинного Лука, лучники Долины.",
+    "major": false,
+    "region": "vale",
+    "seat": "longbow_hall"
+  },
+  {
+    "id": "arwyn",
+    "name": "Арвины",
+    "words": "Старый якорь",
+    "color": "#7f9b9b",
+    "description": "Старый Якорь, дом рыбаков и моряков.",
+    "major": false,
+    "region": "vale",
+    "seat": "old_anchor"
+  },
+  {
+    "id": "sunderland",
+    "name": "Сандерленды",
+    "words": "Сестринская кровь",
+    "color": "#8b7f9b",
+    "description": "Сестрин, три острова с пиратскими обычаями.",
+    "major": false,
+    "region": "vale",
+    "seat": "sisterton"
+  },
+  {
+    "id": "lannister",
+    "name": "Ланнистеры",
+    "words": "Услышь мой рёв!",
+    "color": "#c9a227",
+    "description": "Лорды Утёса Кастерли, богатейший дом Семи Королевств.",
+    "major": true,
+    "region": "westerlands",
+    "seat": "casterly"
+  },
+  {
+    "id": "lefford",
+    "name": "Леффорды",
+    "words": "Золотой зуб",
+    "color": "#c0a860",
+    "description": "Хранители Золотого Зуба, ключа к Западным землям.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "golden_tooth"
+  },
+  {
+    "id": "marbrand",
+    "name": "Марбранды",
+    "words": "Пламя и пепел",
+    "color": "#b08a6b",
+    "description": "Пепельный замок, дом мечников.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "ashemark"
+  },
+  {
+    "id": "crakehall",
+    "name": "Крейкхоллы",
+    "words": "Сильны как кабан",
+    "color": "#a87f5a",
+    "description": "Крейкхолл, дом охотников и воинов.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "crakehall"
+  },
+  {
+    "id": "banefort",
+    "name": "Бейнфорты",
+    "words": "Погибель",
+    "color": "#7f7f8a",
+    "description": "Погибель, мрачный дом у Железного моря.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "banefort"
+  },
+  {
+    "id": "serrett",
+    "name": "Серретты",
+    "words": "Серебро и сталь",
+    "color": "#a8a8b0",
+    "description": "Серебряный холм, богатый дом Запада.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "silverhill"
+  },
+  {
+    "id": "farman",
+    "name": "Фарманы",
+    "words": "Остров и море",
+    "color": "#7f8fa8",
+    "description": "Прекрасный Остров, дом мореходов.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "fair_isle"
+  },
+  {
+    "id": "swyft",
+    "name": "Свифты",
+    "words": "Быстрый ответ",
+    "color": "#b0a060",
+    "description": "Кукурузный Дол, житница Запада.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "cornfield"
+  },
+  {
+    "id": "deep_den",
+    "name": "Дипдены",
+    "words": "Глубокие корни",
+    "color": "#9b7f6b",
+    "description": "Глубокая Берлога, горный дом.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "deep_den"
+  },
+  {
+    "id": "brax",
+    "name": "Браксы",
+    "words": "Рог и меч",
+    "color": "#9b8b7f",
+    "description": "Хорнвейл, дом рыцарей Запада.",
+    "major": false,
+    "region": "westerlands",
+    "seat": "hornvale"
+  },
+  {
+    "id": "tyrell",
+    "name": "Тиреллы",
+    "words": "Растём и крепнем",
+    "color": "#4f9d4f",
+    "description": "Сенешали Хайгардена, возвысившиеся после гибели Гарднеров.",
+    "major": true,
+    "region": "reach",
+    "seat": "highgarden"
+  },
+  {
+    "id": "hightower",
+    "name": "Хайтауэры",
+    "words": "Свет маяка",
+    "color": "#e0c060",
+    "description": "Старомест, древнейший дом Вестероса, хранители Цитадели и Веры.",
+    "major": false,
+    "region": "reach",
+    "seat": "oldtown",
+    "bonuses": [
+      {
+        "key": "pietyIncome",
+        "value": 2,
+        "description": "Цитадель и Звёздная септа"
+      }
+    ]
+  },
+  {
+    "id": "tarly",
+    "name": "Тарли",
+    "words": "Первые в бою",
+    "color": "#7f9b5a",
+    "description": "Рогов Холм, лучшие полководцы Простора.",
+    "major": false,
+    "region": "reach",
+    "seat": "horn_hill",
+    "bonuses": [
+      {
+        "key": "armyAttack",
+        "value": 1,
+        "description": "Лучшие воины Простора"
+      }
+    ]
+  },
+  {
+    "id": "redwyne",
+    "name": "Редвины",
+    "words": "Вино и волны",
+    "color": "#a85a5a",
+    "description": "Арбор, флот и вино Простора.",
+    "major": false,
+    "region": "reach",
+    "seat": "arbor",
+    "bonuses": [
+      {
+        "key": "goldIncome",
+        "value": 1,
+        "description": "Флот Арбора"
+      }
+    ]
+  },
+  {
+    "id": "florent",
+    "name": "Флоренты",
+    "words": "Острый лис",
+    "color": "#c08a4a",
+    "description": "Светлый Ручей, дом с претензиями на Хайгарден.",
+    "major": false,
+    "region": "reach",
+    "seat": "brightwater"
+  },
+  {
+    "id": "cobb",
+    "name": "Коббы",
+    "words": "Горькая правда",
+    "color": "#9b8f6b",
+    "description": "Горький Мост, дом, чьё имя — предупреждение.",
+    "major": false,
+    "region": "reach",
+    "seat": "bitterbridge"
+  },
+  {
+    "id": "footly",
+    "name": "Футли",
+    "words": "Тамблтон",
+    "color": "#9b8a7a",
+    "description": "Тамблтон, дом на переправе.",
+    "major": false,
+    "region": "reach",
+    "seat": "tumbleton"
+  },
+  {
+    "id": "ashford",
+    "name": "Эшфорды",
+    "words": "Твёрдая рука",
+    "color": "#9b9b6b",
+    "description": "Эшфорд, дом рыцарей на дороге в Дорн.",
+    "major": false,
+    "region": "reach",
+    "seat": "ashford"
+  },
+  {
+    "id": "oakheart",
+    "name": "Окхарты",
+    "words": "Старый дуб",
+    "color": "#6b8b4a",
+    "description": "Три Башни, дом, чьи воины сражаются иначе.",
+    "major": false,
+    "region": "reach",
+    "seat": "three_towers"
+  },
+  {
+    "id": "bulwer",
+    "name": "Булверы",
+    "words": "Чёрная корона",
+    "color": "#8a6b5a",
+    "description": "Чёрная Корона, старый дом Простора.",
+    "major": false,
+    "region": "reach",
+    "seat": "blackcrown"
+  },
+  {
+    "id": "cuy",
+    "name": "Кью",
+    "words": "Солнечный дом",
+    "color": "#c0a060",
+    "description": "Солнечный Дом, дом у дороги на юг.",
+    "major": false,
+    "region": "reach",
+    "seat": "sunhouse"
+  },
+  {
+    "id": "merryweather",
+    "name": "Мерривезеры",
+    "words": "Длинный стол",
+    "color": "#a8a05a",
+    "description": "Длинный Стол, богатый дом Простора.",
+    "major": false,
+    "region": "reach",
+    "seat": "longtable"
+  },
+  {
+    "id": "beesbury",
+    "name": "Бисбери",
+    "words": "Медовый холт",
+    "color": "#c0b060",
+    "description": "Медовый Холт, дом пасечников и советников.",
+    "major": false,
+    "region": "reach",
+    "seat": "honeyholt"
+  },
+  {
+    "id": "rowan",
+    "name": "Роуэны",
+    "words": "Золотая роща",
+    "color": "#a8a040",
+    "description": "Золотая Роща, дом тяжёлой конницы.",
+    "major": false,
+    "region": "reach",
+    "seat": "goldengrove"
+  },
+  {
+    "id": "ball",
+    "name": "Боллы",
+    "words": "Красное озеро",
+    "color": "#8a5a5a",
+    "description": "Банды, дом, чьё имя теряется в веках.",
+    "major": false,
+    "region": "reach",
+    "seat": "bands"
+  },
+  {
+    "id": "crane",
+    "name": "Крейны",
+    "words": "Красный журавль",
+    "color": "#b07f7f",
+    "description": "Красное Озеро, дом у границ Запада.",
+    "major": false,
+    "region": "reach",
+    "seat": "red_lake"
+  },
+  {
+    "id": "baratheon",
+    "name": "Баратеоны",
+    "words": "Нам ярость!",
+    "color": "#d0b04c",
+    "description": "Потомки Орисона Баратеона, полководца Эйгона Завоевателя.",
+    "major": true,
+    "region": "stormlands",
+    "seat": "storms_end"
+  },
+  {
+    "id": "connington",
+    "name": "Коннингтоны",
+    "words": "Грифон в небе",
+    "color": "#b05050",
+    "description": "Гнездо Грифона, дом изгнанников и воинов.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "griffins_roost"
+  },
+  {
+    "id": "morrigen",
+    "name": "Морригены",
+    "words": "Воронья верность",
+    "color": "#5a5a6b",
+    "description": "Воронье Гнездо, дом разведчиков.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "crows_nest"
+  },
+  {
+    "id": "caron",
+    "name": "Кароны",
+    "words": "Ночная песнь",
+    "color": "#6b5a7f",
+    "description": "Ночная Песнь, стражи Дорнийского перевала.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "nightsong"
+  },
+  {
+    "id": "dondarrion",
+    "name": "Дондаррионы",
+    "words": "Молния и тьма",
+    "color": "#7f5a9b",
+    "description": "Чёрный Приют, дом, чьи лорды носят молнию.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "blackhaven"
+  },
+  {
+    "id": "tarth",
+    "name": "Тарты",
+    "words": "Сапфировый остров",
+    "color": "#7f9bc0",
+    "description": "Тарт, дом Сапфирового острова.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "tarth",
+    "bonuses": [
+      {
+        "key": "navalPower",
+        "value": 1,
+        "description": "Сапфировый флот"
+      }
+    ]
+  },
+  {
+    "id": "swann",
+    "name": "Свонны",
+    "words": "Чёрный лебедь",
+    "color": "#8a8a9b",
+    "description": "Каменный Шлем, дом рыцарей Штормовых земель.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "stonehelm"
+  },
+  {
+    "id": "grandison",
+    "name": "Грандисоны",
+    "words": "Рассвет",
+    "color": "#c0a07a",
+    "description": "Грандвью, дом стражи.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "grandview"
+  },
+  {
+    "id": "fell",
+    "name": "Феллы",
+    "words": "Тёмный лес",
+    "color": "#6b7f5a",
+    "description": "Фелвуд, дом лесных охотников.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "felwood"
+  },
+  {
+    "id": "estermont",
+    "name": "Эстермонты",
+    "words": "Зелёный остров",
+    "color": "#5a8a6b",
+    "description": "Эстермонт, островной дом Штормовых земель.",
+    "major": false,
+    "region": "stormlands",
+    "seat": "estermont"
+  },
+  {
+    "id": "martell",
+    "name": "Мартеллы",
+    "words": "Непокорённые, несломленные, непреклонные",
+    "color": "#d97a2b",
+    "description": "Правители Дорна, пришедшие из Ройны и не склонившиеся перед драконами.",
+    "major": true,
+    "region": "dorne",
+    "seat": "sunspear"
+  },
+  {
+    "id": "yronwood",
+    "name": "Айронвуды",
+    "words": "Кровь и песок",
+    "color": "#b08a4a",
+    "description": "Айронвуд, древнейший дом Дорна, хранители Костяного Пути.",
+    "major": false,
+    "region": "dorne",
+    "seat": "yronwood"
+  },
+  {
+    "id": "dayne",
+    "name": "Дейны",
+    "words": "Рассвет",
+    "color": "#a87fa8",
+    "description": "Звездопад, дом, чей меч — Рассвет.",
+    "major": false,
+    "region": "dorne",
+    "seat": "starfall",
+    "bonuses": [
+      {
+        "key": "armyAttack",
+        "value": 1,
+        "description": "Меч Рассвет"
+      }
+    ]
+  },
+  {
+    "id": "fowler",
+    "name": "Фаулеры",
+    "words": "Небесный предел",
+    "color": "#8a7f9b",
+    "description": "Небесный Предел, дом горных перевалов.",
+    "major": false,
+    "region": "dorne",
+    "seat": "skyreach"
+  },
+  {
+    "id": "uller",
+    "name": "Уллеры",
+    "words": "Адский холт",
+    "color": "#b06b4a",
+    "description": "Адский Холт, дом, чьи земли выжжены солнцем.",
+    "major": false,
+    "region": "dorne",
+    "seat": "hellholt"
+  },
+  {
+    "id": "allyrion",
+    "name": "Аллирионы",
+    "words": "Божья милость",
+    "color": "#b09b6b",
+    "description": "Божья Милость, дом у Зелёной крови.",
+    "major": false,
+    "region": "dorne",
+    "seat": "godsgrace"
+  },
+  {
+    "id": "vaith",
+    "name": "Вейты",
+    "words": "Красный песок",
+    "color": "#b08a6b",
+    "description": "Вейт, дом пустыни.",
+    "major": false,
+    "region": "dorne",
+    "seat": "vaith"
+  },
+  {
+    "id": "dalt",
+    "name": "Дальты",
+    "words": "Лимонный лес",
+    "color": "#c0c060",
+    "description": "Лимонный Лес, дом, чьё оружие — хитрость.",
+    "major": false,
+    "region": "dorne",
+    "seat": "lemonwood"
+  },
+  {
+    "id": "qorgyle",
+    "name": "Коргайлы",
+    "words": "Песчаник",
+    "color": "#a89b7a",
+    "description": "Песчаник, дом пустынных наездников.",
+    "major": false,
+    "region": "dorne",
+    "seat": "sandstone"
+  },
+  {
+    "id": "gargalen",
+    "name": "Гаргалены",
+    "words": "Соляной берег",
+    "color": "#b09060",
+    "description": "Соляной Берег, дом южного моря.",
+    "major": false,
+    "region": "dorne",
+    "seat": "saltshore"
+  },
+  {
+    "id": "toland",
+    "name": "Толанды",
+    "words": "Призрачный холм",
+    "color": "#9b9b8a",
+    "description": "Призрачный Холм, дом, что танцует между тенями.",
+    "major": false,
+    "region": "dorne",
+    "seat": "ghost_hill"
+  },
+  {
+    "id": "targaryen",
+    "name": "Таргариены",
+    "words": "Пламя и кровь",
+    "color": "#a33a3a",
+    "description": "Драконьи короли Валирии, пережившие Рок Валирии на Драконьем Камне.",
+    "major": true,
+    "region": "crownlands",
+    "seat": "dragonstone"
+  },
+  {
+    "id": "darklyn",
+    "name": "Дарклины",
+    "words": "Сосновый бор",
+    "color": "#7f5a5a",
+    "description": "Сосновый Бор, дом, чьи короли носили корону.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "duskendale"
+  },
+  {
+    "id": "rosby",
+    "name": "Росби",
+    "words": "Хлеб и соль",
+    "color": "#b0a880",
+    "description": "Росби, дом фермеров и торговцев.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "rosby"
+  },
+  {
+    "id": "stokeworth",
+    "name": "Стокворты",
+    "words": "Верность до конца",
+    "color": "#a8a890",
+    "description": "Стокворт, дом овец и вина.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "stokeworth"
+  },
+  {
+    "id": "hayford",
+    "name": "Хейфорды",
+    "words": "Хейфорд",
+    "color": "#9b9b7a",
+    "description": "Хейфорд, малый дом Королевских земель.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "hayford"
+  },
+  {
+    "id": "staunton",
+    "name": "Стэнтоны",
+    "words": "Гнездо воронов",
+    "color": "#6b6b7a",
+    "description": "Гнездо Воронов, дом у Драконьего Камня.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "rooks_rest"
+  },
+  {
+    "id": "sunglass",
+    "name": "Санглэсы",
+    "words": "Сладкий порт",
+    "color": "#b0a860",
+    "description": "Сладкий Порт, дом рыбаков.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "sweetport"
+  },
+  {
+    "id": "crabb",
+    "name": "Краббы",
+    "words": "Клешня",
+    "color": "#8a6b6b",
+    "description": "Клешня, дом, чьи люди живут на берегу.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "crackclaw"
+  },
+  {
+    "id": "buckwell",
+    "name": "Баквеллы",
+    "words": "Рога",
+    "color": "#a87f5a",
+    "description": "Рога, дом охотников Королевских земель.",
+    "major": false,
+    "region": "crownlands",
+    "seat": "antlers"
+  },
+  {
+    "id": "hoare",
+    "name": "Хоары",
+    "words": "Соль и кровь",
+    "color": "#4f6b78",
+    "description": "Короли Железных островов, покорившие Речные земли и построившие Харренхол. Их род пресёкся в пламени драконов.",
+    "major": true,
+    "region": "islands",
+    "seat": "harrenhal"
+  },
+  {
+    "id": "gardener",
+    "name": "Гарднеры",
+    "words": "Мы растим, мы правим",
+    "color": "#5f8f4e",
+    "description": "Короли Простора из дома Гарденеров, ведущие род от самого Гарта Зелёного. Последний король сгорел на Пламенном Поле.",
+    "major": true,
+    "region": "reach",
+    "seat": "highgarden"
+  },
+  {
+    "id": "durrandon",
+    "name": "Дюррандоны",
+    "words": "Гром и ярость",
+    "color": "#c9a227",
+    "description": "Штормовые короли, чей род древнее андалов. Их кровь и знамя унаследовал Орис Баратеон.",
+    "major": true,
+    "region": "stormlands",
+    "seat": "storms_end"
+  },
+  {
+    "id": "velaryon",
+    "name": "Веларионы",
+    "words": "Старые, истинные, смелые",
+    "color": "#6fb3b8",
+    "description": "Древний валирийский дом Дрейфмарка, мореходы и драконьи всадники, верные Таргариенам.",
+    "major": false,
+    "region": "islands",
+    "seat": "driftmark"
+  }
+]

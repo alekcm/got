@@ -1,0 +1,196 @@
+[
+  { "id": "law_royal_decrees", "name": "Королевские указы", "voteCost": 10,
+    "description": "Корона получает право издавать указы без согласия лордов. Влияние трона растёт.",
+    "effects": [
+      { "op": "modifier", "key": "influenceIncome", "value": 2 },
+      { "op": "modifier", "key": "votePower", "value": 1 }
+    ] },
+
+  { "id": "law_golden_treasury", "name": "Золотая казна", "voteCost": 12,
+    "description": "Налоговая реформа: каждый лорд платит в казну часть доходов.",
+    "effects": [
+      { "op": "modifier", "key": "goldIncome", "value": 5 },
+      { "op": "modifier", "key": "goldIncome.pct", "value": 0.05 }
+    ] },
+
+  { "id": "law_mercenary_contracts", "name": "Наёмные контракты", "voteCost": 12,
+    "description": "Наёмники получают королевские патенты. Их услуги дешевле.",
+    "effects": [
+      { "op": "modifier", "key": "recruitCost.pct", "value": -0.12 },
+      { "op": "modifier", "key": "upkeep.pct", "value": 0.08 }
+    ] },
+
+  { "id": "law_standing_army", "name": "Постоянная армия", "voteCost": 15,
+    "description": "Лорды содержат профессиональные гарнизоны вместо ополчения.",
+    "effects": [
+      { "op": "modifier", "key": "armyDefense", "value": 1 },
+      { "op": "modifier", "key": "foodIncome", "value": -2 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.05 }
+    ] },
+
+  { "id": "law_harvest_levy", "name": "Урожайный сбор", "voteCost": 8,
+    "description": "Повышенный налог зерном: больше еды, больше недовольства.",
+    "effects": [
+      { "op": "modifier", "key": "foodIncome", "value": 5 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.12 }
+    ] },
+
+  { "id": "law_old_gods", "name": "Свобода Старых богов", "voteCost": 10,
+    "description": "Поклонение деревьям признано законным по всему королевству.",
+    "effects": [
+      { "op": "modifier", "key": "faithSpread", "value": 0.1 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.08 },
+      { "op": "faith", "id": "oldgods", "amount": 2 }
+    ] },
+
+  { "id": "law_faith_militant", "name": "Воинствующая вера", "voteCost": 16,
+    "description": "Церковь благословляет меч. Воины сражаются с новой яростью, но растёт вражда.",
+    "effects": [
+      { "op": "modifier", "key": "armyAttack", "value": 2 },
+      { "op": "modifier", "key": "pietyIncome", "value": 2 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.15 }
+    ] },
+
+  { "id": "law_red_god", "name": "Владыка Света", "voteCost": 14,
+    "description": "Р'глор объявлен покровителем короны. Ночной огонь горит в столице.",
+    "effects": [
+      { "op": "modifier", "key": "pietyIncome", "value": 3 },
+      { "op": "modifier", "key": "armyMorale", "value": 4 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.1 }
+    ] },
+
+  { "id": "law_iron_price", "name": "Железная цена", "voteCost": 10,
+    "description": "Набеги узаконены: железнорождённые платят короне часть добычи.",
+    "effects": [
+      { "op": "modifier", "key": "raidLoot", "value": 0.3 },
+      { "op": "modifier", "key": "navalPower", "value": 2 },
+      { "op": "modifier", "key": "tradeDominance", "value": -5 }
+    ] },
+
+  { "id": "law_iron_fleet", "name": "Железный флот", "voteCost": 12,
+    "description": "Королевский флот собирает пошлину со всех портов.",
+    "effects": [
+      { "op": "modifier", "key": "navalPower", "value": 3 },
+      { "op": "modifier", "key": "goldIncome", "value": 3 }
+    ] },
+
+  { "id": "law_mountain_pass", "name": "Горные заставы", "voteCost": 8,
+    "description": "Перевалы укреплены, но строительство в горах дорожает.",
+    "effects": [
+      { "op": "modifier", "key": "armyDefense", "value": 2 },
+      { "op": "modifier", "key": "buildCost.pct", "value": 0.1 }
+    ] },
+
+  { "id": "law_knights_of_vale", "name": "Рыцари Долины", "voteCost": 10,
+    "description": "Рыцарские ордена получают земли и привилегии.",
+    "effects": [
+      { "op": "modifier", "key": "armyAttack", "value": 1 },
+      { "op": "modifier", "key": "armyMorale", "value": 3 },
+      { "op": "modifier", "key": "recognitionGain", "value": 0.1 }
+    ] },
+
+  { "id": "law_chivalry", "name": "Кодекс рыцарства", "voteCost": 12,
+    "description": "Поединки, турниры и защита слабых. Знать довольна.",
+    "effects": [
+      { "op": "modifier", "key": "armyMorale", "value": 5 },
+      { "op": "modifier", "key": "recognitionGain", "value": 0.15 },
+      { "op": "modifier", "key": "armyAttack", "value": 1 }
+    ] },
+
+  { "id": "law_great_alliance", "name": "Великий союз", "voteCost": 14,
+    "description": "Лорды обязуются защищать друг друга. Голос каждого в совете усиливается.",
+    "effects": [
+      { "op": "modifier", "key": "votePower", "value": 1 },
+      { "op": "modifier", "key": "influenceIncome", "value": 2 },
+      { "op": "modifier", "key": "armyDefense", "value": 1 }
+    ] },
+
+  { "id": "law_dornish_independence", "name": "Дорнийская автономия", "voteCost": 10,
+    "description": "Дорн сохраняет свои законы и обычаи под короной.",
+    "effects": [
+      { "op": "modifier", "key": "armyDefense", "value": 2 },
+      { "op": "modifier", "key": "tradeDominance", "value": -5 }
+    ] },
+
+  { "id": "law_water_gardens", "name": "Водные сады", "voteCost": 9,
+    "description": "Орошение и сады превращают пустыню в цветущий край.",
+    "effects": [
+      { "op": "modifier", "key": "foodIncome", "value": 4 },
+      { "op": "modifier", "key": "influenceIncome", "value": 2 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.05 }
+    ] },
+
+  { "id": "law_sand_snakes", "name": "Песчаные змеи", "voteCost": 12,
+    "description": "Тайные операции Дорна получают официальную поддержку.",
+    "effects": [
+      { "op": "modifier", "key": "spyOffense", "value": 2 },
+      { "op": "modifier", "key": "recognitionGain", "value": -0.1 }
+    ] },
+
+  { "id": "law_northern_levy", "name": "Северное ополчение", "voteCost": 8,
+    "description": "Каждый северянин обязан держать оружие.",
+    "effects": [
+      { "op": "modifier", "key": "levySize", "value": 1 },
+      { "op": "modifier", "key": "recruitCost.pct", "value": -0.08 },
+      { "op": "modifier", "key": "foodIncome", "value": -1 }
+    ] },
+
+  { "id": "law_king_in_the_north", "name": "Король Севера", "voteCost": 18,
+    "description": "Север объявляет о своей независимости. Признание растёт, но Совет слабеет.",
+    "effects": [
+      { "op": "recognition", "target": "self", "amount": 6 },
+      { "op": "modifier", "key": "armyAttack", "value": 1 },
+      { "op": "modifier", "key": "votePower", "value": -1 }
+    ] },
+
+  { "id": "law_river_submission", "name": "Покорность Рек", "voteCost": 10,
+    "description": "Речные лорды платят двойную пошлину, но ненавидят корону.",
+    "effects": [
+      { "op": "modifier", "key": "goldIncome", "value": 4 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.2 }
+    ] },
+
+  { "id": "law_dragon_rule", "name": "Власть дракона", "voteCost": 15,
+    "description": "Королевская власть опирается на страх перед драконьим огнём.",
+    "effects": [
+      { "op": "modifier", "key": "dragonPower", "value": 0.25 },
+      { "op": "modifier", "key": "influenceIncome", "value": 2 },
+      { "op": "modifier", "key": "recognitionGain", "value": 0.1 }
+    ] },
+
+  { "id": "law_fire_and_blood", "name": "Пламя и кровь", "voteCost": 16,
+    "description": "Непокорные сгорают. Прямолинейно, но эффективно.",
+    "effects": [
+      { "op": "modifier", "key": "armyAttack", "value": 2 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.15 }
+    ] },
+
+  { "id": "law_storm_banners", "name": "Штормовые знамёна", "voteCost": 9,
+    "description": "Всеобщий сбор: каждый лорд обязан выставить людей.",
+    "effects": [
+      { "op": "modifier", "key": "levySize", "value": 1 },
+      { "op": "modifier", "key": "armyAttack", "value": 1 },
+      { "op": "modifier", "key": "foodIncome", "value": -2 }
+    ] },
+
+  { "id": "law_iron_conviction", "name": "Железная воля", "voteCost": 10,
+    "description": "Дисциплина и вера важнее золота.",
+    "effects": [
+      { "op": "modifier", "key": "armyMorale", "value": 8 },
+      { "op": "modifier", "key": "spyDefense", "value": -1 }
+    ] },
+
+  { "id": "law_salt_wife", "name": "Соляные жёны", "voteCost": 8,
+    "description": "Железнорождённые получают право брать «соляных жён» и делить добычу.",
+    "effects": [
+      { "op": "modifier", "key": "goldIncome", "value": 3 },
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": 0.08 }
+    ] },
+
+  { "id": "law_feudal_contract", "name": "Феодальный договор", "voteCost": 6,
+    "description": "Базовые права лордов: их земли и люди защищены законом.",
+    "effects": [
+      { "op": "modifier", "key": "unrestGlobal.pct", "value": -0.1 },
+      { "op": "modifier", "key": "influenceIncome", "value": 1 }
+    ] }
+]

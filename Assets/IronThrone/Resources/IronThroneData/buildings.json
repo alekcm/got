@@ -1,0 +1,901 @@
+[
+  {
+    "id": "castle",
+    "name": "Замок",
+    "slot": "castle",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 300,
+      "materials": 200
+    },
+    "modifiers": [
+      {
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "key": "unrestGlobal.pct",
+        "value": -0.05
+      }
+    ],
+    "description": "Каменные стены, башни и гарнизон. Основа власти."
+  },
+  {
+    "id": "market",
+    "name": "Рынок",
+    "slot": "economy",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 120,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 6
+      },
+      {
+        "key": "influenceIncome",
+        "value": 1
+      }
+    ],
+    "description": "Торговые ряды, где золото меняет хозяев."
+  },
+  {
+    "id": "granary",
+    "name": "Амбары",
+    "slot": "economy",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 100,
+      "materials": 80
+    },
+    "modifiers": [
+      {
+        "key": "foodIncome",
+        "value": 8
+      }
+    ],
+    "description": "Полные закрома — половина победы в войне."
+  },
+  {
+    "id": "sawmill",
+    "name": "Лесопилка",
+    "slot": "economy",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 110,
+      "materials": 30
+    },
+    "modifiers": [
+      {
+        "key": "materialsIncome",
+        "value": 6
+      }
+    ],
+    "description": "Доски, балки и осадные башни."
+  },
+  {
+    "id": "mine",
+    "name": "Шахта",
+    "slot": "economy",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 140,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "materialsIncome",
+        "value": 8
+      },
+      {
+        "key": "goldIncome",
+        "value": 2
+      }
+    ],
+    "description": "Железо, медь и серебро — кровь войны."
+  },
+  {
+    "id": "trade_post",
+    "name": "Торговая фактория",
+    "slot": "economy",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 180,
+      "materials": 80
+    },
+    "requiresTech": "shared_trade_routes",
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 10
+      }
+    ],
+    "description": "Купцы приходят сами, если им есть что предложить."
+  },
+  {
+    "id": "mint",
+    "name": "Монетный двор",
+    "slot": "economy",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 220,
+      "materials": 100
+    },
+    "requiresTech": "shared_coinage",
+    "modifiers": [
+      {
+        "key": "goldIncome.pct",
+        "value": 0.12
+      }
+    ],
+    "description": "Чеканка собственной монеты увеличивает доходы."
+  },
+  {
+    "id": "farms",
+    "name": "Поля",
+    "slot": "economy",
+    "buildTurns": 1,
+    "cost": {
+      "gold": 60,
+      "materials": 20
+    },
+    "modifiers": [
+      {
+        "key": "foodIncome",
+        "value": 4
+      }
+    ],
+    "description": "Пшеница, ячмень и репа."
+  },
+  {
+    "id": "barracks",
+    "name": "Казармы",
+    "slot": "military",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 140,
+      "materials": 90
+    },
+    "modifiers": [
+      {
+        "key": "armyDefense",
+        "value": 1
+      },
+      {
+        "key": "recoveryCost.pct",
+        "value": -0.1
+      }
+    ],
+    "description": "Здесь солдаты живут, учатся и пополняют потери."
+  },
+  {
+    "id": "stable",
+    "name": "Конюшни",
+    "slot": "military",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 130,
+      "materials": 70
+    },
+    "modifiers": [
+      {
+        "key": "armyMove",
+        "value": 1
+      }
+    ],
+    "description": "Кони для гонцов, разведки и кавалерии."
+  },
+  {
+    "id": "armory",
+    "name": "Оружейная",
+    "slot": "military",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 150,
+      "materials": 120
+    },
+    "modifiers": [
+      {
+        "key": "armyAttack",
+        "value": 1
+      }
+    ],
+    "description": "Сталь, заточенная перед боем."
+  },
+  {
+    "id": "training_ground",
+    "name": "Плац",
+    "slot": "military",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 110,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "armyMorale",
+        "value": 5
+      }
+    ],
+    "description": "Муштра превращает крестьян в солдат."
+  },
+  {
+    "id": "siege_workshop",
+    "name": "Осадная мастерская",
+    "slot": "military",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 180,
+      "materials": 140
+    },
+    "requiresTech": "shared_siegecraft",
+    "modifiers": [
+      {
+        "key": "siegeSpeed",
+        "value": 0.2
+      }
+    ],
+    "description": "Требушеты, тараны и лестницы."
+  },
+  {
+    "id": "watchtower",
+    "name": "Сторожевая башня",
+    "slot": "military",
+    "buildTurns": 1,
+    "cost": {
+      "gold": 80,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "spyDefense",
+        "value": 1
+      }
+    ],
+    "description": "Дозорные видят врага раньше, чем он подойдёт."
+  },
+  {
+    "id": "sept",
+    "name": "Септа",
+    "slot": "temple",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 110,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.05
+      },
+      {
+        "key": "unrestGlobal.pct",
+        "value": -0.03
+      }
+    ],
+    "description": "Дом Семерых. Вера успокаивает и объединяет."
+  },
+  {
+    "id": "godswood",
+    "name": "Богороща",
+    "slot": "temple",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 80,
+      "materials": 50
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.05
+      },
+      {
+        "key": "armyMorale",
+        "value": 2
+      }
+    ],
+    "description": "Сердце-дерево и Старые боги. Северная верность."
+  },
+  {
+    "id": "drowned_shrine",
+    "name": "Святилище Утонувшего",
+    "slot": "temple",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 90,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.05
+      },
+      {
+        "key": "navalPower",
+        "value": 1
+      }
+    ],
+    "description": "Соль и камень. Благословение моря."
+  },
+  {
+    "id": "fire_temple",
+    "name": "Храм Р'глора",
+    "slot": "temple",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 120,
+      "materials": 70
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 3
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.08
+      },
+      {
+        "key": "spyOffense",
+        "value": 1
+      }
+    ],
+    "description": "Ночной огонь, в котором видят будущее."
+  },
+  {
+    "id": "monastery",
+    "name": "Монастырь",
+    "slot": "temple",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 160,
+      "materials": 90
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "influenceIncome",
+        "value": 1
+      }
+    ],
+    "description": "Молитвы и переписывание книг."
+  },
+  {
+    "id": "port",
+    "name": "Порт",
+    "slot": "port",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 200,
+      "materials": 120
+    },
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 8
+      },
+      {
+        "key": "materialsIncome",
+        "value": 2
+      }
+    ],
+    "description": "Причалы, склады и корабли. Морская торговля."
+  },
+  {
+    "id": "shipyard",
+    "name": "Корабельная верфь",
+    "slot": "port",
+    "buildTurns": 4,
+    "cost": {
+      "gold": 260,
+      "materials": 180
+    },
+    "requiresTech": "shared_shipbuilding",
+    "modifiers": [
+      {
+        "key": "navalPower",
+        "value": 2
+      },
+      {
+        "key": "goldIncome",
+        "value": 4
+      }
+    ],
+    "description": "Здесь рождаются дромоны и длинные корабли."
+  },
+  {
+    "id": "lighthouse",
+    "name": "Маяк",
+    "slot": "port",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 90,
+      "materials": 70
+    },
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 2
+      },
+      {
+        "key": "spyDefense",
+        "value": 1
+      }
+    ],
+    "description": "Свет, который ведёт корабли и выдаёт врагов."
+  },
+  {
+    "id": "kingsguard_hq",
+    "name": "Казармы Королевской гвардии",
+    "slot": "castle",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 240,
+      "materials": 120
+    },
+    "modifiers": [
+      {
+        "key": "armyDefense",
+        "value": 2
+      },
+      {
+        "key": "recognitionGain",
+        "value": 0.1
+      }
+    ],
+    "description": "Семь рыцарей, чья верность — оружие."
+  },
+  {
+    "id": "treasury",
+    "name": "Казначейство",
+    "slot": "castle",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 220,
+      "materials": 90
+    },
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 10
+      },
+      {
+        "key": "goldIncome.pct",
+        "value": 0.05
+      }
+    ],
+    "description": "Счётные книги, замки и ключи."
+  },
+  {
+    "id": "great_hall",
+    "name": "Большой зал",
+    "slot": "castle",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 180,
+      "materials": 110
+    },
+    "modifiers": [
+      {
+        "key": "influenceIncome",
+        "value": 2
+      },
+      {
+        "key": "votePower",
+        "value": 1
+      }
+    ],
+    "description": "Пир, присяга и решения, принятые за одним столом."
+  },
+  {
+    "id": "maester_tower",
+    "name": "Башня мейстера",
+    "slot": "special",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 120,
+      "materials": 60
+    },
+    "modifiers": [
+      {
+        "key": "influenceIncome",
+        "value": 1
+      },
+      {
+        "key": "spyDefense",
+        "value": 1
+      }
+    ],
+    "description": "Вороны, книги и советы, которые стоят дороже золота."
+  },
+  {
+    "id": "library",
+    "name": "Библиотека",
+    "slot": "special",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 160,
+      "materials": 80
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 1
+      },
+      {
+        "key": "researchSpeed",
+        "value": 1
+      }
+    ],
+    "description": "Знание, собранное веками."
+  },
+  {
+    "id": "spy_network",
+    "name": "Сеть шептунов",
+    "slot": "special",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 130,
+      "materials": 40
+    },
+    "modifiers": [
+      {
+        "key": "spyOffense",
+        "value": 2
+      },
+      {
+        "key": "spyNetwork",
+        "value": 1
+      }
+    ],
+    "description": "Маленькие птички приносят большие секреты."
+  },
+  {
+    "id": "tourney_grounds",
+    "name": "Турнирное поле",
+    "slot": "special",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 200,
+      "materials": 120
+    },
+    "modifiers": [
+      {
+        "key": "recognitionGain",
+        "value": 0.15
+      },
+      {
+        "key": "armyMorale",
+        "value": 3
+      }
+    ],
+    "description": "Рыцарская слава и народная любовь."
+  },
+  {
+    "id": "dragonpit",
+    "name": "Драконье логово",
+    "slot": "special",
+    "buildTurns": 4,
+    "cost": {
+      "gold": 300,
+      "materials": 220
+    },
+    "unique": true,
+    "uniqueToFaction": "targaryen",
+    "modifiers": [
+      {
+        "key": "dragonPower",
+        "value": 0.2
+      },
+      {
+        "key": "pietyIncome",
+        "value": 2
+      }
+    ],
+    "description": "Каменный колодец, где спят драконы. Только для Таргариенов."
+  },
+  {
+    "id": "alchemist_guild",
+    "name": "Гильдия алхимиков",
+    "slot": "special",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 180,
+      "materials": 70
+    },
+    "requiresTech": "shared_alchemy",
+    "modifiers": [
+      {
+        "key": "spyOffense",
+        "value": 1
+      },
+      {
+        "key": "armyAttack",
+        "value": 1
+      }
+    ],
+    "description": "Дикий огонь и яды — оружие слабых против сильных."
+  },
+  {
+    "id": "fleet_anchorage",
+    "name": "Стоянка флота",
+    "slot": "port",
+    "buildTurns": 3,
+    "cost": {
+      "gold": 220,
+      "materials": 150
+    },
+    "requiresTech": "shared_shipbuilding",
+    "modifiers": [
+      {
+        "key": "navalPower",
+        "value": 3
+      },
+      {
+        "key": "raidLoot",
+        "value": 0.15
+      }
+    ],
+    "description": "Длинные корабли ждут прилива."
+  },
+  {
+    "id": "valyrian_shrine",
+    "name": "Валирийское святилище",
+    "slot": "temple",
+    "buildTurns": 2,
+    "cost": {
+      "gold": 120,
+      "materials": 70
+    },
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.06
+      },
+      {
+        "key": "dragonPower",
+        "value": 0.1
+      }
+    ],
+    "description": "Стены из чёрного камня и древние имена драконов. Наследие Валирии."
+  },
+  {
+    "id": "province_mill",
+    "name": "Мельница",
+    "slot": "province",
+    "cost": {
+      "gold": 60,
+      "materials": 40
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +4 продовольствия и +1 золота.",
+    "modifiers": [
+      {
+        "key": "foodIncome",
+        "value": 4
+      },
+      {
+        "key": "goldIncome",
+        "value": 1
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_farmsteads",
+    "name": "Фермерские дворы",
+    "slot": "province",
+    "cost": {
+      "gold": 50,
+      "materials": 30
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +6 продовольствия.",
+    "modifiers": [
+      {
+        "key": "foodIncome",
+        "value": 6
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_quarry",
+    "name": "Каменоломня",
+    "slot": "province",
+    "cost": {
+      "gold": 70,
+      "materials": 30
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +5 стройматериалов.",
+    "modifiers": [
+      {
+        "key": "materialsIncome",
+        "value": 5
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_sawmill",
+    "name": "Лесопилка",
+    "slot": "province",
+    "cost": {
+      "gold": 60,
+      "materials": 25
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +4 стройматериала и +1 продовольствия.",
+    "modifiers": [
+      {
+        "key": "materialsIncome",
+        "value": 4
+      },
+      {
+        "key": "foodIncome",
+        "value": 1
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_market_stall",
+    "name": "Торговые ряды",
+    "slot": "province",
+    "cost": {
+      "gold": 80,
+      "materials": 35
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +4 золота.",
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 4
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_watchtower",
+    "name": "Сторожевая башня",
+    "slot": "province",
+    "cost": {
+      "gold": 60,
+      "materials": 50
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +4 к гарнизону и +1 к обороне армий.",
+    "modifiers": [
+      {
+        "key": "garrisonBonus",
+        "value": 4
+      },
+      {
+        "key": "armyDefense",
+        "value": 1
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_shrine",
+    "name": "Дорожная часовня",
+    "slot": "province",
+    "cost": {
+      "gold": 40,
+      "materials": 25
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +2 веры и +8% к распространению веры.",
+    "modifiers": [
+      {
+        "key": "pietyIncome",
+        "value": 2
+      },
+      {
+        "key": "faithSpread",
+        "value": 0.08
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_toll_bridge",
+    "name": "Платный мост",
+    "slot": "province",
+    "cost": {
+      "gold": 90,
+      "materials": 40
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +3 золота и +1 влияния.",
+    "modifiers": [
+      {
+        "key": "goldIncome",
+        "value": 3
+      },
+      {
+        "key": "influenceIncome",
+        "value": 1
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_hunting_lodge",
+    "name": "Охотничий домик",
+    "slot": "province",
+    "cost": {
+      "gold": 55,
+      "materials": 30
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +3 продовольствия и +6% к росту освоения.",
+    "modifiers": [
+      {
+        "key": "foodIncome",
+        "value": 3
+      },
+      {
+        "key": "growthBonus",
+        "value": 6
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  },
+  {
+    "id": "province_training_yard",
+    "name": "Учебный плац",
+    "slot": "province",
+    "cost": {
+      "gold": 80,
+      "materials": 60
+    },
+    "buildTurns": 1,
+    "description": "Провинциальное улучшение: +1 к атаке и +4% к скорости осад.",
+    "modifiers": [
+      {
+        "key": "armyAttack",
+        "value": 1
+      },
+      {
+        "key": "siegeSpeed",
+        "value": 4
+      }
+    ],
+    "effects": [],
+    "maxPerEmpire": 99
+  }
+]

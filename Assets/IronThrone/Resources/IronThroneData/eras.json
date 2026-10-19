@@ -1,0 +1,24 @@
+[
+  {
+    "id": "conquest",
+    "name": "Завоевание Эйгона",
+    "startYear": -2,
+    "yearSuffix": "от З.Э.",
+    "description": "2 год до Завоевания. Семь королевств ещё не знают, что с востока пришёл огонь. Эйгон Таргариен и его сёстры высадились в устье Черноводной, и старые короли должны решить: склониться или сгореть. Малый совет ещё не существует — Железный трон нужно основать, а вместе с ним и новый порядок.",
+    "intro": "«Пламя и кровь» — Эйгон Таргариен поднимает знамёна Драконьего Камня. Вестерос расколот на семь враждебных королевств. Каждый дом волен выбрать свой путь: покориться драконам, объединиться против них или переждать бурю за стенами.",
+    "factions": ["conquest_targaryen", "conquest_stark", "conquest_arryn", "conquest_hoare", "conquest_lannister", "conquest_gardener", "conquest_durrandon", "conquest_martell", "conquest_nightswatch"],
+    "map": "canonical",
+    "globalEvents": ["global_doom_of_valyria_echo", "global_long_winter", "global_great_council", "global_faith_militant", "global_grey_plague"]
+  },
+  {
+    "id": "fivekings",
+    "name": "Битва Пяти Королевств",
+    "startYear": 298,
+    "yearSuffix": "от З.Э.",
+    "description": "298 год от Завоевания. Роберт Баратеон мёртв, его сын Джоффри сидит на Железном троне, но страна уже горит. Пять королей и ещё больше претендентов делят кости дракона. Малый совет расколот, Верит — оружие, а за Стеной собираются одичалые.",
+    "intro": "«Когда играют короли, пляшут и простые люди». Пять корон, пять армий, один Железный трон. Что вы выберете: меч, закон, золото или веру?",
+    "factions": ["five_stark", "five_lannister", "five_baratheon", "five_tyrell", "five_martell", "five_greyjoy", "five_arryn", "five_stannis", "five_nightswatch"],
+    "map": "canonical",
+    "globalEvents": ["global_daenerys_landing", "global_long_winter", "global_great_council", "global_faith_militant", "global_grey_plague", "global_dragon_over_kinglanding"]
+  }
+]

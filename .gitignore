@@ -1,0 +1,22 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+# Unity
+Library/
+Temp/
+Logs/
+Build/
+Builds/
+UserSettings/
+# IDE
+.vs/
+.idea/
+*.csproj.user
+# OS
+.DS_Store
+Thumbs.db
+# local env
+.venv/
+*.pyc
+__pycache__/

@@ -1,0 +1,1691 @@
+[
+  {
+    "id": "ev_harvest_bounty",
+    "type": "random",
+    "name": "Богатый урожай",
+    "weight": 3,
+    "minTurn": 2,
+    "text": "Поля дали больше, чем ожидалось. Амбары ломятся от зерна, а купцы уже предлагают цену.",
+    "choices": [
+      {
+        "text": "Наполнить амбары",
+        "aiWeight": 2,
+        "resultText": "Запасы пополнены",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 120
+          }
+        ]
+      },
+      {
+        "text": "Продать излишки",
+        "aiWeight": 1,
+        "resultText": "Золото в казне",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 150
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_bandits",
+    "type": "random",
+    "name": "Разбойники на дорогах",
+    "weight": 3,
+    "minTurn": 3,
+    "text": "Шайка разбойников перекрыла торговый тракт. Крестьяне жалуются, купцы требуют защиты.",
+    "choices": [
+      {
+        "text": "Заплатить за охрану",
+        "cost": {
+          "gold": 80
+        },
+        "aiWeight": 1,
+        "resultText": "Тракт очищен",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -8
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Послать солдат",
+        "aiWeight": 2,
+        "resultText": "Разбойники повешены",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 3
+          },
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "text": "Пусть merchants платят сами",
+        "aiWeight": 0.5,
+        "resultText": "Торговля страдает",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 10
+          },
+          {
+            "op": "timedmodifier",
+            "key": "goldIncome",
+            "value": -3,
+            "turns": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_famine",
+    "type": "random",
+    "name": "Голод",
+    "weight": 2,
+    "minTurn": 6,
+    "text": "Неурожай ударил по деревням. Люди едят кору и молятся, чтобы лорд открыл амбары.",
+    "choices": [
+      {
+        "text": "Открыть амбары",
+        "aiWeight": 3,
+        "resultText": "Народ благодарен",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": -80
+          },
+          {
+            "op": "unrest",
+            "amount": -15
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Купить зерно у соседей",
+        "cost": {
+          "gold": 150
+        },
+        "aiWeight": 2,
+        "resultText": "Зерно куплено",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "unrest",
+            "amount": -5
+          }
+        ]
+      },
+      {
+        "text": "Ничего не делать",
+        "aiWeight": 0.3,
+        "resultText": "Голод усиливается",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 18
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": -40
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_wedding",
+    "type": "random",
+    "name": "Свадьба",
+    "weight": 2,
+    "minTurn": 5,
+    "text": "Вассальный дом предлагает брак. Пир, союз и новые обещания — всё имеет цену.",
+    "choices": [
+      {
+        "text": "Устроить пышную свадьбу",
+        "cost": {
+          "gold": 120
+        },
+        "aiWeight": 2,
+        "resultText": "Союз скреплён",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 8
+          },
+          {
+            "op": "modifier",
+            "key": "recognitionGain",
+            "value": 0.05
+          },
+          {
+            "op": "unrest",
+            "amount": -6
+          }
+        ]
+      },
+      {
+        "text": "Скромная церемония",
+        "aiWeight": 1,
+        "resultText": "Дом доволен",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 3
+          }
+        ]
+      },
+      {
+        "text": "Отказать",
+        "aiWeight": 0.2,
+        "resultText": "Обида",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 6
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": -2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_sickness",
+    "type": "random",
+    "name": "Болезнь в замке",
+    "weight": 2,
+    "minTurn": 8,
+    "text": "Лихорадка косится людей в одной из ваших провинций. Мейстер требует деньги на лекарства.",
+    "choices": [
+      {
+        "text": "Оплатить лечение",
+        "cost": {
+          "gold": 90
+        },
+        "aiWeight": 2,
+        "resultText": "Болезнь отступила",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -4
+          }
+        ]
+      },
+      {
+        "text": "Закрыть провинцию",
+        "aiWeight": 1,
+        "resultText": "Торговля остановлена",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 6
+          },
+          {
+            "op": "timedmodifier",
+            "key": "goldIncome",
+            "value": -2,
+            "turns": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_tourney",
+    "type": "random",
+    "name": "Турнир",
+    "weight": 2,
+    "minTurn": 10,
+    "text": "Рыцари со всей округи съезжаются на турнир. Победитель получит славу, а устроитель — любовь народа.",
+    "choices": [
+      {
+        "text": "Провести большой турнир",
+        "cost": {
+          "gold": 160
+        },
+        "aiWeight": 2,
+        "resultText": "Слава и признание",
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 3
+          },
+          {
+            "op": "modifier",
+            "key": "recognitionGain",
+            "value": 0.05
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 5
+          }
+        ]
+      },
+      {
+        "text": "Малый турнир",
+        "cost": {
+          "gold": 60
+        },
+        "aiWeight": 1,
+        "resultText": "Рыцари довольны",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_faith_revival",
+    "type": "random",
+    "name": "Религиозное пробуждение",
+    "weight": 2,
+    "minTurn": 6,
+    "text": "Проповедники собирают толпы. Народ требует новых храмов и знамений.",
+    "choices": [
+      {
+        "text": "Поддержать веру",
+        "cost": {
+          "gold": 100
+        },
+        "aiWeight": 2,
+        "resultText": "Вера крепнет",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "pietyIncome",
+            "value": 2
+          },
+          {
+            "op": "faith",
+            "amount": 4
+          },
+          {
+            "op": "unrest",
+            "amount": -8
+          }
+        ]
+      },
+      {
+        "text": "Оставить как есть",
+        "aiWeight": 1,
+        "resultText": "Проповедники недовольны",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_mercenary_offer",
+    "type": "random",
+    "name": "Отряд наёмников",
+    "weight": 2,
+    "minTurn": 7,
+    "text": "Капитан вольного отряда предлагает услуги. Его люди опытны, но дороги.",
+    "choices": [
+      {
+        "text": "Нанять отряд",
+        "cost": {
+          "gold": 180
+        },
+        "aiWeight": 2,
+        "resultText": "Наёмники присоединились",
+        "effects": [
+          {
+            "op": "recruit",
+            "id": "sellswords",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "text": "Отказаться",
+        "aiWeight": 1,
+        "resultText": "Отряд ушёл к конкурентам",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": -2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_maester_discovery",
+    "type": "random",
+    "name": "Открытие мейстера",
+    "weight": 2,
+    "minTurn": 4,
+    "text": "Мейстер нашёл в старых свитках полезные сведения. Их можно применить на практике.",
+    "choices": [
+      {
+        "text": "Внедрить открытие",
+        "cost": {
+          "gold": 50
+        },
+        "aiWeight": 2,
+        "resultText": "Знание применено",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 3
+          }
+        ]
+      },
+      {
+        "text": "Продать секрет",
+        "aiWeight": 1,
+        "resultText": "Свиток продан",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_noble_feud",
+    "type": "random",
+    "name": "Вражда вассалов",
+    "weight": 2,
+    "minTurn": 5,
+    "text": "Два ваших вассала начали войну из-за старой обиды. Их люди жгут друг другу поля.",
+    "choices": [
+      {
+        "text": "Рассудить",
+        "cost": {
+          "influence": 6
+        },
+        "aiWeight": 2,
+        "resultText": "Мир восстановлен",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -10
+          },
+          {
+            "op": "modifier",
+            "key": "votePower",
+            "value": 0
+          }
+        ]
+      },
+      {
+        "text": "Поддержать сильнейшего",
+        "aiWeight": 1,
+        "resultText": "Слабый дом обижен",
+        "effects": [
+          {
+            "op": "recruit",
+            "id": "men_at_arms",
+            "count": 1
+          },
+          {
+            "op": "unrest",
+            "amount": 6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_white_raven",
+    "type": "random",
+    "name": "Белый ворон",
+    "weight": 2,
+    "minTurn": 3,
+    "text": "Из Цитадели прилетел белый ворон. Зима близко — или уже здесь.",
+    "choices": [
+      {
+        "text": "Заготовить припасы",
+        "aiWeight": 2,
+        "resultText": "Амбары полны",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 60
+          },
+          {
+            "op": "modifier",
+            "key": "foodIncome",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Игнорировать",
+        "aiWeight": 0.4,
+        "resultText": "Зима застала врасплох",
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "foodIncome",
+            "value": -3,
+            "turns": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_spy_caught",
+    "type": "random",
+    "name": "Пойманный шпион",
+    "weight": 2,
+    "minTurn": 8,
+    "text": "Ваши люди поймали лазутчика. Он знает много — и может знать ещё больше.",
+    "choices": [
+      {
+        "text": "Допросить и перевербовать",
+        "aiWeight": 2,
+        "resultText": "Новый агент",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "spyOffense",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Казнить публично",
+        "aiWeight": 1,
+        "resultText": "Страх и порядок",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -5
+          },
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_red_god_vision",
+    "type": "random",
+    "name": "Видение в огне",
+    "weight": 2,
+    "minTurn": 8,
+    "conditions": {
+      "requiresFaith": "rhllor"
+    },
+    "text": "Жрец Р'глора видит в пламени вашу победу. Нужна лишь жертва.",
+    "choices": [
+      {
+        "text": "Принести жертву",
+        "aiWeight": 2,
+        "resultText": "Владыка Света доволен",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 25
+          },
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 2
+          },
+          {
+            "op": "unrest",
+            "amount": 6
+          }
+        ]
+      },
+      {
+        "text": "Отказаться",
+        "aiWeight": 1,
+        "resultText": "Жрец уходит",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": -5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_old_gods_sacrifice",
+    "type": "random",
+    "name": "Кровавое жертвоприношение",
+    "weight": 2,
+    "minTurn": 8,
+    "conditions": {
+      "requiresFaith": "oldgods"
+    },
+    "text": "Древние боги молчат. Но кровь на корнях чардрева может разбудить их.",
+    "choices": [
+      {
+        "text": "Принести жертву",
+        "aiWeight": 1,
+        "resultText": "Боги услышали",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 20
+          },
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          },
+          {
+            "op": "unrest",
+            "amount": 8
+          }
+        ]
+      },
+      {
+        "text": "Не осквернять богорощу",
+        "aiWeight": 2,
+        "resultText": "Север помнит",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": -5
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_deserters",
+    "type": "random",
+    "name": "Дезертиры",
+    "weight": 2,
+    "minTurn": 9,
+    "text": "Часть ополчения разбежалась после тяжёлого марша. Их нужно вернуть или наказать.",
+    "choices": [
+      {
+        "text": "Простить и вернуть",
+        "cost": {
+          "gold": 60
+        },
+        "aiWeight": 2,
+        "resultText": "Люди вернулись",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": -20
+          },
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "text": "Показательная казнь",
+        "aiWeight": 1,
+        "resultText": "Дисциплина восстановлена",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyMorale",
+            "value": 3
+          },
+          {
+            "op": "unrest",
+            "amount": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_trade_boom",
+    "type": "random",
+    "name": "Торговый бум",
+    "weight": 2,
+    "minTurn": 5,
+    "text": "Через ваши земли прошёл богатый караван. Купцы просят льгот.",
+    "choices": [
+      {
+        "text": "Дать льготы",
+        "aiWeight": 2,
+        "resultText": "Торговля расцвела",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": 3
+          },
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "text": "Обложить пошлиной",
+        "aiWeight": 1,
+        "resultText": "Казна пополнилась",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 180
+          },
+          {
+            "op": "modifier",
+            "key": "tradeDominance",
+            "value": -2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_wildling_raid",
+    "type": "random",
+    "name": "Набег одичалых",
+    "weight": 2,
+    "minTurn": 4,
+    "conditions": {
+      "faction": "nightswatch"
+    },
+    "text": "Одичалые перешли Стену в одном из заброшенных проходов.",
+    "choices": [
+      {
+        "text": "Отправить разведчиков",
+        "aiWeight": 2,
+        "resultText": "Набег отбит",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 4
+          }
+        ]
+      },
+      {
+        "text": "Укрепить Стену",
+        "cost": {
+          "materials": 80
+        },
+        "aiWeight": 1,
+        "resultText": "Стена усилена",
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_long_winter",
+    "type": "global",
+    "name": "Долгая зима",
+    "everyTurns": 72,
+    "minTurn": 30,
+    "text": "Белые вороны летят во все концы. Зима будет долгой и жестокой: урожаи падают, армии мёрзнут.",
+    "choices": [
+      {
+        "text": "Пережить зиму",
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "foodIncome",
+            "value": -4,
+            "turns": 8,
+            "text": "Долгая зима"
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyMove",
+            "value": -1,
+            "turns": 8
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": -30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_great_council",
+    "type": "global",
+    "name": "Великий совет",
+    "everyTurns": 60,
+    "minTurn": 24,
+    "text": "Лорды собираются в Хаppенхоле, чтобы решить судьбу короны. Интриги, обещания и голоса.",
+    "choices": [
+      {
+        "text": "Совет состоялся",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 6
+          },
+          {
+            "op": "recognition",
+            "amount": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": -60
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_faith_militant",
+    "type": "global",
+    "name": "Воинствующая вера",
+    "everyTurns": 84,
+    "minTurn": 36,
+    "text": "Септоны проповедуют крестовый поход против неверных. Толпы жгут богорощи и храмы Р'глора.",
+    "choices": [
+      {
+        "text": "Смута веры",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 10
+          },
+          {
+            "op": "timedmodifier",
+            "key": "unrestGlobal.pct",
+            "value": 0.12,
+            "turns": 6
+          },
+          {
+            "op": "modifier",
+            "key": "armyAttack",
+            "value": 0
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_grey_plague",
+    "type": "global",
+    "name": "Серая чума",
+    "everyTurns": 96,
+    "minTurn": 48,
+    "text": "Корабль из Эссоса привёз чуму. Гавани закрываются, люди умирают тысячами.",
+    "choices": [
+      {
+        "text": "Мор",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 14
+          },
+          {
+            "op": "timedmodifier",
+            "key": "goldIncome",
+            "value": -4,
+            "turns": 6
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": -40
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_daenerys_landing",
+    "type": "global",
+    "name": "Дейенерис высаживается в Вестеросе",
+    "everyTurns": 999,
+    "minTurn": 30,
+    "text": "Слухи подтвердились: на Драконьем Камне подняты знамёна дома Таргариенов. Драконы вернулись.",
+    "choices": [
+      {
+        "text": "Буря с востока",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 8
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyMorale",
+            "value": -2,
+            "turns": 5
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": -2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_dragon_over_kinglanding",
+    "type": "global",
+    "name": "Тень над Королевской Гаванью",
+    "everyTurns": 999,
+    "minTurn": 42,
+    "text": "Огромная тень прошла над столицей. Горожане в панике, а лорды шепчутся о конце династии.",
+    "choices": [
+      {
+        "text": "Паника",
+        "effects": [
+          {
+            "op": "unrest",
+            "amount": 12
+          },
+          {
+            "op": "timedmodifier",
+            "key": "recognitionGain",
+            "value": -0.2,
+            "turns": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "global_doom_of_valyria_echo",
+    "type": "global",
+    "name": "Эхо Рока Валирии",
+    "everyTurns": 999,
+    "minTurn": 6,
+    "text": "Весь Вестерос говорит о драконах. Старые боги шепчут, что мир меняется навсегда.",
+    "choices": [
+      {
+        "text": "Знамение",
+        "effects": [
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 10
+          },
+          {
+            "op": "unrest",
+            "amount": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_targ_blood_wedding",
+    "type": "random",
+    "name": "Кровь и пламя",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Двор шепчется: король взял в жёны собственную сестру. Старые боги и Семеро молчат, но люди помнят Валирию.",
+    "conditions": {
+      "faction": "targaryen",
+      "requiresFlag": "incest_path"
+    },
+    "choices": [
+      {
+        "text": "Сыграть свадьбу по валирийскому обряду",
+        "resultText": "Драконья кровь не разбавлена. Двор в ужасе, но драконы сильны.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "dragonPower",
+            "value": 0.2,
+            "turns": 3,
+            "text": "Кровь дракона"
+          },
+          {
+            "op": "recognition",
+            "amount": 8
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          },
+          {
+            "op": "resource",
+            "res": "piety",
+            "amount": 15
+          }
+        ]
+      },
+      {
+        "text": "Ограничиться тайным обрядом",
+        "resultText": "Свадьба без свидетелей. Слухи есть, доказательств нет.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "spyDefense",
+            "value": 2,
+            "turns": 3,
+            "text": "Тайна двора"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 15
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_targ_new_marriage",
+    "type": "random",
+    "name": "Новый союз",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Король ищет невесту среди великих домов. Дракон должен породниться с Вестеросом, а не с самим собой.",
+    "conditions": {
+      "faction": "targaryen",
+      "requiresFlag": "reform_path"
+    },
+    "choices": [
+      {
+        "text": "Породниться с великим домом",
+        "resultText": "Союз скреплён браком. Дворы Вестероса видят в вас своих.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 12
+          },
+          {
+            "op": "recognition",
+            "amount": 6
+          },
+          {
+            "op": "resource",
+            "res": "food",
+            "amount": 100
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      },
+      {
+        "text": "Взять в жёны дочь купца",
+        "resultText": "Богатое приданое и никаких обязательств перед лордами.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 300
+          },
+          {
+            "op": "modifier",
+            "key": "goldIncome",
+            "value": 2
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_stark_crown",
+    "type": "random",
+    "name": "Корона Севера",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Лорды Севера собрались в Винтерфелле. Они ждут, наденет ли Старк корону — или снова склонит колено.",
+    "conditions": {
+      "faction": "stark",
+      "requiresFlag": "king_in_the_north"
+    },
+    "choices": [
+      {
+        "text": "Надеть корону",
+        "resultText": "Север провозглашает Короля в Северном крае. Юг в ярости, Север — в восторге.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 12
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyMorale",
+            "value": 6,
+            "turns": 3,
+            "text": "Корона Севера"
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -8
+          }
+        ]
+      },
+      {
+        "text": "Оставить корону в крипте",
+        "resultText": "Символ власти без вызова трону. Лорды расходятся, кто-то недоволен.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 20
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_stark_oath",
+    "type": "random",
+    "name": "Присяга Железному трону",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Ворон из Королевской Гавани принёс присягу. Север должен решить: мир или гордость.",
+    "conditions": {
+      "faction": "stark",
+      "requiresFlag": "bent_knee"
+    },
+    "choices": [
+      {
+        "text": "Присягнуть публично",
+        "resultText": "Присяга приносит мир и признание, но Север помнит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 12
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": -15
+          }
+        ]
+      },
+      {
+        "text": "Затянуть с ответом",
+        "resultText": "Пока ворон ждёт, купцы платят за проходы.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 150
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_lannister_terror",
+    "type": "random",
+    "name": "Красный страх",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Шептуны донесли: враги собираются в тёмных углах. Лев должен ответить — или проявить милость.",
+    "conditions": {
+      "faction": "lannister",
+      "requiresFlag": "ruthless_path"
+    },
+    "choices": [
+      {
+        "text": "Устроить чистку",
+        "resultText": "Дворы замолчали. Кто-то исчез, кто-то просто больше не говорит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "recognition",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -10
+          },
+          {
+            "op": "timedmodifier",
+            "key": "spyOffense",
+            "value": 2,
+            "turns": 3,
+            "text": "Красный страх"
+          }
+        ]
+      },
+      {
+        "text": "Казнить только главарей",
+        "resultText": "Мера страха и милосердия. Двор вздохнул, но не расслабился.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 4
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_lannister_amnesty",
+    "type": "random",
+    "name": "Прощение долгов",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Должники пришли к воротам. Можно взыскать долг, а можно простить — и купить верность.",
+    "conditions": {
+      "faction": "lannister",
+      "requiresFlag": "mercy_path"
+    },
+    "choices": [
+      {
+        "text": "Простить долги",
+        "resultText": "Лорды запомнили доброту. Золото вернётся позже — с процентами верности.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 12
+          },
+          {
+            "op": "modifier",
+            "key": "influenceIncome",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": -100
+          }
+        ]
+      },
+      {
+        "text": "Взыскать сполна",
+        "resultText": "Казна полна, но должники злы.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_greyjoy_oldway",
+    "type": "random",
+    "name": "Старый путь",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Капитан предлагает новый набег на богатое побережье. Старый путь не спрашивает, можно ли.",
+    "conditions": {
+      "faction": "greyjoy",
+      "requiresFlag": "old_way"
+    },
+    "choices": [
+      {
+        "text": "Идти на восток",
+        "resultText": "Длинные корабли уходят в туман. Добыча будет.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 100
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -8
+          },
+          {
+            "op": "timedmodifier",
+            "key": "raidLoot",
+            "value": 0.1,
+            "turns": 3,
+            "text": "Старый путь"
+          }
+        ]
+      },
+      {
+        "text": "Отложить набег",
+        "resultText": "Воины недовольны, но буря переждана.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "navalPower",
+            "value": 2,
+            "turns": 3,
+            "text": "Тихая гавань"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_greyjoy_trade",
+    "type": "random",
+    "name": "Договор с зелёными",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Купцы Простора предлагают торговать вместо грабежа. Железные люди не сеют — но, может, умеют считать?",
+    "conditions": {
+      "faction": "greyjoy",
+      "requiresFlag": "new_way"
+    },
+    "choices": [
+      {
+        "text": "Подписать договор",
+        "resultText": "Золото потечёт в гавани. Старые капитаны ворчат, но кошельки полны.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 250
+          },
+          {
+            "op": "tradedominance",
+            "amount": 6
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          }
+        ]
+      },
+      {
+        "text": "Забрать товар силой",
+        "resultText": "Купцы бегут. Добыча есть, но торговля закрыта.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 200
+          },
+          {
+            "op": "resource",
+            "res": "materials",
+            "amount": 80
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_martell_vengeance",
+    "type": "random",
+    "name": "Пламя Дорна",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Дорн ждал слишком долго. Можно нанести удар сейчас — или подождать ещё немного.",
+    "conditions": {
+      "faction": "martell",
+      "requiresFlag": "vengeance_path"
+    },
+    "choices": [
+      {
+        "text": "Ударить",
+        "resultText": "Яд и копьё сделали своё дело. Враги знают: Дорн не прощает.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 15
+          },
+          {
+            "op": "timedmodifier",
+            "key": "armyAttack",
+            "value": 2,
+            "turns": 3,
+            "text": "Месть Дорна"
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -6
+          }
+        ]
+      },
+      {
+        "text": "Продолжать ждать",
+        "resultText": "Дорн копит силы. Терпение — тоже оружие.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_martell_peace",
+    "type": "random",
+    "name": "Мирный Дорн",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Королевская Гавань предлагает мир. Дорн может принять его — или вспомнить Элию.",
+    "conditions": {
+      "faction": "martell",
+      "requiresFlag": "peace_path"
+    },
+    "choices": [
+      {
+        "text": "Принять мир",
+        "resultText": "Послы подписывают договор. Дорн торгует, а не хоронит.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "tradedominance",
+            "amount": 5
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 100
+          }
+        ]
+      },
+      {
+        "text": "Отклонить",
+        "resultText": "Мир отвергнут. Дорн снова один.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "timedmodifier",
+            "key": "armyDefense",
+            "value": 2,
+            "turns": 3,
+            "text": "Непокорённые"
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_arryn_littlefinger",
+    "type": "random",
+    "name": "Сделка с Мизинцем",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Мизинец привёз карту и мешок золота. Услуга будет оказана — но что ему нужно взамен?",
+    "conditions": {
+      "faction": "arryn",
+      "requiresFlag": "littlefinger_path"
+    },
+    "choices": [
+      {
+        "text": "Принять сделку",
+        "resultText": "Золото в сундуках, а в Долине появляются новые люди Мизинца.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": 300
+          },
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": -5
+          },
+          {
+            "op": "modifier",
+            "key": "spyNetwork",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "text": "Отказаться",
+        "resultText": "Мизинец уехал улыбаясь. Улыбка не внушала доверия.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "spyDefense",
+            "value": 2
+          },
+          {
+            "op": "resource",
+            "res": "influence",
+            "amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ev_arryn_honor",
+    "type": "random",
+    "name": "Честь Долины",
+    "weight": 5,
+    "minTurn": 1,
+    "oncePerGame": true,
+    "text": "Долина может снова стать известна честью, а не интригами. Лорды ждут решения.",
+    "conditions": {
+      "faction": "arryn",
+      "requiresFlag": "honor_path"
+    },
+    "choices": [
+      {
+        "text": "Созвать рыцарей",
+        "resultText": "Знамёна Долины подняты. Честь стоит золота.",
+        "aiWeight": 2,
+        "effects": [
+          {
+            "op": "relation",
+            "target": "all",
+            "amount": 10
+          },
+          {
+            "op": "recruit",
+            "id": "vale_knights",
+            "count": 1
+          },
+          {
+            "op": "resource",
+            "res": "gold",
+            "amount": -50
+          }
+        ]
+      },
+      {
+        "text": "Укрепить перевалы",
+        "resultText": "Честь — это ещё и умение держать границу.",
+        "aiWeight": 1,
+        "effects": [
+          {
+            "op": "modifier",
+            "key": "armyDefense",
+            "value": 2
+          },
+          {
+            "op": "modifier",
+            "key": "garrisonBonus",
+            "value": 3
+          }
+        ]
+      }
+    ]
+  }
+]
