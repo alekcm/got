@@ -19,6 +19,8 @@ namespace IronThrone.Core.Game
     /// <summary>Все условия победы: гегемония, политика, экономика, религия.</summary>
     public static class VictorySystem
     {
+        public const int PoliticalSeatsRequired = 6;
+
         public static List<VictoryProgress> Evaluate(GameState state, FactionState f)
         {
             var list = new List<VictoryProgress>();
@@ -43,10 +45,10 @@ namespace IronThrone.Core.Game
                 faction = f.id, victoryType = "political",
                 value = f.recognition,
                 target = v.politicalRecognition,
-                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}, мест в совете: {PoliticsSystem.SeatsOf(state, f.id)}/5" +
+                description = $"Признание: {f.recognition:0}/{v.politicalRecognition}, мест в совете: {PoliticsSystem.SeatsOf(state, f.id)}/{PoliticalSeatsRequired}" +
                               (state.Council.throneHolder == f.id ? ", Железный трон ваш" : ", Железный трон не ваш"),
                 achieved = f.recognition >= v.politicalRecognition && state.Council.throneHolder == f.id &&
-                           PoliticsSystem.SeatsOf(state, f.id) >= 5
+                           PoliticsSystem.SeatsOf(state, f.id) >= PoliticalSeatsRequired
             });
 
             // Экономика

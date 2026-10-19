@@ -23,6 +23,8 @@ namespace IronThrone.Unity
                             (p.def.isCapital ? " · столица региона" : "") + (p.def.port ? " · порт" : ""), _small);
             GUILayout.Label($"Владелец: {_state.FactionName(p.owner)}   Контроль: {_state.FactionName(p.controller)}", _body);
             GUILayout.Label($"Гарнизон: {p.garrison}/{TurnEngine.MaxGarrison(p)}   Беспорядки: {p.unrest:0}%   Развитие: {p.development:0}", _body);
+            if (!string.IsNullOrEmpty(p.besieger) && p.controller != p.besieger)
+                GUILayout.Label($"Осада: {_state.FactionName(p.besieger)} · пробито {p.siegeProgress:0}/{Math.Max(1, p.garrison)}", _small);
             GUILayout.Label($"Вера: {FaithName(p.dominantFaith)}", _body);
 
             if (p.controller == f.id)

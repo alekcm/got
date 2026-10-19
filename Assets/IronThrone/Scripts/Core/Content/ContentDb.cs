@@ -112,5 +112,20 @@ namespace IronThrone.Core.Content
         public IEnumerable<AdvisorDef> AdvisorsFor(EraDef era, FactionDef faction) =>
             Advisors.Where(a => (a.eras.Count == 0 || a.eras.Contains(era.id)) &&
                                 (string.IsNullOrEmpty(a.faction) || a.faction == faction.id || a.faction == faction.house));
+
+        /// <summary>Советники, из которых дом реально выбирает двух: faction.advisorPool, иначе общие.</summary>
+        public List<AdvisorDef> AdvisorsForFaction(EraDef era, FactionDef faction)
+        {
+            if (faction == null) return new List<AdvisorDef>();
+            var pool = faction.advisorPool
+                .Where(id => AdvisorById.ContainsKey(id))
+                .Select(id => AdvisorById[id])
+                .Where(a => a.eras.Count == 0 || (era != null && a.eras.Contains(era.id)))
+                .ToList();
+            if (pool.Count == 0)
+                pool = Advisors.Where(a => string.IsNullOrEmpty(a.faction) &&
+                                           (a.eras.Count == 0 || (era != null && a.eras.Contains(era.id)))).ToList();
+            return pool;
+        }
     }
 }

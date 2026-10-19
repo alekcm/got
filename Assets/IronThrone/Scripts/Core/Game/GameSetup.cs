@@ -132,10 +132,7 @@ namespace IronThrone.Core.Game
                     EffectEngine.ApplyAll(t.effects, new EffectContext { State = state, Source = f }, null);
                 }
                 // советники: 2 из пула
-                var pool = def.advisorPool.Where(id => state.Content.AdvisorById.ContainsKey(id)).ToList();
-                if (pool.Count == 0)
-                    pool = state.Content.Advisors.Where(a => string.IsNullOrEmpty(a.faction) &&
-                        (a.eras.Count == 0 || a.eras.Contains(era.id))).Select(a => a.id).ToList();
+                var pool = state.Content.AdvisorsForFaction(era, def).Select(a => a.id).ToList();
                 var chosen = new List<string>();
                 if (f.isPlayer && chosenAdvisors != null && chosenAdvisors.Count > 0)
                 {

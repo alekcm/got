@@ -67,6 +67,17 @@ namespace IronThrone.Headless
                 ok = false;
             }
 
+            // у каждой играбельной фракции должно быть минимум два советника в пуле
+            foreach (var era in db.Eras)
+            {
+                foreach (var f in db.Factions.Where(x => x.era == era.id && x.playable))
+                {
+                    var pool = db.AdvisorsForFaction(era, f);
+                    if (pool.Count < 2)
+                        Console.WriteLine($"  [советники] {f.id}: в пуле только {pool.Count}");
+                }
+            }
+
             if (saveTest) ok &= SaveTest(db);
             if (args.Contains("--battletest")) ok &= BattleTest(db);
             if (args.Contains("--exportmap"))
