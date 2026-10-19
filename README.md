@@ -36,7 +36,7 @@
 
 ## Как запустить в Unity
 
-1. Откройте папку репозитория через **Unity Hub → Add project from disk**. Проект собран под **Unity 2022.3 LTS**; подойдёт и 2021.3+.
+1. Откройте папку репозитория через **Unity Hub → Add project from disk**. Проект собран под **Unity 6000.6.6f1** (Unity 6).
 2. В меню выберите **Iron Throne → Создать стартовую сцену**. Сцена `Assets/Scenes/Main.unity` создастся и добавится в Build Settings.
 3. Нажмите **Play**. Скрипт `IronThroneGame` сам создаст объект игры через `RuntimeInitializeOnLoadMethod`; сцена может быть любой.
 4. Перед сборкой билда выполните **Iron Throne → Подготовить StreamingAssets** (или просто соберите: `IPreprocessBuildWithReport` скопирует JSON сам).
