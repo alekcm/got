@@ -78,14 +78,14 @@ namespace IronThrone.Headless
             }
             catch (Exception ex) { Console.WriteLine("  [набежчики] ошибка: " + ex.Message); }
 
-            // у каждой играбельной фракции должно быть минимум два советника в пуле
+            // у каждой играбельной фракции должно быть из кого выбрать двух советников
             foreach (var era in db.Eras)
             {
                 foreach (var f in db.Factions.Where(x => x.era == era.id && x.playable))
                 {
                     var pool = db.AdvisorsForFaction(era, f);
-                    if (pool.Count < 2)
-                        Console.WriteLine($"  [советники] {f.id}: в пуле только {pool.Count}");
+                    if (pool.Count < 4)
+                        Console.WriteLine($"  [советники] {f.id} ({era.id}): в пуле только {pool.Count}");
                 }
             }
 
@@ -147,6 +147,22 @@ namespace IronThrone.Headless
                     var f = st.Faction(polFaction);
                     var seats = st.Council.seats.Where(kv => kv.Value == f.id).Select(kv => kv.Key).ToList();
                     Console.WriteLine($"  [полит {turnNo}] трон: {st.FactionName(st.Council.throneHolder)}, признание: {f.recognition:0.#}, мест: {seats.Count}/{VictorySystem.PoliticalSeatsRequired} ({string.Join(",", seats)}), влияния: {f.influence:0}, законов: {f.passedLaws.Count}");
+                }
+            }
+
+            if (args.Contains("--debug-econ"))
+            {
+                var st = GameSetup.CreateNewGame(db, "fivekings", "five_lannister", seed: 12345, mapMode: "canonical");
+                TurnEngine.StartGame(st);
+                for (int turnNo = 1; turnNo <= 220; turnNo++)
+                {
+                    TurnEngine.EndTurn(st);
+                    if (turnNo % 40 != 0) continue;
+                    var top = st.Factions.Values.Where(f => f.alive)
+                        .OrderByDescending(f => f.tradeDominance).Take(4)
+                        .Select(f => $"{f.def.shortName ?? f.def.name} {f.tradeDominance:0}%")
+                        .ToList();
+                    Console.WriteLine($"  [эконом {turnNo}] " + string.Join(" · ", top));
                 }
             }
 

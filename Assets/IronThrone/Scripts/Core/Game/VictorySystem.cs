@@ -57,8 +57,8 @@ namespace IronThrone.Core.Game
                 faction = f.id, victoryType = "economic",
                 value = f.tradeDominance,
                 target = v.economicDominance,
-                description = $"Торговое господство: {f.tradeDominance:0}% (порты и рынки), торговых узлов: {f.tradeRoutePoints}",
-                achieved = f.tradeDominance >= v.economicDominance
+                description = $"Торговое господство: {f.tradeDominance:0}/{v.economicDominance}% (порты и рынки), торговых узлов: {f.tradeRoutePoints}/15",
+                achieved = f.tradeDominance >= v.economicDominance && f.tradeRoutePoints >= 15
             });
 
             // Религия

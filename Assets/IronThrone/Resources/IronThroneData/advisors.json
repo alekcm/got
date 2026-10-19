@@ -150,5 +150,23 @@
     "passive": [ { "key": "foodIncome", "value": 3 }, { "key": "goldIncome", "value": 2 }, { "key": "armyDefense", "value": 1 } ],
     "active": { "name": "Снабжение", "description": "Приносит еду и материалы.",
       "cooldown": 4, "cost": { "gold": 40 }, "target": "self",
-      "effects": [ { "op": "resource", "res": "food", "amount": 120 }, { "op": "resource", "res": "materials", "amount": 60 } ] } }
+      "effects": [ { "op": "resource", "res": "food", "amount": 120 }, { "op": "resource", "res": "materials", "amount": 60 } ] } },
+
+  { "id": "adv_ranger", "name": "Первый разведчик", "title": "Глаза Дозора", "portrait": "ranger",
+    "eras": ["conquest", "fivekings"], "faction": "nightswatch",
+    "description": "Суровый следопыт, который знает каждый проход за Стеной и не боится ни дикарей, ни теней.",
+    "quote": "Я видел, что живёт за Стеной. Лучше бы не видел.",
+    "passive": [ { "key": "armyMove", "value": 1 }, { "key": "spyDefense", "value": 2 } ],
+    "active": { "name": "Разведка за Стеной", "description": "Дозорные находят тропы и приносят припасы.",
+      "cooldown": 5, "cost": { "gold": 50 }, "target": "self",
+      "effects": [ { "op": "timedmodifier", "key": "armyAttack", "value": 4, "turns": 3, "text": "Разведданные" }, { "op": "resource", "res": "food", "amount": 80 } ] } },
+
+  { "id": "adv_builder", "name": "Строитель", "title": "Мастер Стены", "portrait": "builder",
+    "eras": ["conquest", "fivekings"], "faction": "nightswatch",
+    "description": "Инженер, чьими руками держится Стена — и чьи укрепления не пробить ни дикарю, ни рыцарю.",
+    "quote": "Стена стоит, пока стоит хоть один её камень.",
+    "passive": [ { "key": "buildCost.pct", "value": -0.15 }, { "key": "materialsIncome", "value": 2 } ],
+    "active": { "name": "Укрепить Стену", "description": "Починка укреплений и заготовка камня.",
+      "cooldown": 4, "cost": { "gold": 60 }, "target": "self",
+      "effects": [ { "op": "resource", "res": "materials", "amount": 150 }, { "op": "timedmodifier", "key": "siegeDefense", "value": 3, "turns": 4, "text": "Укрепления Дозора" } ] } }
 ]
