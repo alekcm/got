@@ -67,6 +67,17 @@ namespace IronThrone.Headless
                 ok = false;
             }
 
+            // лагеря набежчиков: все виды должны встречаться
+            try
+            {
+                var probe = GameSetup.CreateNewGame(db, "fivekings", "five_stark", seed: 99);
+                var kinds = probe.RaiderCamps.Select(c => c.kind).Distinct().OrderBy(x => x).ToList();
+                Console.WriteLine($"Лагеря набежчиков: {probe.RaiderCamps.Count} ({string.Join(", ", kinds)})");
+                foreach (var need in new[] { "pirates", "mountain clans", "wildlings", "reavers" })
+                    if (!kinds.Contains(need)) Console.WriteLine($"  [набежчики] не создан лагерь вида '{need}'");
+            }
+            catch (Exception ex) { Console.WriteLine("  [набежчики] ошибка: " + ex.Message); }
+
             // у каждой играбельной фракции должно быть минимум два советника в пуле
             foreach (var era in db.Eras)
             {

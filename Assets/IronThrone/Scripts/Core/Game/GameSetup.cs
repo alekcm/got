@@ -358,30 +358,44 @@ namespace IronThrone.Core.Game
 
         private static void CreateRaiderCamps(GameState state)
         {
-            var coasts = state.Provinces.Values.Where(p => p.def.coastal).OrderBy(_ => state.Rng.Next()).Take(6).ToList();
-            foreach (var p in coasts)
+            var used = new HashSet<string>();
+            void AddCamp(ProvinceState p, string kind, int strength)
             {
-                string kind = p.def.region == "islands" ? "reavers" :
-                    p.def.region == "wall" ? "wildlings" :
-                    p.def.region == "valley" || p.def.region == "westerlands" ? "mountain clans" : "pirates";
+                if (p == null || !used.Add(p.id)) return;
                 state.RaiderCamps.Add(new RaiderCampState
                 {
                     id = "camp_" + state.NextCampId++,
                     name = RaiderCampName(kind, state.Rng),
                     province = p.id,
                     kind = kind,
-                    strength = 40 + state.Rng.Next(0, 40),
+                    strength = strength,
                 });
             }
-            foreach (var p in state.Provinces.Values.Where(p => p.def.region == "north" && p.def.terrain == "mountains").Take(1))
-                state.RaiderCamps.Add(new RaiderCampState
-                {
-                    id = "camp_" + state.NextCampId++,
-                    name = "Кланы Горного Племени",
-                    province = p.id,
-                    kind = "mountain clans",
-                    strength = 45,
-                });
+
+            // пираты и железнорождённые: побережье и острова
+            foreach (var p in state.Provinces.Values
+                         .Where(p => p.def.port && p.def.region != "wall")
+                         .OrderBy(_ => state.Rng.Next()).Take(4))
+                AddCamp(p, p.def.region == "islands" ? "reavers" : "pirates", 40 + state.Rng.Next(0, 30));
+
+            // горные кланы: Долина и Запад
+            foreach (var p in state.Provinces.Values
+                         .Where(p => (p.def.region == "vale" || p.def.region == "westerlands") &&
+                                     (p.def.terrain == "mountains" || p.def.terrain == "hills"))
+                         .OrderBy(_ => state.Rng.Next()).Take(2))
+                AddCamp(p, "mountain clans", 45 + state.Rng.Next(0, 15));
+
+            // одичалые: у Стены
+            foreach (var p in state.Provinces.Values
+                         .Where(p => p.def.region == "wall")
+                         .OrderBy(_ => state.Rng.Next()).Take(2))
+                AddCamp(p, "wildlings", 40 + state.Rng.Next(0, 20));
+
+            // разбойники в глубине материка
+            var inland = state.Provinces.Values
+                .Where(p => !p.def.port && p.def.region != "wall" && p.controller == null)
+                .OrderBy(_ => state.Rng.Next()).FirstOrDefault();
+            AddCamp(inland, "bandits", 35 + state.Rng.Next(0, 20));
         }
 
         private static string RaiderCampName(string kind, Random rng)
@@ -390,7 +404,9 @@ namespace IronThrone.Core.Game
             var wildlings = new[] { "Лагерь Одичалых", "Стоянка Теннов", "Костёр За Стеной" };
             var clans = new[] { "Кланы Лунных Гор", "Пещеры Чёрного Козла", "Логово Горных Разбойников" };
             var reavers = new[] { "Волны Утонувшего", "Стоянка Длинных Кораблей", "Морские Волки" };
-            var arr = kind == "wildlings" ? wildlings : kind == "reavers" ? reavers : kind == "mountain clans" ? clans : pirates;
+            var bandits = new[] { "Шайка Кровавых Плащей", "Лагерь Разбойников", "Вольные Клинки" };
+            var arr = kind == "wildlings" ? wildlings : kind == "reavers" ? reavers : kind == "mountain clans" ? clans :
+                      kind == "bandits" ? bandits : pirates;
             return arr[rng.Next(arr.Length)];
         }
 
