@@ -172,6 +172,26 @@ namespace IronThrone.UnitySmoke
                 Call(game, "OnGUI");
             });
 
+            Step("голосование и лобби", () =>
+            {
+                var state = (GameState)Get(game, "_state");
+                var player = state.Faction(state.PlayerFaction);
+                player.influence += 60;
+                var law = PoliticsSystem.AvailableLaws(state, player).FirstOrDefault();
+                if (law == null) throw new Exception("нет доступных законов");
+                PoliticsSystem.ProposeLaw(state, player, law.id, out var err);
+                if (state.PendingVote == null) throw new Exception("голосование не открылось: " + err);
+                var other = state.Factions.Values.First(x => x.alive && x.id != player.id);
+                PoliticsSystem.Lobby(state, player, other.id, 8, out _);
+                Set(game, "_tab", 2);
+                Call(game, "OnGUI");
+                PoliticsSystem.SetPlayerVote(state, "yes");
+                PoliticsSystem.ResolveVote(state, autoPlayer: true);
+                if (state.PendingVote != null) throw new Exception("голосование не закрылось");
+                Call(game, "OnGUI");
+                Console.WriteLine($"    закон «{law.name}»: {(state.ActiveLaws.Any(l => l.id == law.id) ? "принят" : "отклонён")}");
+            });
+
             Step("тактический бой", () =>
             {
                 var state = (GameState)Get(game, "_state");

@@ -617,7 +617,30 @@ namespace IronThrone.Unity
                 GUILayout.Label(law != null ? law.name : vote.lawId, _h2);
                 GUILayout.Label(law?.description ?? "", _body);
                 GUILayout.Label($"Спонсор: {_state.FactionName(vote.sponsor)} · стоимость влияния: {law?.voteCost ?? 0}", _small);
-                GUILayout.Space(8);
+                var player = _state.Faction(_state.PlayerFaction);
+                if (player != null)
+                {
+                    GUILayout.Label($"Мой голос: {PoliticsSystem.VotePower(_state, player)} · влияние: {player.influence}", _small);
+                    GUILayout.Space(6);
+                    GUILayout.Label("Лоббирование (влияние → голоса в пользу закона)", _h2);
+                    foreach (var other in _state.Factions.Values.Where(x => x.alive && x.id != player.id).OrderBy(x => x.def.name))
+                    {
+                        int unit = PoliticsSystem.LobbyUnitCost(_state, player, other);
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label($"{other.def.name} · голос {PoliticsSystem.VotePower(_state, other)}", _small);
+                        GUILayout.FlexibleSpace();
+                        GUI.enabled = player.influence >= unit;
+                        if (GUILayout.Button($"Лобби {unit}", _button, GUILayout.Width(130)))
+                        {
+                            if (PoliticsSystem.Lobby(_state, player, other.id, unit, out var lerr))
+                                Toast($"{other.def.name} склоняется к «за»");
+                            else Toast(lerr);
+                        }
+                        GUI.enabled = true;
+                        GUILayout.EndHorizontal();
+                    }
+                    GUILayout.Space(8);
+                }
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("ЗА", _tabActive, GUILayout.Height(36)))
                 {
