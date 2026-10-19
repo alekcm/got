@@ -56,6 +56,7 @@ namespace IronThrone.UnitySmoke
             Console.WriteLine($"  контент: эпох {content?.Eras.Count}, фракций {content?.Factions.Count}");
 
             Step("OnGUI меню", () => Call(game, "OnGUI"));
+            Step("справка в меню", () => { Set(game, "_showHelp", true); Call(game, "OnGUI"); Set(game, "_showHelp", false); });
 
             Step("старт партии", () =>
             {
@@ -73,6 +74,7 @@ namespace IronThrone.UnitySmoke
             });
 
             Step("OnGUI игровой экран", () => Call(game, "OnGUI"));
+            Step("справка в игре", () => { Set(game, "_showHelp", true); Call(game, "OnGUI"); Set(game, "_showHelp", false); });
 
             Step("попадание по гексу (TileAt/ProvinceAt)", () =>
             {

@@ -45,6 +45,7 @@ namespace IronThrone.Unity
         private string _selectedArmy;
         private string _spyTarget;
         private string _claimImprovement;
+        private bool _showHelp;
         private bool _moveMode;
         private Vector2 _sideScroll;
         private string _toast;
@@ -97,6 +98,7 @@ namespace IronThrone.Unity
                     break;
                 case UiScreen.Menu:
                     DrawMenu();
+                    if (_showHelp) DrawHelp();
                     break;
                 case UiScreen.Game:
                     if (_battle != null) DrawBattle();
@@ -235,6 +237,15 @@ namespace IronThrone.Unity
             GUI.enabled = canStart;
             if (GUILayout.Button("НАЧАТЬ ИГРУ", _h1, GUILayout.Height(44), GUILayout.Width(260))) StartNewGame();
             GUI.enabled = true;
+            if (_state != null && GUILayout.Button("Продолжить партию", _button, GUILayout.Height(44), GUILayout.Width(220)))
+            { _screen = UiScreen.Game; Toast("Партия продолжена: ход " + _state.Turn); }
+            if (File.Exists(UnityContent.SavePath) || File.Exists(UnityContent.AutoSavePath))
+            {
+                if (GUILayout.Button("Загрузить сохранение", _button, GUILayout.Height(44), GUILayout.Width(220)))
+                    LoadGame();
+            }
+            if (GUILayout.Button("Как играть", _button, GUILayout.Height(44), GUILayout.Width(180)))
+                _showHelp = true;
             if (!canStart) GUILayout.Label("Выберите двух советников, чтобы начать.", _small);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
@@ -325,7 +336,8 @@ namespace IronThrone.Unity
             if (GUI.Button(new Rect(244, Screen.height - bottomH + 8, 120, 40), "Сохранить", _button)) SaveGame(false);
             if (GUI.Button(new Rect(372, Screen.height - bottomH + 8, 120, 40), "Загрузить", _button)) LoadGame();
             if (GUI.Button(new Rect(500, Screen.height - bottomH + 8, 120, 40), "В меню", _button)) { _screen = UiScreen.Menu; PickDefaultFaction(); }
-            GUI.Label(new Rect(640, Screen.height - bottomH + 16, Screen.width - 660, 24),
+            if (GUI.Button(new Rect(628, Screen.height - bottomH + 8, 44, 40), "?", _button)) _showHelp = !_showHelp;
+            GUI.Label(new Rect(684, Screen.height - bottomH + 16, Screen.width - 704, 24),
                 $"ход {_state.Turn} · {Season(_state.Season)} · войн: {_state.Wars.Count(w => w.active)}" +
                 (f != null ? $" · освоение {f.growth:0}/{TerritorySystem.GrowthThreshold(_state, f)}" +
                              (f.growthReady ? " (готово)" : "") : ""), _small);
@@ -334,6 +346,7 @@ namespace IronThrone.Unity
                 GUI.Label(new Rect(Screen.width / 2f - 350, Screen.height - bottomH - 34, 700, 26), _toast, _h2);
 
             DrawModals();
+            if (_showHelp) DrawHelp();
             if (_state.Phase == GamePhase.GameOver) DrawVictory();
         }
 
@@ -380,6 +393,40 @@ namespace IronThrone.Unity
                 Toast("Ошибка хода: " + ex.Message);
                 Debug.LogError(ex);
             }
+        }
+
+        private void DrawHelp()
+        {
+            float w = Math.Min(760, Screen.width - 80), h = Math.Min(560, Screen.height - 100);
+            var r = new Rect((Screen.width - w) / 2, (Screen.height - h) / 2, w, h);
+            Fill(new Rect(0, 0, Screen.width, Screen.height), new Color(0, 0, 0, 0.55f));
+            GUILayout.BeginArea(r, _box);
+            GUILayout.Label("Как играть", _h1);
+            _sideScroll = GUILayout.BeginScrollView(_sideScroll);
+            GUILayout.Label(
+                "<b>Ход.</b> Пробел или кнопка «Следующий ход» — конец хода. Доход, стройка, исследования идут автоматически; " +
+                "события и голосования открываются модальными окнами и ждут решения.\n\n" +
+                "<b>Карта.</b> Клик по гексу выбирает провинцию. Вкладка «Армия» → «Двигаться», затем клик по соседней провинции — марш. " +
+                "Если в провинции стоит враг, открывается тактическое поле.\n\n" +
+                "<b>Ресурсы.</b> Золото — строительство, найм, влияние на двор. Материалы — стройка. Продовольствие — найм и восполнение потерь; " +
+                "потери восполняются только когда потрёпанная армия вернулась на свою землю и есть еда. Влияние — войны, законы, шпионаж, вассалы. " +
+                "Вера — миссионеры и реформа.\n\n" +
+                "<b>Освоение.</b> Каждый ход дом копит освоение от числа и развития провинций. Накопленное тратится на присоединение соседней ничейной " +
+                "провинции (кнопка в карточке провинции) или на улучшение земли — мельницы, каменоломни, торговые ряды, башни, часовни. " +
+                "Улучшения можно докупить за золото; лимит — 2 на провинцию.\n\n" +
+                "<b>Столица.</b> Слоты построек зависят от уровня провинции: экономика, войска, храм, порт, особые. Постройки дают доход и модификаторы.\n\n" +
+                "<b>Двор.</b> Законы предлагаются в Малом совете и принимаются голосованием; сила голоса зависит от титулов, вассалов и влияния. " +
+                "Титулы можно раздавать членам дома.\n\n" +
+                "<b>Шпионаж.</b> Сеть шептунов и миссии: разведка, кража технологий, саботаж, подстрекательство, убийство героя, подкуп, контрразведка.\n\n" +
+                "<b>Малые дома.</b> Дары, браки, угрозы, наёмники; при высоких отношениях — вассалитет или аннексия. Дань идёт в казну.\n\n" +
+                "<b>Победы.</b> Гегемония — большая часть провинций и 5 региональных столиц. Политика — признание, Железный трон и 5 мест в совете. " +
+                "Экономика — торговое господство. Религия — ваша вера в большинстве провинций, вы глава веры и вера реформирована. " +
+                "Если никто не победил до конца ходов, побеждает дом с наибольшим счётом.\n\n" +
+                "<b>Горячие клавиши.</b> Пробел — конец хода; «?» — эта справка.", _body);
+            GUILayout.Space(8);
+            if (GUILayout.Button("Закрыть", _button, GUILayout.Height(34))) _showHelp = false;
+            GUILayout.EndScrollView();
+            GUILayout.EndArea();
         }
 
         private void Toast(string text)
