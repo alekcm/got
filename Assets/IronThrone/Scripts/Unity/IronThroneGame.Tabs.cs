@@ -220,6 +220,16 @@ namespace IronThrone.Unity
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"• {u.name}: HP {u.hp:0}%, мораль {u.morale:0}%, ур. {u.level}, спец. {u.upgradeLevel}/2", _body);
                 GUILayout.FlexibleSpace();
+                var nextUnit = MilitarySystem.NextUpgrade(_state, f, u);
+                if (nextUnit != null)
+                {
+                    var ucost = MilitarySystem.UpgradeCost(u, nextUnit);
+                    if (GUILayout.Button("→ " + nextUnit.name + "  " + ucost.ToRu(), _button, GUILayout.Width(200)))
+                    {
+                        if (MilitarySystem.UpgradeUnitType(_state, f, army, u, out var uerr)) Toast("Отряд переформирован: " + nextUnit.name);
+                        else Toast(uerr);
+                    }
+                }
                 if (u.upgradeLevel < 2)
                 {
                     var cost = new ResourceCost { gold = 90 * (u.upgradeLevel + 1), materials = 50 * (u.upgradeLevel + 1) };

@@ -21,6 +21,7 @@ namespace IronThrone.Core.AI
                 DiplomacySystem.AiConsiderWars(state, f);
                 MoveArmies(state, f);
                 ClaimLand(state, f);
+                UpgradeArmies(state, f);
                 SpendTreasury(state, f);
                 MinorDiplomacy(state, f);
                 UseAdvisors(state, f);
@@ -232,6 +233,20 @@ namespace IronThrone.Core.AI
             var improvements = TerritorySystem.Improvements(state, f, target);
             string pick = improvements.FirstOrDefault(b => b.maxPerEmpire > 1 || !state.Provinces.Values.Any(x => x.buildings.Contains(b.id)))?.id;
             TerritorySystem.Claim(state, f, target.id, pick, out _);
+        }
+
+        private static void UpgradeArmies(GameState state, FactionState f)
+        {
+            if (f.gold < 320 || f.materials < 120) return;
+            int done = 0;
+            foreach (var army in f.armies.Select(id => state.Armies.TryGetValue(id, out var a) ? a : null).Where(a => a != null && a.alive))
+            {
+                if (done >= 2) break;
+                if (state.Province(army.province)?.controller != f.id) continue;
+                var unit = army.units.Where(u => u.alive).FirstOrDefault(u => MilitarySystem.NextUpgrade(state, f, u) != null);
+                if (unit == null) continue;
+                if (MilitarySystem.UpgradeUnitType(state, f, army, unit, out _)) done++;
+            }
         }
 
         /// <summary>Богатые дома вкладывают излишки в землю, а не копят золото до бесконечности.</summary>

@@ -88,6 +88,44 @@ namespace IronThrone.Core.Game
             return true;
         }
 
+        /// <summary>Следующий отряд в цепочке прокачки, доступный дому (по технологии и фракции).</summary>
+        public static UnitDef NextUpgrade(GameState state, FactionState faction, UnitInstance unit)
+        {
+            if (unit == null || faction == null) return null;
+            if (!state.Content.UnitById.TryGetValue(unit.defId, out var def)) return null;
+            foreach (var id in def.upgradesTo)
+            {
+                if (!state.Content.UnitById.TryGetValue(id, out var next)) continue;
+                if (next.faction != "shared" && next.faction != faction.house) continue;
+                if (!string.IsNullOrEmpty(next.requiresTech) && !faction.HasTech(next.requiresTech)) continue;
+                return next;
+            }
+            return null;
+        }
+
+        /// <summary>Стоимость перевода отряда в следующий тир: 75% цены нового отряда.</summary>
+        public static ResourceCost UpgradeCost(UnitInstance unit, UnitDef next) =>
+            next.cost.Scaled(0.75f);
+
+        public static bool UpgradeUnitType(GameState state, FactionState faction, ArmyState army, UnitInstance unit, out string error)
+        {
+            error = null;
+            if (army == null || unit == null || !unit.alive) { error = "Отряд недоступен"; return false; }
+            if (army.province == null || state.Province(army.province)?.controller != faction.id)
+            { error = "Прокачка возможна только на своей территории"; return false; }
+            var next = NextUpgrade(state, faction, unit);
+            if (next == null) { error = "Для этого отряда нет доступного улучшения"; return false; }
+            var cost = UpgradeCost(unit, next);
+            if (!EffectEngine.CanAfford(faction, cost)) { error = "Недостаточно ресурсов: " + cost.ToRu(); return false; }
+            EffectEngine.Pay(faction, cost);
+            string oldName = unit.name;
+            unit.defId = next.id;
+            unit.name = next.name;
+            unit.hp = Math.Min(100, Math.Max(unit.hp, 75));
+            state.AddLog("army", $"{faction.def.name}: «{oldName}» переформирован в «{next.name}»", faction.id);
+            return true;
+        }
+
         public static int EstimateStrength(ArmyState army)
         {
             if (army == null) return 0;

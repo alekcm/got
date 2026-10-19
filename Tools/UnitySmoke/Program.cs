@@ -122,6 +122,27 @@ namespace IronThrone.UnitySmoke
                 Call(game, "OnGUI");
             });
 
+            Step("прокачка отрядов", () =>
+            {
+                var state = (GameState)Get(game, "_state");
+                var player = state.Faction(state.PlayerFaction);
+                var army = player.armies.Select(id => state.Armies[id]).FirstOrDefault(a => a.alive && !a.IsEmpty);
+                if (army == null) throw new Exception("нет армии");
+                var unit = army.units.FirstOrDefault(u => u.alive && MilitarySystem.NextUpgrade(state, player, u) != null);
+                if (unit == null)
+                {
+                    // добавим дешёвый отряд, чтобы проверить механику
+                    var def = state.Content.UnitById["levy"];
+                    unit = new UnitInstance(def.id, def.name) { hp = 100, morale = 100 };
+                    army.units.Add(unit);
+                }
+                string before = unit.defId;
+                player.gold += 500; player.materials += 500; player.food += 500;
+                if (!MilitarySystem.UpgradeUnitType(state, player, army, unit, out var err))
+                    throw new Exception("прокачка не удалась: " + err);
+                Console.WriteLine($"    {before} → {unit.defId}");
+            });
+
             Step("освоение земель", () =>
             {
                 var state = (GameState)Get(game, "_state");

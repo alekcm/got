@@ -1,185 +1,898 @@
 [
-  { "id": "levy", "name": "Ополчение", "faction": "shared", "tier": 0, "kind": "infantry",
-    "cost": { "gold": 40, "materials": 15, "food": 30 }, "upkeep": { "gold": 3 },
-    "stats": { "hp": 100, "attack": 8, "defense": 5, "range": 1, "move": 3, "morale": 55, "initiative": 7 },
-    "description": "Крестьяне с копьями и топорами. Дёшево и сердито." },
-
-  { "id": "men_at_arms", "name": "Пехота дома", "faction": "shared", "tier": 1, "kind": "infantry",
-    "cost": { "gold": 70, "materials": 30, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 14, "defense": 10, "range": 1, "move": 3, "morale": 70, "initiative": 9 },
-    "abilities": ["shield_wall"],
-    "description": "Профессиональные солдаты, ядро любой армии." },
-
-  { "id": "spearmen", "name": "Копейщики", "faction": "shared", "tier": 1, "kind": "infantry",
-    "cost": { "gold": 65, "materials": 35, "food": 25 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 12, "defense": 14, "range": 1, "move": 3, "morale": 70, "initiative": 8 },
-    "abilities": ["shield_wall"],
-    "description": "Плотный строй, который трудно пробить." },
-
-  { "id": "archers", "name": "Лучники", "faction": "shared", "tier": 1, "kind": "archers",
-    "cost": { "gold": 60, "materials": 25, "food": 25 }, "upkeep": { "gold": 4 },
-    "stats": { "hp": 100, "attack": 11, "defense": 5, "range": 3, "move": 3, "morale": 60, "initiative": 11 },
-    "abilities": ["volley"],
-    "description": "Стреляют издалека, но плохо держат удар." },
-
-  { "id": "longbowmen", "name": "Длинные луки", "faction": "shared", "tier": 2, "kind": "archers",
-    "cost": { "gold": 85, "materials": 40, "food": 30 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 15, "defense": 6, "range": 4, "move": 3, "morale": 65, "initiative": 12 },
-    "abilities": ["volley"], "requiresTech": "shared_archery",
-    "description": "Закалённые луки, пробивающие доспехи на большом расстоянии." },
-
-  { "id": "knights", "name": "Рыцари", "faction": "shared", "tier": 2, "kind": "cavalry",
-    "cost": { "gold": 140, "materials": 70, "food": 60 }, "upkeep": { "gold": 10 },
-    "stats": { "hp": 100, "attack": 22, "defense": 12, "range": 1, "move": 4, "morale": 80, "initiative": 12 },
-    "abilities": ["charge"],
-    "description": "Тяжёлая конница. Сокрушительный удар, но дорогое содержание." },
-
-  { "id": "light_cavalry", "name": "Лёгкая конница", "faction": "shared", "tier": 1, "kind": "cavalry",
-    "cost": { "gold": 100, "materials": 50, "food": 45 }, "upkeep": { "gold": 7 },
-    "stats": { "hp": 100, "attack": 16, "defense": 8, "range": 1, "move": 5, "morale": 70, "initiative": 14 },
-    "abilities": ["swift"],
-    "description": "Быстрые всадники для манёвра и преследования." },
-
-  { "id": "siege_engine", "name": "Осадные машины", "faction": "shared", "tier": 2, "kind": "siege",
-    "cost": { "gold": 90, "materials": 120, "food": 20 }, "upkeep": { "gold": 8 },
-    "stats": { "hp": 100, "attack": 18, "defense": 4, "range": 2, "move": 2, "morale": 50, "initiative": 6 },
-    "abilities": ["fortified"], "requiresTech": "shared_siegecraft",
-    "description": "Требушеты и тараны. Незаменимы при осадах." },
-
-  { "id": "sellswords", "name": "Наёмники", "faction": "shared", "tier": 1, "kind": "infantry",
-    "cost": { "gold": 120, "materials": 20, "food": 30 }, "upkeep": { "gold": 9 },
-    "stats": { "hp": 100, "attack": 15, "defense": 9, "range": 1, "move": 3, "morale": 60, "initiative": 10 },
-    "description": "Сражаются за золото — и перестают, когда оно кончается." },
-
-  { "id": "raiders", "name": "Разбойники-мореходы", "faction": "shared", "tier": 1, "kind": "infantry",
-    "cost": { "gold": 80, "materials": 20, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 14, "defense": 6, "range": 1, "move": 4, "morale": 65, "initiative": 13 },
-    "abilities": ["swift"],
-    "description": "Быстрые грабители, сильные в набегах и слабые в осадах." },
-
-  { "id": "northern_infantry", "name": "Северная пехота", "faction": "stark", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 80, "materials": 40, "food": 35 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 15, "defense": 13, "range": 1, "move": 3, "morale": 80, "initiative": 8 },
-    "abilities": ["shield_wall"],
-    "description": "Тяжёлая северная пехота, привыкшая к холоду и потерям." },
-
-  { "id": "direwolves", "name": "Лютоволки", "faction": "stark", "tier": 3, "kind": "special",
-    "cost": { "gold": 150, "materials": 0, "food": 70 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 22, "defense": 8, "range": 1, "move": 5, "morale": 90, "initiative": 16 },
-    "abilities": ["swift", "berserk"], "requiresTech": "stark_direwolves",
-    "description": "Волки Старков. Ужас на поле боя и символ Севера." },
-
-  { "id": "red_cloaks", "name": "Красные плащи", "faction": "lannister", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 85, "materials": 40, "food": 30 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 16, "defense": 13, "range": 1, "move": 3, "morale": 75, "initiative": 10 },
-    "abilities": ["shield_wall"],
-    "description": "Домовая гвардия Ланнистеров, дисциплинированная и хорошо оплаченная." },
-
-  { "id": "westerland_knights", "name": "Западные рыцари", "faction": "lannister", "tier": 3, "kind": "cavalry",
-    "cost": { "gold": 160, "materials": 80, "food": 65 }, "upkeep": { "gold": 11 },
-    "stats": { "hp": 100, "attack": 24, "defense": 14, "range": 1, "move": 4, "morale": 82, "initiative": 12 },
-    "abilities": ["charge"],
-    "description": "Лучшие доспехи за золото Запада." },
-
-  { "id": "storm_knights", "name": "Штормовые рыцари", "faction": "baratheon", "tier": 2, "kind": "cavalry",
-    "cost": { "gold": 150, "materials": 70, "food": 60 }, "upkeep": { "gold": 10 },
-    "stats": { "hp": 100, "attack": 23, "defense": 12, "range": 1, "move": 4, "morale": 84, "initiative": 12 },
-    "abilities": ["charge"],
-    "description": "Наследники ярости Штормового Предела." },
-
-  { "id": "rhllor_fanatics", "name": "Воины Р'глора", "faction": "baratheon", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 90, "materials": 30, "food": 40, "piety": 10 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 18, "defense": 6, "range": 1, "move": 3, "morale": 95, "initiative": 9 },
-    "abilities": ["berserk", "flaming"],
-    "description": "Они не боятся смерти — Владыка Света ждёт их." },
-
-  { "id": "reach_knights", "name": "Рыцари Простора", "faction": "tyrell", "tier": 2, "kind": "cavalry",
-    "cost": { "gold": 140, "materials": 70, "food": 60 }, "upkeep": { "gold": 9 },
-    "stats": { "hp": 100, "attack": 21, "defense": 13, "range": 1, "move": 4, "morale": 80, "initiative": 11 },
-    "abilities": ["charge"],
-    "description": "Цвет рыцарства Вестероса, воспитанный на турнирах." },
-
-  { "id": "tyrell_guard", "name": "Гвардия Хайгардена", "faction": "tyrell", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 90, "materials": 45, "food": 35 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 15, "defense": 15, "range": 1, "move": 3, "morale": 75, "initiative": 8 },
-    "abilities": ["shield_wall"],
-    "description": "Дисциплинированная стража, охраняющая лорда." },
-
-  { "id": "dornish_spears", "name": "Дорнийские копейщики", "faction": "martell", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 80, "materials": 35, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 14, "defense": 12, "range": 1, "move": 4, "morale": 78, "initiative": 10 },
-    "abilities": ["swift"],
-    "description": "Легкая пехота, рождённая в пустыне." },
-
-  { "id": "sand_riders", "name": "Песчаные всадники", "faction": "martell", "tier": 3, "kind": "cavalry",
-    "cost": { "gold": 130, "materials": 50, "food": 45 }, "upkeep": { "gold": 8 },
-    "stats": { "hp": 100, "attack": 18, "defense": 8, "range": 1, "move": 5, "morale": 80, "initiative": 15 },
-    "abilities": ["swift"],
-    "description": "Быстрые и неуловимые, как самум." },
-
-  { "id": "ironborn_reavers", "name": "Железнорождённые", "faction": "greyjoy", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 85, "materials": 30, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 18, "defense": 9, "range": 1, "move": 4, "morale": 82, "initiative": 12 },
-    "abilities": ["berserk"],
-    "description": "Они платят железную цену и не боятся утонуть." },
-
-  { "id": "drowned_men", "name": "Утонувшие", "faction": "greyjoy", "tier": 3, "kind": "infantry",
-    "cost": { "gold": 110, "materials": 30, "food": 35, "piety": 15 }, "upkeep": { "gold": 6 },
-    "stats": { "hp": 100, "attack": 16, "defense": 12, "range": 1, "move": 3, "morale": 95, "initiative": 9 },
-    "abilities": ["berserk"],
-    "description": "Фанатики Утонувшего Бога, которых не остановить." },
-
-  { "id": "iron_reavers", "name": "Железные разорители", "faction": "hoare", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 85, "materials": 30, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 18, "defense": 9, "range": 1, "move": 4, "morale": 82, "initiative": 12 },
-    "abilities": ["berserk"],
-    "description": "Воины Харрена, держащие речные земли в страхе." },
-
-  { "id": "vale_knights", "name": "Рыцари Долины", "faction": "arryn", "tier": 2, "kind": "cavalry",
-    "cost": { "gold": 145, "materials": 70, "food": 55 }, "upkeep": { "gold": 9 },
-    "stats": { "hp": 100, "attack": 22, "defense": 15, "range": 1, "move": 4, "morale": 80, "initiative": 11 },
-    "abilities": ["charge"],
-    "description": "Славнейшие рыцари, выросшие среди гор." },
-
-  { "id": "mountain_archers", "name": "Горные лучники", "faction": "arryn", "tier": 2, "kind": "archers",
-    "cost": { "gold": 75, "materials": 30, "food": 25 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 13, "defense": 6, "range": 4, "move": 3, "morale": 70, "initiative": 13 },
-    "abilities": ["volley"],
-    "description": "Бьют без промаха с любой высоты." },
-
-  { "id": "dragon_balerion", "name": "Балерион Чёрный Ужас", "faction": "targaryen", "tier": 4, "kind": "dragon",
-    "cost": { "gold": 0, "materials": 0, "food": 80, "piety": 20 }, "upkeep": { "gold": 15 },
-    "stats": { "hp": 100, "attack": 60, "defense": 30, "range": 2, "move": 6, "morale": 110, "initiative": 18 },
-    "abilities": ["dragon_breath", "swift"], "upgradesTo": [],
-    "description": "Чёрная гибель Валирии. Там, где он пролетает, армии обращаются в пепел." },
-
-  { "id": "dragon_vhagar", "name": "Вхагар", "faction": "targaryen", "tier": 4, "kind": "dragon",
-    "cost": { "gold": 0, "materials": 0, "food": 60, "piety": 10 }, "upkeep": { "gold": 10 },
-    "stats": { "hp": 100, "attack": 45, "defense": 24, "range": 2, "move": 6, "morale": 105, "initiative": 17 },
-    "abilities": ["dragon_breath"],
-    "description": "Дракон Висеньи, быстрый и яростный." },
-
-  { "id": "dragon_meraxes", "name": "Мераксес", "faction": "targaryen", "tier": 4, "kind": "dragon",
-    "cost": { "gold": 0, "materials": 0, "food": 60, "piety": 10 }, "upkeep": { "gold": 10 },
-    "stats": { "hp": 100, "attack": 42, "defense": 22, "range": 2, "move": 6, "morale": 105, "initiative": 17 },
-    "abilities": ["dragon_breath", "swift"],
-    "description": "Серебристая драконица Рейнис." },
-
-  { "id": "storm_axemen", "name": "Штормовые топорники", "faction": "durrandon", "tier": 2, "kind": "infantry",
-    "cost": { "gold": 80, "materials": 35, "food": 30 }, "upkeep": { "gold": 5 },
-    "stats": { "hp": 100, "attack": 20, "defense": 10, "range": 1, "move": 3, "morale": 85, "initiative": 9 },
-    "abilities": ["berserk"],
-    "description": "Свирепые воины, которые идут в бой под гром." },
-
-  { "id": "greenhand_knights", "name": "Рыцари Зелёной Руки", "faction": "gardener", "tier": 2, "kind": "cavalry",
-    "cost": { "gold": 145, "materials": 65, "food": 55 }, "upkeep": { "gold": 9 },
-    "stats": { "hp": 100, "attack": 21, "defense": 13, "range": 1, "move": 4, "morale": 82, "initiative": 11 },
-    "abilities": ["charge"],
-    "description": "Конница Гарднеров, последних королей Простора." },
-
-  { "id": "rangers", "name": "Разведчики Дозора", "faction": "nightswatch", "tier": 1, "kind": "infantry",
-    "cost": { "gold": 60, "materials": 20, "food": 25 }, "upkeep": { "gold": 4 },
-    "stats": { "hp": 100, "attack": 13, "defense": 10, "range": 1, "move": 4, "morale": 80, "initiative": 13 },
-    "abilities": ["swift"],
-    "description": "Те, кто ходит за Стену и возвращается." }
+  {
+    "id": "levy",
+    "name": "Ополчение",
+    "faction": "shared",
+    "tier": 0,
+    "kind": "infantry",
+    "cost": {
+      "gold": 40,
+      "materials": 15,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 3
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 8,
+      "defense": 5,
+      "range": 1,
+      "move": 3,
+      "morale": 55,
+      "initiative": 7
+    },
+    "description": "Крестьяне с копьями и топорами. Дёшево и сердито.",
+    "upgradesTo": [
+      "spearmen"
+    ]
+  },
+  {
+    "id": "men_at_arms",
+    "name": "Пехота дома",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "infantry",
+    "cost": {
+      "gold": 70,
+      "materials": 30,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 14,
+      "defense": 10,
+      "range": 1,
+      "move": 3,
+      "morale": 70,
+      "initiative": 9
+    },
+    "abilities": [
+      "shield_wall"
+    ],
+    "description": "Профессиональные солдаты, ядро любой армии.",
+    "upgradesTo": [
+      "knights"
+    ]
+  },
+  {
+    "id": "spearmen",
+    "name": "Копейщики",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "infantry",
+    "cost": {
+      "gold": 65,
+      "materials": 35,
+      "food": 25
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 12,
+      "defense": 14,
+      "range": 1,
+      "move": 3,
+      "morale": 70,
+      "initiative": 8
+    },
+    "abilities": [
+      "shield_wall"
+    ],
+    "description": "Плотный строй, который трудно пробить.",
+    "upgradesTo": [
+      "men_at_arms"
+    ]
+  },
+  {
+    "id": "archers",
+    "name": "Лучники",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "archers",
+    "cost": {
+      "gold": 60,
+      "materials": 25,
+      "food": 25
+    },
+    "upkeep": {
+      "gold": 4
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 11,
+      "defense": 5,
+      "range": 3,
+      "move": 3,
+      "morale": 60,
+      "initiative": 11
+    },
+    "abilities": [
+      "volley"
+    ],
+    "description": "Стреляют издалека, но плохо держат удар.",
+    "upgradesTo": [
+      "longbowmen"
+    ]
+  },
+  {
+    "id": "longbowmen",
+    "name": "Длинные луки",
+    "faction": "shared",
+    "tier": 2,
+    "kind": "archers",
+    "cost": {
+      "gold": 85,
+      "materials": 40,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 15,
+      "defense": 6,
+      "range": 4,
+      "move": 3,
+      "morale": 65,
+      "initiative": 12
+    },
+    "abilities": [
+      "volley"
+    ],
+    "requiresTech": "shared_archery",
+    "description": "Закалённые луки, пробивающие доспехи на большом расстоянии."
+  },
+  {
+    "id": "knights",
+    "name": "Рыцари",
+    "faction": "shared",
+    "tier": 2,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 140,
+      "materials": 70,
+      "food": 60
+    },
+    "upkeep": {
+      "gold": 10
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 22,
+      "defense": 12,
+      "range": 1,
+      "move": 4,
+      "morale": 80,
+      "initiative": 12
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Тяжёлая конница. Сокрушительный удар, но дорогое содержание."
+  },
+  {
+    "id": "light_cavalry",
+    "name": "Лёгкая конница",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 100,
+      "materials": 50,
+      "food": 45
+    },
+    "upkeep": {
+      "gold": 7
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 16,
+      "defense": 8,
+      "range": 1,
+      "move": 5,
+      "morale": 70,
+      "initiative": 14
+    },
+    "abilities": [
+      "swift"
+    ],
+    "description": "Быстрые всадники для манёвра и преследования.",
+    "upgradesTo": [
+      "knights"
+    ]
+  },
+  {
+    "id": "siege_engine",
+    "name": "Осадные машины",
+    "faction": "shared",
+    "tier": 2,
+    "kind": "siege",
+    "cost": {
+      "gold": 90,
+      "materials": 120,
+      "food": 20
+    },
+    "upkeep": {
+      "gold": 8
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 18,
+      "defense": 4,
+      "range": 2,
+      "move": 2,
+      "morale": 50,
+      "initiative": 6
+    },
+    "abilities": [
+      "fortified"
+    ],
+    "requiresTech": "shared_siegecraft",
+    "description": "Требушеты и тараны. Незаменимы при осадах."
+  },
+  {
+    "id": "sellswords",
+    "name": "Наёмники",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "infantry",
+    "cost": {
+      "gold": 120,
+      "materials": 20,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 9
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 15,
+      "defense": 9,
+      "range": 1,
+      "move": 3,
+      "morale": 60,
+      "initiative": 10
+    },
+    "description": "Сражаются за золото — и перестают, когда оно кончается.",
+    "upgradesTo": [
+      "men_at_arms"
+    ]
+  },
+  {
+    "id": "raiders",
+    "name": "Разбойники-мореходы",
+    "faction": "shared",
+    "tier": 1,
+    "kind": "infantry",
+    "cost": {
+      "gold": 80,
+      "materials": 20,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 14,
+      "defense": 6,
+      "range": 1,
+      "move": 4,
+      "morale": 65,
+      "initiative": 13
+    },
+    "abilities": [
+      "swift"
+    ],
+    "description": "Быстрые грабители, сильные в набегах и слабые в осадах.",
+    "upgradesTo": [
+      "iron_reavers"
+    ]
+  },
+  {
+    "id": "northern_infantry",
+    "name": "Северная пехота",
+    "faction": "stark",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 80,
+      "materials": 40,
+      "food": 35
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 15,
+      "defense": 13,
+      "range": 1,
+      "move": 3,
+      "morale": 80,
+      "initiative": 8
+    },
+    "abilities": [
+      "shield_wall"
+    ],
+    "description": "Тяжёлая северная пехота, привыкшая к холоду и потерям."
+  },
+  {
+    "id": "direwolves",
+    "name": "Лютоволки",
+    "faction": "stark",
+    "tier": 3,
+    "kind": "special",
+    "cost": {
+      "gold": 150,
+      "materials": 0,
+      "food": 70
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 22,
+      "defense": 8,
+      "range": 1,
+      "move": 5,
+      "morale": 90,
+      "initiative": 16
+    },
+    "abilities": [
+      "swift",
+      "berserk"
+    ],
+    "requiresTech": "stark_direwolves",
+    "description": "Волки Старков. Ужас на поле боя и символ Севера."
+  },
+  {
+    "id": "red_cloaks",
+    "name": "Красные плащи",
+    "faction": "lannister",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 85,
+      "materials": 40,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 16,
+      "defense": 13,
+      "range": 1,
+      "move": 3,
+      "morale": 75,
+      "initiative": 10
+    },
+    "abilities": [
+      "shield_wall"
+    ],
+    "description": "Домовая гвардия Ланнистеров, дисциплинированная и хорошо оплаченная."
+  },
+  {
+    "id": "westerland_knights",
+    "name": "Западные рыцари",
+    "faction": "lannister",
+    "tier": 3,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 160,
+      "materials": 80,
+      "food": 65
+    },
+    "upkeep": {
+      "gold": 11
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 24,
+      "defense": 14,
+      "range": 1,
+      "move": 4,
+      "morale": 82,
+      "initiative": 12
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Лучшие доспехи за золото Запада."
+  },
+  {
+    "id": "storm_knights",
+    "name": "Штормовые рыцари",
+    "faction": "baratheon",
+    "tier": 2,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 150,
+      "materials": 70,
+      "food": 60
+    },
+    "upkeep": {
+      "gold": 10
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 23,
+      "defense": 12,
+      "range": 1,
+      "move": 4,
+      "morale": 84,
+      "initiative": 12
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Наследники ярости Штормового Предела."
+  },
+  {
+    "id": "rhllor_fanatics",
+    "name": "Воины Р'глора",
+    "faction": "baratheon",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 90,
+      "materials": 30,
+      "food": 40,
+      "piety": 10
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 18,
+      "defense": 6,
+      "range": 1,
+      "move": 3,
+      "morale": 95,
+      "initiative": 9
+    },
+    "abilities": [
+      "berserk",
+      "flaming"
+    ],
+    "description": "Они не боятся смерти — Владыка Света ждёт их."
+  },
+  {
+    "id": "reach_knights",
+    "name": "Рыцари Простора",
+    "faction": "tyrell",
+    "tier": 2,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 140,
+      "materials": 70,
+      "food": 60
+    },
+    "upkeep": {
+      "gold": 9
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 21,
+      "defense": 13,
+      "range": 1,
+      "move": 4,
+      "morale": 80,
+      "initiative": 11
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Цвет рыцарства Вестероса, воспитанный на турнирах."
+  },
+  {
+    "id": "tyrell_guard",
+    "name": "Гвардия Хайгардена",
+    "faction": "tyrell",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 90,
+      "materials": 45,
+      "food": 35
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 15,
+      "defense": 15,
+      "range": 1,
+      "move": 3,
+      "morale": 75,
+      "initiative": 8
+    },
+    "abilities": [
+      "shield_wall"
+    ],
+    "description": "Дисциплинированная стража, охраняющая лорда."
+  },
+  {
+    "id": "dornish_spears",
+    "name": "Дорнийские копейщики",
+    "faction": "martell",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 80,
+      "materials": 35,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 14,
+      "defense": 12,
+      "range": 1,
+      "move": 4,
+      "morale": 78,
+      "initiative": 10
+    },
+    "abilities": [
+      "swift"
+    ],
+    "description": "Легкая пехота, рождённая в пустыне."
+  },
+  {
+    "id": "sand_riders",
+    "name": "Песчаные всадники",
+    "faction": "martell",
+    "tier": 3,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 130,
+      "materials": 50,
+      "food": 45
+    },
+    "upkeep": {
+      "gold": 8
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 18,
+      "defense": 8,
+      "range": 1,
+      "move": 5,
+      "morale": 80,
+      "initiative": 15
+    },
+    "abilities": [
+      "swift"
+    ],
+    "description": "Быстрые и неуловимые, как самум."
+  },
+  {
+    "id": "ironborn_reavers",
+    "name": "Железнорождённые",
+    "faction": "greyjoy",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 85,
+      "materials": 30,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 18,
+      "defense": 9,
+      "range": 1,
+      "move": 4,
+      "morale": 82,
+      "initiative": 12
+    },
+    "abilities": [
+      "berserk"
+    ],
+    "description": "Они платят железную цену и не боятся утонуть."
+  },
+  {
+    "id": "drowned_men",
+    "name": "Утонувшие",
+    "faction": "greyjoy",
+    "tier": 3,
+    "kind": "infantry",
+    "cost": {
+      "gold": 110,
+      "materials": 30,
+      "food": 35,
+      "piety": 15
+    },
+    "upkeep": {
+      "gold": 6
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 16,
+      "defense": 12,
+      "range": 1,
+      "move": 3,
+      "morale": 95,
+      "initiative": 9
+    },
+    "abilities": [
+      "berserk"
+    ],
+    "description": "Фанатики Утонувшего Бога, которых не остановить."
+  },
+  {
+    "id": "iron_reavers",
+    "name": "Железные разорители",
+    "faction": "hoare",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 85,
+      "materials": 30,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 18,
+      "defense": 9,
+      "range": 1,
+      "move": 4,
+      "morale": 82,
+      "initiative": 12
+    },
+    "abilities": [
+      "berserk"
+    ],
+    "description": "Воины Харрена, держащие речные земли в страхе."
+  },
+  {
+    "id": "vale_knights",
+    "name": "Рыцари Долины",
+    "faction": "arryn",
+    "tier": 2,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 145,
+      "materials": 70,
+      "food": 55
+    },
+    "upkeep": {
+      "gold": 9
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 22,
+      "defense": 15,
+      "range": 1,
+      "move": 4,
+      "morale": 80,
+      "initiative": 11
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Славнейшие рыцари, выросшие среди гор."
+  },
+  {
+    "id": "mountain_archers",
+    "name": "Горные лучники",
+    "faction": "arryn",
+    "tier": 2,
+    "kind": "archers",
+    "cost": {
+      "gold": 75,
+      "materials": 30,
+      "food": 25
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 13,
+      "defense": 6,
+      "range": 4,
+      "move": 3,
+      "morale": 70,
+      "initiative": 13
+    },
+    "abilities": [
+      "volley"
+    ],
+    "description": "Бьют без промаха с любой высоты."
+  },
+  {
+    "id": "dragon_balerion",
+    "name": "Балерион Чёрный Ужас",
+    "faction": "targaryen",
+    "tier": 4,
+    "kind": "dragon",
+    "cost": {
+      "gold": 0,
+      "materials": 0,
+      "food": 80,
+      "piety": 20
+    },
+    "upkeep": {
+      "gold": 15
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 60,
+      "defense": 30,
+      "range": 2,
+      "move": 6,
+      "morale": 110,
+      "initiative": 18
+    },
+    "abilities": [
+      "dragon_breath",
+      "swift"
+    ],
+    "upgradesTo": [],
+    "description": "Чёрная гибель Валирии. Там, где он пролетает, армии обращаются в пепел."
+  },
+  {
+    "id": "dragon_vhagar",
+    "name": "Вхагар",
+    "faction": "targaryen",
+    "tier": 4,
+    "kind": "dragon",
+    "cost": {
+      "gold": 0,
+      "materials": 0,
+      "food": 60,
+      "piety": 10
+    },
+    "upkeep": {
+      "gold": 10
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 45,
+      "defense": 24,
+      "range": 2,
+      "move": 6,
+      "morale": 105,
+      "initiative": 17
+    },
+    "abilities": [
+      "dragon_breath"
+    ],
+    "description": "Дракон Висеньи, быстрый и яростный."
+  },
+  {
+    "id": "dragon_meraxes",
+    "name": "Мераксес",
+    "faction": "targaryen",
+    "tier": 4,
+    "kind": "dragon",
+    "cost": {
+      "gold": 0,
+      "materials": 0,
+      "food": 60,
+      "piety": 10
+    },
+    "upkeep": {
+      "gold": 10
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 42,
+      "defense": 22,
+      "range": 2,
+      "move": 6,
+      "morale": 105,
+      "initiative": 17
+    },
+    "abilities": [
+      "dragon_breath",
+      "swift"
+    ],
+    "description": "Серебристая драконица Рейнис."
+  },
+  {
+    "id": "storm_axemen",
+    "name": "Штормовые топорники",
+    "faction": "durrandon",
+    "tier": 2,
+    "kind": "infantry",
+    "cost": {
+      "gold": 80,
+      "materials": 35,
+      "food": 30
+    },
+    "upkeep": {
+      "gold": 5
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 20,
+      "defense": 10,
+      "range": 1,
+      "move": 3,
+      "morale": 85,
+      "initiative": 9
+    },
+    "abilities": [
+      "berserk"
+    ],
+    "description": "Свирепые воины, которые идут в бой под гром."
+  },
+  {
+    "id": "greenhand_knights",
+    "name": "Рыцари Зелёной Руки",
+    "faction": "gardener",
+    "tier": 2,
+    "kind": "cavalry",
+    "cost": {
+      "gold": 145,
+      "materials": 65,
+      "food": 55
+    },
+    "upkeep": {
+      "gold": 9
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 21,
+      "defense": 13,
+      "range": 1,
+      "move": 4,
+      "morale": 82,
+      "initiative": 11
+    },
+    "abilities": [
+      "charge"
+    ],
+    "description": "Конница Гарднеров, последних королей Простора."
+  },
+  {
+    "id": "rangers",
+    "name": "Разведчики Дозора",
+    "faction": "nightswatch",
+    "tier": 1,
+    "kind": "infantry",
+    "cost": {
+      "gold": 60,
+      "materials": 20,
+      "food": 25
+    },
+    "upkeep": {
+      "gold": 4
+    },
+    "stats": {
+      "hp": 100,
+      "attack": 13,
+      "defense": 10,
+      "range": 1,
+      "move": 4,
+      "morale": 80,
+      "initiative": 13
+    },
+    "abilities": [
+      "swift"
+    ],
+    "description": "Те, кто ходит за Стену и возвращается."
+  }
 ]
