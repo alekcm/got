@@ -730,11 +730,11 @@ def generate(layout, sub, blueprint, catalog, seed, land_fraction=0.70):
 def pick_terrain(biome, patch, coast, near_sea):
     if biome == "North":
         # как AdvTerrainInfo.Pick: снег и сосны — основа, скалы — редкость
-        if near_sea and coast > 0.55 and patch < 0.40: return "ColdGrass"
-        if patch < 0.28: return "Snow"
-        if patch < 0.50: return "Tundra"
-        if patch < 0.72: return "ForestPine"
-        if patch < 0.90: return "ColdGrass"
+        if near_sea and coast > 0.55 and patch < 0.30: return "ColdGrass"
+        if patch < 0.45: return "Snow"
+        if patch < 0.62: return "ForestPine"
+        if patch < 0.80: return "ColdGrass"
+        if patch < 0.92: return "Tundra"
         return "SnowRock"
     if biome == "Desert":
         if near_sea and coast > 0.6: return "Sand"

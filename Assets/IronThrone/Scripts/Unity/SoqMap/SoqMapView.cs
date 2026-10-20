@@ -787,6 +787,27 @@ namespace IronThrone.Unity.SoqMap
                 }
             }
 
+            // важные точки поверх рельефа: города, цели, старты (как экспорт миникарты в SoQ)
+            foreach (var start in _map.Starts)
+            {
+                int row = _map.Height - 1 - start.y;
+                if (row < 0 || row >= _map.Height) continue;
+                pixels[row * _map.Width + Mathf.Clamp(start.x, 0, _map.Width - 1)] = new Color(1f, 0.92f, 0.55f);
+            }
+            foreach (var obj in _map.Objects)
+            {
+                if (obj.removed) continue;
+                if (!string.Equals(obj.category, "settlement", StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(obj.category, "objective", StringComparison.OrdinalIgnoreCase))
+                    continue;
+                int row = _map.Height - 1 - obj.y;
+                if (row < 0 || row >= _map.Height) continue;
+                var color = string.Equals(obj.category, "settlement", StringComparison.OrdinalIgnoreCase)
+                    ? new Color(0.98f, 0.98f, 0.94f)
+                    : new Color(1f, 0.45f, 0.75f);
+                pixels[row * _map.Width + Mathf.Clamp(obj.x, 0, _map.Width - 1)] = color;
+            }
+
             tex.SetPixels32(pixels);
             tex.Apply();
             tex.filterMode = FilterMode.Point;

@@ -53,11 +53,31 @@ namespace IronThrone.Unity.SoqMap
             Regenerate();
         }
 
+        /// <summary>
+        /// Папка IronThroneData. UnityContent грузит контент в Start() IronThroneGame,
+        /// а Awake этой сцены может сработать раньше — поэтому перебираем те же пути.
+        /// </summary>
+        private static string FindContentDirectory()
+        {
+            string cached = UnityContent.ContentDirectory;
+            if (!string.IsNullOrEmpty(cached) && Directory.Exists(cached)) return cached;
+            var candidates = new List<string>
+            {
+                Path.Combine(Application.dataPath, "IronThrone/Resources/IronThroneData"),
+                Path.Combine(Application.streamingAssetsPath, "IronThroneData"),
+                Path.Combine(Application.dataPath, "StreamingAssets/IronThroneData"),
+                Path.Combine(Directory.GetCurrentDirectory(), "Assets/IronThrone/Resources/IronThroneData"),
+            };
+            foreach (var dir in candidates)
+                if (Directory.Exists(dir)) return dir;
+            return cached;
+        }
+
         private void LoadPack()
         {
             try
             {
-                string contentDir = UnityContent.ContentDirectory;
+                string contentDir = FindContentDirectory();
                 if (string.IsNullOrEmpty(contentDir))
                     contentDir = Path.Combine(Application.dataPath, "IronThrone/Resources/IronThroneData");
                 string dir = Path.Combine(contentDir, MapGenFolder);

@@ -144,11 +144,11 @@ namespace IronThrone.Core.Worldgen
                 case AdvBiome.North:
                     // снег и сосны — основа севера; снежные скалы — редкая деталь,
                     // иначе регион превращается в белую «рябь» (текстура 094_snow_rock)
-                    if (nearSea && coastFactor > 0.55f && n < 0.40f) return AdvTerrain.ColdGrass;
-                    if (n < 0.28f) return AdvTerrain.Snow;
-                    if (n < 0.50f) return AdvTerrain.Tundra;
-                    if (n < 0.72f) return AdvTerrain.ForestPine;
-                    if (n < 0.90f) return AdvTerrain.ColdGrass;
+                    if (nearSea && coastFactor > 0.55f && n < 0.30f) return AdvTerrain.ColdGrass;
+                    if (n < 0.45f) return AdvTerrain.Snow;
+                    if (n < 0.62f) return AdvTerrain.ForestPine;
+                    if (n < 0.80f) return AdvTerrain.ColdGrass;
+                    if (n < 0.92f) return AdvTerrain.Tundra;
                     return AdvTerrain.SnowRock;
 
                 case AdvBiome.Desert:
