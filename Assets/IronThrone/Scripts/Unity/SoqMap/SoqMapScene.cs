@@ -138,7 +138,7 @@ namespace IronThrone.Unity.SoqMap
                 _map = SoqMapGenerator.Generate(_pack, request);
                 if (_view == null) _view = SoqMapView.Build(_map, _pack.Catalog);
                 else _view.Rebuild(_map, _pack.Catalog);
-                _view.SetDecorVisible(_showDecor);
+                if (_view != null) _view.SetDecorVisible(_showDecor);
                 _selectedX = _selectedY = -1;
                 _status = $"Сид {seed} · «{_map.LayoutName}»" +
                           (string.IsNullOrEmpty(_map.SublayoutName) ? "" : " / " + _map.SublayoutName) +
