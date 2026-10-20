@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 785645487, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: CutThroatVisuals
+  m_EditorClassIdentifier:
+  _portraitPivotOffset: {x: 7, y: -105}
+  _battlePrefabReference:
+    m_AssetGUID: 5c04f8c6d3b6d4968977c212d42cf81f
+    m_SubObjectName:
+    m_SubObjectType:
+  _adventurePrefabReference:
+    m_AssetGUID: 24f0f5f88b9144ef4a3f3c5f11289a5d
+    m_SubObjectName:
+    m_SubObjectType:
+  _offsetType: 0
+  _moveScale: 1
+  _moveScaleDuration: 0.12
+  _movespeed: 6
+  _meleeSelfEffect:
+    _type: 1
+  _meleeOpponentEffect:
+    _type: 4
+  _meleeOpponentEffectVariant:
+    _type: 1
+  _beginAttack:
+    _type: 1
+  _criticalMeleeOpponentEffect:
+    _type: 27
+  _criticalMeleeOpponentEffectVariant:
+    _type: 1
+  _rangedSelfEffect:
+    _type: 1
+  _beginRangedAttackEffect:
+    _type: 1
+  _rangedOpponentEffect:
+    _type: 1
+  _criticalRangedOpponentEffect:
+    _type: 1
+  _receiveDamageEffect:
+    _type: 5
+  _receiveMassiveDamageEffect:
+    _type: 5
+  _receiveDamageDeathEffect:
+    _type: 1
+  _hitGroundEffect:
+    _type: 182
+  _hitGroundBloodEffect:
+    _type: 119
+  _deathBounceDuration: 0.45
+  _deathBounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _deathKnockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1.3998079
+      outSlope: 1.3998079
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.040702134
+    - serializedVersion: 3
+      time: 0.3503857
+      value: 0.15
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

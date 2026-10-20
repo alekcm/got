@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BattleDashedRangedOutlineMaterial
+  m_Shader: {fileID: 4800000, guid: b314873cda7e7f44ca48534d3bda0f3d, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - BOOLEAN_3F9319D6_ON
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties:
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      _GlobalLightMap_96b48655df560b8daf9f0f87f6885a59_GlobalLightMap_3011405116_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: {}
+    m_Floats:
+      BOOLEAN_3F9319D6: 1
+      BOOLEAN_EA85EC90: 0
+      Vector1_252DBA8D: 1
+      Vector1_296DE7CB: 1
+      Vector1_2C66B2B8: 4
+      Vector1_3132E7CB: 1
+      Vector1_429701A1: 8
+      Vector1_4BEE8386: 1
+      Vector1_551FB769: 1
+      Vector1_5EC5D623: 0
+      Vector1_64F1B073: 1
+      Vector1_6FD638D: 2
+      Vector1_7792FCD6: 1
+      Vector1_7D7B8307: 0.05
+      Vector1_84C24C48: 0.5
+      Vector1_8C85741: 0.1
+      Vector1_8CAC8D79: 0
+      Vector1_B48B6929: 50
+      Vector1_BCF8DC1F: 0
+      Vector1_BF8F6B8D: -0.1
+      Vector1_CA4F6014: 10
+      Vector1_DC4D3C4E: 1
+      Vector1_DF35C20D: 12
+      Vector1_E5EE0D0E: 0
+      Vector1_F368090E: 4
+      _AlphaClip: 0
+      _Blend: 0
+      _BumpScale: 1
+      _Cull: 2
+      _Cutoff: 0.5
+      _DstBlend: 0
+      _EnvironmentReflections: 1
+      _GlobalLightMapSize: 256
+      _GlossMapScale: 0
+      _Glossiness: 0
+      _GlossyReflections: 0
+      _METALNESS: 0
+      _Metallic: 0
+      _OcclusionStrength: 1
+      _QueueControl: 0
+      _QueueOffset: 0
+      _ReceiveShadows: 1
+      _SPECULAR_IOR: 1.5
+      _SPECULAR_ROUGHNESS: 0
+      _Smoothness: 0.5
+      _SmoothnessTextureChannel: 0
+      _SpecularHighlights: 1
+      _SrcBlend: 1
+      _Surface: 0
+      _WorkflowMode: 1
+      _ZWrite: 1
+    m_Colors:
+      Color_49922541: {r: 1, g: 1, b: 1, a: 1}
+      Color_A6CB7EFF: {r: 1, g: 1, b: 1, a: 1}
+      Color_BA0A1A07: {r: 1, g: 0.46360755, b: 0, a: 0}
+      Vector2_3D9B5A95: {r: -3, g: 0, b: 0, a: 0}
+      Vector2_3EF442FB: {r: 0.4, g: 0.2, b: 0, a: 0}
+      Vector2_488A3099: {r: 1, g: 1, b: 0, a: 0}
+      Vector2_7F2AFB0: {r: -0.4, g: -0.4, b: 0, a: 0}
+      Vector2_E0A9038E: {r: -2, g: 0, b: 0, a: 0}
+      Vector2_E45A1444: {r: 1, g: 1, b: 0, a: 0}
+      _BASE_COLOR: {r: 0, g: 0, b: 0, a: 0}
+      _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
+      _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+      _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 0}
+      _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

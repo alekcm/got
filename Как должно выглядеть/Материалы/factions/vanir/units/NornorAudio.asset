@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 978092469, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: NornorAudio
+  m_EditorClassIdentifier:
+  bodySoundType: 1
+  rangedAttackSoundType: 0
+  attackSoundType: 2
+  attackSoundTypeVariant: 2
+  _deathKey: VanirBattle_NornorDeath
+  _getsTurnKey: VanirBattle_NornorGetsTurn
+  _hitKey: VanirBattle_NornorHit
+  _killingBlowMeleeAttackKey: VanirBattle_NornorKillingBlowMeleeAttack
+  _killingShotRangedAttackKey: VanirBattle_NornorKillingShotRangedAttack
+  _meleeAttackKey: VanirBattle_NornorMeleeAttack
+  _meleeAttackVariantKey:
+  _rangedAttackKey: VanirBattle_NornorRangedAttack
+  _postMoveStartStop: 0
+  _movementStartedKey:
+  _movementStoppedKey:

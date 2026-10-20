@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 14541939, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: HuskarlDefinition
+  m_EditorClassIdentifier:
+  _id: 17
+  _makeGeneratedEnumValueObsolete: 0
+  _languageKey: Huskarl
+  _visualsPath: Factions/Vanir/Units/HuskarlVisuals
+  _audioPath: Factions/Vanir/Units/HuskarlAudio
+  _purchaseCost:
+    CostEntries:
+    - Type: 0
+      Amount: 200
+  _obsoleteGoldCost: 0
+  _stats:
+    _tier: 2
+    _essenceStats:
+      _order: 0
+      _creation: 0
+      _chaos: 0
+      _arcana: 0
+      _destruction: 2
+    _meleeAttack:
+      _offense: 10
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 25
+      _range:
+        min: 0
+        max: 4
+      _deadlyRange: 2
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 18
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 2
+      max: 3
+    _movement: 3
+    _initiative: 14
+    _health: 15
+    _maxTroopSize: 25
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 0000000008000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _hasStatsVariant: 1
+  _statsVariant:
+    _tier: 2
+    _essenceStats:
+      _order: 0
+      _creation: 0
+      _chaos: 0
+      _arcana: 0
+      _destruction: 2
+    _meleeAttack:
+      _offense: 20
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 0
+      _range:
+        min: 0
+        max: 0
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 14
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 3
+      max: 4
+    _movement: 3
+    _initiative: 22
+    _health: 15
+    _maxTroopSize: 20
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 00000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _troopAbility: 13
+  _abilityRequiresResearch: 0
+  _requiredResearchForAbility: 16
+  _bacterias:
+  - _parentId: 0
+    _id: 0
+    _casterInformation:
+      ScalingLevel: 0
+      SpellDamagePowerPercent: 0
+    BacteriaType: 800
+    Duration:
+      Type: 3
+      Duration: 0
+    TargetType: 0
+  - _parentId: 0
+    _id: 0
+    _casterInformation:
+      ScalingLevel: 0
+      SpellDamagePowerPercent: 0
+    BacteriaType: 66
+    Duration:
+      Type: 3
+      Duration: 0
+    TargetType: 0
+  - _parentId: 0
+    _id: 0
+    _casterInformation:
+      ScalingLevel: 0
+      SpellDamagePowerPercent: 0
+    BacteriaType: 1368
+    Duration:
+      Type: 3
+      Duration: 0
+    TargetType: 0
+  _contentProfile: 75
+  _addonProfile:
+    RequiresOwnership: 1
+    PreventUseInOlderCampaigns: 1
+    IncludedInAddon: 32
+  _usage: 0
+  _isExcludedFromRandomPool: 0

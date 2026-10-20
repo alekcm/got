@@ -1,0 +1,146 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!213 &21300000
+Sprite:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: YulanXuanTian_Color_11_MeleeAttack_3
+  m_Rect:
+    serializedVersion: 2
+    x: 245
+    y: 481
+    width: 111
+    height: 83
+  m_Offset: {x: -3.5000012, y: -71.5}
+  m_Border: {x: 0, y: 0, z: 0, w: 0}
+  m_PixelsToUnits: 64
+  m_Pivot: {x: 0.46846846, y: -0.36144578}
+  m_Extrude: 1
+  m_IsPolygon: 0
+  m_AtlasName:
+  m_PackingTag:
+  m_RenderDataKey:
+    24cbbe9a830d59f468c1ac0c2551077e: -185946256
+  m_AtlasTags: []
+  m_SpriteAtlas: {fileID: 0}
+  m_RD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: 5e11320dfd5b1e1418cf4073e0b86320, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes:
+    - serializedVersion: 2
+      firstByte: 0
+      indexCount: 102
+      topology: 0
+      baseVertex: 0
+      firstVertex: 0
+      vertexCount: 60
+      localAABB:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    m_IndexBuffer: 01000200030000000100030005000600070004000500070009000a000b00080009000b000e00110012000d00120013000e000f0010000e00100011000d000e0012000c000d001300180019001a00150016001700150017001800140015001800140018001a001b001c001d001e001f002000210022002300250026002700240025002700280029002a0028002a002b002c00330034002d00300031002e002f0030002d002e0030002d00310032002c002d0032002c003200330035003600370039003a003b00380039003b00
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 60
+      m_Channels:
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 3
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 1
+        offset: 0
+        format: 0
+        dimension: 2
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      m_DataSize: 1200
+      _typelessdata: 00004cbf0000f03e00000000000050bf0000f03e00000000000050bf0000f83e0000000000004cbf0000f83e00000000000044bf00000c3f00000000000048bf00000c3f00000000000048bf0000143f00000000000044bf0000143f0000000000004cbf0000143f00000000000050bf0000143f00000000000050bf00001c3f0000000000004cbf00001c3f000000000000c0bd0000863f00000000000088be0000783f0000000000000cbf0000443f00000000000030bf0000183f0000000000003cbf0000243f0000000000001cbf00005c3f00000000000014bf00005c3f000000000000c0bd0000923f000000000000643f0000783f000000000000583f0000603f0000000000006c3f00004c3f0000000000004c3f00004c3f000000000000483f0000783f000000000000143f0000943f000000000000143f0000a43f00000000000000000000883f000000000000c0bd0000883f00000000000000000000943f000000000000203e0000883f000000000000c03d00008c3f000000000000203e0000943f000000000000c03d00008a3f000000000000000000008a3f000000000000c03d0000963f000000000000703e00008a3f000000000000303e00008a3f000000000000303e00008c3f000000000000703e00008c3f000000000000103f0000a63f000000000000103f00009c3f000000000000f03e0000a23f000000000000f03e0000b23f000000000000f83e0000d63f000000000000e83e0000c23f000000000000f83e0000b23f000000000000c03e0000b83f000000000000e03e0000be3f000000000000c83e0000c43f000000000000d83e0000d43f000000000000003f0000de3f000000000000183f0000de3f000000000000483f0000ce3f000000000000203f0000ce3f000000000000203f0000e23f0000000000001c3f0000dc3f000000000000183f0000dc3f000000000000183f0000de3f0000000000001c3f0000de3f000000000000f63e5555453f0000f53e5555453f0000f53e5cbe453f0000f63e5cbe453f0000f83e7662473f0000f73e7662473f0000f73e8334483f0000f83e8334483f0000f63e8334483f0000f53e8334483f0000f53e9006493f0000f63e9006493f0080113f4883543f00000c3f2776523f0000033fd2204d3f0000fd3e8a9d483f0000fa3e9ed8493f0000013ff9964f3f0000023ff9964f3f0080113f70f9563f0000313f2776523f00802f3f0000503f0000323fdff24d3f00002e3fdff24d3f00802d3f2776523f0000273f7662573f0000273fabaa5a3f0080143f4fec543f0080113f4fec543f0080143f7662573f0080193f4fec543f0080173f5cbe553f0080193f7662573f0080173f5555553f0080143f5555553f0080173f7dcb573f00001c3f5555553f00001a3f5555553f00001a3f5cbe553f00001c3f5cbe553f0080263fb1135b3f0080263f9006593f0080233fa4415a3f0080233fd9895d3f0000243f4fec643f0000233f0dd2603f0000243fd9895d3f0080203fecc45e3f0080223f0000603f0000213f143b613f0000223f4883643f0080243f6990663f0080273f6990663f00802d3f3548633f0080283f3548633f0080283f7662673f0000283f6227663f0080273f6227663f0080273f6990663f0000283f6990663f
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 245
+      y: 481
+      width: 111
+      height: 83
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 64, y: 297, z: 64, w: 451}
+    downscaleMultiplier: 1
+  m_AtlasRD:
+    serializedVersion: 3
+    texture: {fileID: 0}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes: []
+    m_IndexBuffer:
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 0
+      m_Channels: []
+      m_DataSize: 0
+      _typelessdata:
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: 0, y: 0}
+    settingsRaw: 0
+    uvTransform: {x: 0, y: 0, z: 0, w: 0}
+    downscaleMultiplier: 0
+  m_PhysicsShape: []
+  m_Bones: []
+  m_SpriteID:

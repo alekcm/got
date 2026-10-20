@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!213 &21300000
+Sprite:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BaryaPiper_Default_7_Idle_7
+  m_Rect:
+    serializedVersion: 2
+    x: 264
+    y: 8
+    width: 33.923878
+    height: 49
+  m_Offset: {x: 1.0380609, y: -24.5}
+  m_Border: {x: 0, y: 0, z: 0, w: 0}
+  m_PixelsToUnits: 64
+  m_Pivot: {x: 0.5305997, y: 0}
+  m_Extrude: 1
+  m_IsPolygon: 0
+  m_AtlasName:
+  m_PackingTag:
+  m_RenderDataKey:
+    87e1460f5b6ae6d44b9c2eb970798967: -5295053235952787271
+  m_AtlasTags: []
+  m_SpriteAtlas: {fileID: 0}
+  m_RD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: b7c2d44309ffdf14d89f4676688703d8, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes:
+    - serializedVersion: 2
+      firstByte: 0
+      indexCount: 30
+      topology: 0
+      baseVertex: 0
+      firstVertex: 0
+      vertexCount: 12
+      localAABB:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    m_IndexBuffer: 01000a000b0009000700080009000a000700010007000a00040005000600040006000700070002000300070001000200070003000400000001000b00
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 12
+      m_Channels:
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 3
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 1
+        offset: 0
+        format: 0
+        dimension: 2
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      m_DataSize: 240
+      _typelessdata: 0000803e0000303f000000000000203e0000103f000000000000603e0000c03e000000000000403e0000803e000000000000e03d0000203e000000000000e03d0000000000000000000020be0000000000000000000020be0000b03e00000000000090be0000b03e00000000000090be0000083f00000000000040be0000203f000000000000303e0000443f000000000000153f53e4b33e0000123f5a37983e0000143fc9675d3e0000133fd60d263e0080103fc214f93d0080103fc9675d3d0000083fc9675d3d0000083f4c914f3e0000043f4c914f3e0000043f1c4c913e0000073fd60da63e0080123f6f30c53e
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 264
+      y: 8
+      width: 33.923878
+      height: 49
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 64, y: 282, z: 64, w: 8}
+    downscaleMultiplier: 1
+  m_AtlasRD:
+    serializedVersion: 3
+    texture: {fileID: 0}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes: []
+    m_IndexBuffer:
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 0
+      m_Channels: []
+      m_DataSize: 0
+      _typelessdata:
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: 0, y: 0}
+    settingsRaw: 0
+    uvTransform: {x: 0, y: 0, z: 0, w: 0}
+    downscaleMultiplier: 0
+  m_PhysicsShape:
+  - - {x: 0.25, y: 0.75}
+    - {x: 0.234375, y: 0.765625}
+    - {x: 0.03125, y: 0.765625}
+    - {x: -0.140625, y: 0.6875}
+    - {x: -0.28125, y: 0.609375}
+    - {x: -0.28125, y: 0.1875}
+    - {x: -0.21875, y: 0.015625}
+    - {x: -0.203125, y: 0}
+    - {x: 0.140625, y: 0}
+    - {x: 0.171875, y: 0.015625}
+    - {x: 0.25, y: 0.3125}
+  m_Bones: []
+  m_SpriteID:

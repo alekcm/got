@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 226595031, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: VanirVisuals
+  m_EditorClassIdentifier:
+  _colors:
+    Primary: {r: 0.7686275, g: 0.6509804, b: 0.4431373, a: 0}
+    Complementary: {r: 0, g: 0, b: 0, a: 0}
+    Dark: {r: 0, g: 0, b: 0, a: 0}
+  _complementaryColors:
+    Primary: {r: 0.2627451, g: 0.4117647, b: 0.5058824, a: 1}
+    Complementary: {r: 0.23137255, g: 0.3372549, b: 0.4627451, a: 1}
+    Dark: {r: 0.21960784, g: 0.20392157, b: 0.36862746, a: 1}
+  _bannerSprite: {fileID: 21300000, guid: a18e44590c6278a4b97633c4bc5c6945, type: 2}
+  _wielderFrames:
+    CommanderFrames:
+    - {fileID: 21300000, guid: 739212885f27d5648bdf7dacf28089ff, type: 2}
+    - {fileID: 21300000, guid: d5315fb1f2321c74a8c3fd42c787f525, type: 2}
+  _bannerPrefab: {fileID: 1709254077376921, guid: 754f37d73582bf44484ce26d393553ce, type: 2}
+  _siegeBannerPrefab: {fileID: 1709254077376921, guid: 8fbb6108fea76aa498bd89150d816e48, type: 2}

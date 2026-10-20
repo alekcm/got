@@ -1,0 +1,169 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!213 &21300000
+Sprite:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ArleonFaeySpirit_Emission_Wings_10_MeleeAttack_2
+  m_Rect:
+    serializedVersion: 2
+    x: 373
+    y: 20.07612
+    width: 52
+    height: 31.92388
+  m_Offset: {x: 3.9999998, y: -53.03806}
+  m_Border: {x: 0, y: 0, z: 0, w: 0}
+  m_PixelsToUnits: 64
+  m_Pivot: {x: 0.5769231, y: -1.1613914}
+  m_Extrude: 1
+  m_IsPolygon: 0
+  m_AtlasName:
+  m_PackingTag:
+  m_RenderDataKey:
+    0c3184820aa3f9d45928a6d89622f581: 7170578272888337988
+  m_AtlasTags: []
+  m_SpriteAtlas: {fileID: 0}
+  m_RD:
+    serializedVersion: 3
+    texture: {fileID: 2800000, guid: f075d122e35072c43a8311136cee655c, type: 3}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes:
+    - serializedVersion: 2
+      firstByte: 0
+      indexCount: 42
+      topology: 0
+      baseVertex: 0
+      firstVertex: 0
+      vertexCount: 22
+      localAABB:
+        m_Center: {x: 0, y: 0, z: 0}
+        m_Extent: {x: 0, y: 0, z: 0}
+    m_IndexBuffer: 0400050006000100020003000100030004000000010004000600000004000b000c000d0007000b000d00070008000900070009000a0007000a000b000f00100011000e000f001100130014001500120013001500
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 22
+      m_Channels:
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 3
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 1
+        offset: 0
+        format: 0
+        dimension: 2
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      - stream: 0
+        offset: 0
+        format: 0
+        dimension: 0
+      m_DataSize: 448
+      _typelessdata: 000040be00004c3f00000000000020be00003c3f00000000000020be0000143f000000000000f0be0000403f000000000000d0be0000503f000000000000c8be00008a3f00000000000040be00008a3f000000000000303e0000403f000000000000983e0000803f000000000000b03e0000403f000000000000003e00001c3f000000000000a03d00004c3f000000000000e03d0000883f000000000000203e0000883f000000000000803d0000303f00000000000080bc0000303f00000000000080bc0000843f000000000000803d0000843f00000000000020be00007c3f00000000000030be00007c3f00000000000030be0000843f00000000000020be0000843f0000000000000000000000000080433f5fe8053e0080443fc54eec3d0080443fd9899d3d00803a3f432ff43d00803c3f9ed8093e00003d3fcdcc4c3e0080433fcdcc4c3e00004f3f432ff43d0000533f921b393e0080543f432ff43d00804d3fd54aad3d00004c3f5fe8053e00004d3f8edc483e00804e3f8edc483e00804b3f4badd43d0000493f4badd43d0000493f10fc403e00804b3f10fc403e0080443f532b353e0000443f532b353e0000443f10fc403e0080443f10fc403e
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 373
+      y: 20.07612
+      width: 52
+      height: 31.92388
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: -1, y: -1}
+    settingsRaw: 64
+    uvTransform: {x: 64, y: 403, z: 64, w: -17}
+    downscaleMultiplier: 1
+  m_AtlasRD:
+    serializedVersion: 3
+    texture: {fileID: 0}
+    alphaTexture: {fileID: 0}
+    secondaryTextures: []
+    m_SubMeshes: []
+    m_IndexBuffer:
+    m_VertexData:
+      serializedVersion: 3
+      m_VertexCount: 0
+      m_Channels: []
+      m_DataSize: 0
+      _typelessdata:
+    m_Bindpose: []
+    textureRect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    textureRectOffset: {x: 0, y: 0}
+    atlasRectOffset: {x: 0, y: 0}
+    settingsRaw: 0
+    uvTransform: {x: 0, y: 0, z: 0, w: 0}
+    downscaleMultiplier: 0
+  m_PhysicsShape:
+  - - {x: -0.125, y: 0.984375}
+    - {x: -0.125, y: 1.0625}
+    - {x: -0.15625, y: 1.078125}
+    - {x: -0.46875, y: 1.078125}
+    - {x: -0.46875, y: 0.703125}
+    - {x: -0.25, y: 0.578125}
+    - {x: -0.125, y: 0.578125}
+    - {x: -0.125, y: 0.8125}
+    - {x: -0.140625, y: 0.890625}
+  - - {x: 0.28125, y: 0.6875}
+    - {x: 0.28125, y: 0.65625}
+    - {x: 0.328125, y: 0.609375}
+    - {x: 0.34375, y: 0.609375}
+    - {x: 0.34375, y: 0.734375}
+    - {x: 0.328125, y: 0.734375}
+  - - {x: 0.3125, y: 1.078125}
+    - {x: -0.046875, y: 1.078125}
+    - {x: -0.046875, y: 0.703125}
+    - {x: 0.015625, y: 0.640625}
+    - {x: 0.109375, y: 0.625}
+    - {x: 0.21875, y: 0.625}
+    - {x: 0.34375, y: 0.75}
+    - {x: 0.34375, y: 0.984375}
+  m_Bones: []
+  m_SpriteID:

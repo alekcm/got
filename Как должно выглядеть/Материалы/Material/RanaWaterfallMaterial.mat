@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RanaWaterfallMaterial
+  m_Shader: {fileID: 4800000, guid: ac5abc07efc96274a880db5831b91021, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - SOC_QUALITY_HIGH
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3001
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties:
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+      Texture2D_912eea80c03f4e338ccca66d4422d78d:
+        m_Texture: {fileID: 2800000, guid: ff80399323ec30440827f14044bde6e7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      Texture2D_A4A3B899:
+        m_Texture: {fileID: 2800000, guid: e8c0e8c96853157448ddd617f8443300, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      Texture2D_EFAF4C3E:
+        m_Texture: {fileID: 2800000, guid: f72c11d381c05914884d9cb4d8c0e5a7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      _MainTex:
+        m_Texture: {fileID: 2800000, guid: 1ad1f1e2421163c4d840c3fc8e95ceb9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+      unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: {}
+    m_Floats:
+      SOC_QUALITY: 0
+      Vector1_1: 0.123
+      Vector1_1756F6C8: 0.5
+      Vector1_219ef313257d47a28b2a396da1f81540: 0.06
+      Vector1_277CCB04: 0.37
+      Vector1_2C246587: 0.5
+      Vector1_5401A176: 0.3
+      Vector1_584DFF8A: 4
+      Vector1_74189A1D: 0.92
+      Vector1_975A1573: 0.975
+      Vector1_AF637D27: 0.1
+      Vector1_B20ACA46: 4
+      Vector1_F044C982: 1
+      Vector1_F24C7721: 0.005
+      _AlphaClip: 0
+      _AlphaToMask: 0
+      _Blend: 0
+      _BlendModePreserveSpecular: 1
+      _BumpScale: 1
+      _ClearCoatMask: 0
+      _ClearCoatSmoothness: 0
+      _Cull: 2
+      _Cutoff: 0.5
+      _DetailAlbedoMapScale: 1
+      _DetailNormalMapScale: 1
+      _DstBlend: 0
+      _DstBlendAlpha: 0
+      _EnvironmentReflections: 1
+      _FrameCount: 8
+      _FrameRate: 9
+      _GlossMapScale: 1
+      _Glossiness: 0.5
+      _GlossyReflections: 1
+      _LeanStrenth: 0.65
+      _Metallic: 0
+      _Mode: 0
+      _OcclusionStrength: 1
+      _Parallax: 0.02
+      _QueueControl: 0
+      _QueueOffset: 1
+      _ReceiveShadows: 1
+      _Smoothness: 0.5
+      _SmoothnessTextureChannel: 0
+      _SpecularHighlights: 1
+      _SrcBlend: 1
+      _SrcBlendAlpha: 1
+      _Surface: 0
+      _UVSec: 0
+      _WorkflowMode: 1
+      _ZWrite: 1
+    m_Colors:
+      Vector3_4A2DDAE9: {r: 1.5, g: 3, b: 0.025, a: 0}
+      _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+      _Color: {r: 1, g: 1, b: 1, a: 1}
+      _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+      _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+  m_BuildTextureStacks: []

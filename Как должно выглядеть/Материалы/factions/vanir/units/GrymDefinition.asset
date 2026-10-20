@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 14541939, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: GrymDefinition
+  m_EditorClassIdentifier:
+  _id: 9
+  _makeGeneratedEnumValueObsolete: 0
+  _languageKey: Grym
+  _visualsPath: Factions/Vanir/Units/GrymVisuals
+  _audioPath: Factions/Vanir/Units/GrymAudio
+  _purchaseCost:
+    CostEntries:
+    - Type: 0
+      Amount: 1300
+  _obsoleteGoldCost: 0
+  _stats:
+    _tier: 15
+    _essenceStats:
+      _order: 0
+      _creation: 0
+      _chaos: 0
+      _arcana: 0
+      _destruction: 2
+    _meleeAttack:
+      _offense: 28
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 28
+      _range:
+        min: 0
+        max: 6
+      _deadlyRange: 4
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 32
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 9
+      max: 13
+    _movement: 4
+    _initiative: 18
+    _health: 80
+    _maxTroopSize: 10
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 0900000008000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _hasStatsVariant: 1
+  _statsVariant:
+    _tier: 15
+    _essenceStats:
+      _order: 0
+      _creation: 0
+      _chaos: 0
+      _arcana: 0
+      _destruction: 2
+    _meleeAttack:
+      _offense: 56
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 0
+      _range:
+        min: 0
+        max: 0
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 32
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 16
+      max: 22
+    _movement: 4
+    _initiative: 18
+    _health: 80
+    _maxTroopSize: 10
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 09000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _troopAbility: 30
+  _abilityRequiresResearch: 0
+  _requiredResearchForAbility: 16
+  _bacterias: []
+  _contentProfile: 75
+  _addonProfile:
+    RequiresOwnership: 1
+    PreventUseInOlderCampaigns: 1
+    IncludedInAddon: 32
+  _usage: 0
+  _isExcludedFromRandomPool: 0

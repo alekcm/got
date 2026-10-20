@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1477087302, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: YulanDefinition
+  m_EditorClassIdentifier:
+  _id: 7
+  _makeGeneratedEnumValueObsolete: 0
+  _languageKey: Yulan
+  _visualPath: Factions/Yulan/YulanVisuals
+  _commanderEnumName: YulanCommanderTypes
+  _unitEnumName: YulanUnitTypes
+  _commanders:
+  - {fileID: 11400000, guid: 6ba25b88f8bc7df44a8d89059ad3eb78, type: 2}
+  - {fileID: 11400000, guid: 4a8d1c3189d224844abb683712be51e9, type: 2}
+  - {fileID: 11400000, guid: ef460d51b49c7314b8c0a5d71f89f089, type: 2}
+  - {fileID: 11400000, guid: 0a0fa498f56f7d4409fe6ee20074dffd, type: 2}
+  - {fileID: 11400000, guid: 698754d70b90259449fb3e71b0ebfd7b, type: 2}
+  - {fileID: 11400000, guid: 04b2eb3cb1469344f8c6c20e3e32d876, type: 2}
+  - {fileID: 11400000, guid: 6c4f37f3e3256c54e8b36ccb2264b8ff, type: 2}
+  - {fileID: 11400000, guid: 02bb0bb5ba84f694db1a8725cb2ddc27, type: 2}
+  - {fileID: 11400000, guid: 60fe722095733bf4d84496cfb06be359, type: 2}
+  _units:
+  - Vanilla: {fileID: 11400000, guid: b1b9817493604354eac74cd82bc384cc, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 11400000, guid: 3d008d4a2f99e1c4080b7693a4438962, type: 2}
+    CreationUpgraded: {fileID: 11400000, guid: a688639a5bcae2a41a23882379426d22, type: 2}
+    OrderUpgraded: {fileID: 11400000, guid: 1c44d8984457a42488a4cc6439502a72, type: 2}
+  - Vanilla: {fileID: 11400000, guid: 38fee7ef21354fc4d9511ff5610b9c75, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 11400000, guid: 21f640fcb8bb77245b416599554269fd, type: 2}
+    CreationUpgraded: {fileID: 11400000, guid: 1e22135a5517e2c488a9f4fe781ec459, type: 2}
+    OrderUpgraded: {fileID: 11400000, guid: 60f4dfd31cce0484d9b58b67daf3a871, type: 2}
+  - Vanilla: {fileID: 11400000, guid: 4e5677380a388d04c909d010b07cb6a9, type: 2}
+    Upgraded: {fileID: 11400000, guid: 7a4b4bfa8c8487440bfb0d5a5fa22fe8, type: 2}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 0}
+    CreationUpgraded: {fileID: 0}
+    OrderUpgraded: {fileID: 0}
+  - Vanilla: {fileID: 11400000, guid: f8fffe2d49ef7f6409b040ff80b7b991, type: 2}
+    Upgraded: {fileID: 11400000, guid: fc4a4098f0a81604985c7118d64ab371, type: 2}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 0}
+    CreationUpgraded: {fileID: 0}
+    OrderUpgraded: {fileID: 0}
+  - Vanilla: {fileID: 11400000, guid: b3fece094b553f84f8fdef78092472fe, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 11400000, guid: f9e8f0b3bbd13494d828c8c496344983, type: 2}
+    CreationUpgraded: {fileID: 11400000, guid: 9a56ab69216dcc94db7e82213fba5388, type: 2}
+    OrderUpgraded: {fileID: 11400000, guid: 65740c6506b7369409c715292f565ec4, type: 2}
+  - Vanilla: {fileID: 11400000, guid: 5da04b43549db6e43881100c942177ba, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 11400000, guid: a6c517d4506be3547b5c41221edd7ba4, type: 2}
+    CreationUpgraded: {fileID: 11400000, guid: 30996aea1b002134093dc04bbfc1a174, type: 2}
+    OrderUpgraded: {fileID: 11400000, guid: 6a2a0a5505b72804b91e7483a23d1e5c, type: 2}
+  - Vanilla: {fileID: 11400000, guid: 6549cf28abc04174dbc8575f24090800, type: 2}
+    Upgraded: {fileID: 11400000, guid: 3ace2c092c6adf444a8cad8b8a9cb64e, type: 2}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 0}
+    CreationUpgraded: {fileID: 0}
+    OrderUpgraded: {fileID: 0}
+  - Vanilla: {fileID: 11400000, guid: e924296dd440a2e408b1e23b4a3de8cc, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 11400000, guid: 10838dc4e2afb114da980d6436f68341, type: 2}
+    CreationUpgraded: {fileID: 11400000, guid: a284c7aea15c83147861e572fdb57fd9, type: 2}
+    OrderUpgraded: {fileID: 11400000, guid: fe6dd7a4acdfe394ca52d5b26672d6b4, type: 2}
+  - Vanilla: {fileID: 11400000, guid: 3ca34bfbfcd29af428613634fe041f7e, type: 2}
+    Upgraded: {fileID: 0}
+    SuperUpgraded: {fileID: 0}
+    ArcanaUpgraded: {fileID: 0}
+    CreationUpgraded: {fileID: 0}
+    OrderUpgraded: {fileID: 0}
+  _ballistaReference:
+    FactionIndex: 7
+    UnitIndex: 8
+    Size: 1
+    UpgradeType: 0
+  _commanderGuid2Ids:
+  - GUID: 1e8d1ebef1f2b8040b5ef03c9fb0e228
+    Id: 0
+  - GUID: 3ad0eec13380ea141a5066cdaf8b29f3
+    Id: 1
+  - GUID: ce873561d3c68db44bc58dddbf6bbea0
+    Id: 2
+  - GUID: ba85f5b9f26dfbc4492b9b08bfb0bf6f
+    Id: 3
+  - GUID: ae7964397be03404d88ab1053af51c6a
+    Id: 4
+  - GUID: 8a5e403a647f78a4da5668d79d917bf8
+    Id: 5
+  - GUID: c7e313d4203e2d44b8688eba57bc51ff
+    Id: 6
+  - GUID: 522335242cd9a734bb2c87a799476c88
+    Id: 7
+  - GUID: 151b81d295e587f419af55f956b864ee
+    Id: 8
+  _unitGuid2Ids:
+  - GUID: 646f49ced20113348b54908ff92efaba
+    Id: 1
+  - GUID: 0d0f3a83f9ecfae48b82f00f9885ab46
+    Id: 2
+  - GUID: 82fb5015d4898954d87d7d119d5c493b
+    Id: 3
+  - GUID: c6177e7e96056b046b80e536b79874bf
+    Id: 4
+  - GUID: 6583ad4f9a604464a95439f948271500
+    Id: 5
+  - GUID: 9152049e17b8ea244823657749017b11
+    Id: 6
+  - GUID: 6ff89359d076f124da1a3a984975c072
+    Id: 7
+  - GUID: 34ccb3f41b5f28e42b1cfe1bd35e1cd1
+    Id: 8
+  - GUID: a481d9c9304517b44a9fc8ca17d51b46
+    Id: 9
+  - GUID: 3eaccfed87ae50d4391d1cd18eb17c52
+    Id: 10
+  - GUID: 8df1f8fc6904e9d4c9f8cc9e8a3af7d6
+    Id: 11
+  - GUID: be3c70656a8753b4898f917cfd1dee9b
+    Id: 12
+  - GUID: fdb48626ecf77c64e90b7478e6639059
+    Id: 13
+  - GUID: 6ea68ea354cd71a4ca42e353bc830b31
+    Id: 14
+  - GUID: fc19b747def98e04c9ca82975fe6a9b0
+    Id: 15
+  - GUID: 5ff8c717316563e40b259f3e18fac089
+    Id: 16
+  - GUID: 5cf000a094f0c3a479eb018946160626
+    Id: 17
+  - GUID: 273717c0e42d74b428661f5b5de46d18
+    Id: 18
+  - GUID: 883808aa02070be4798c95c234cde77a
+    Id: 19
+  - GUID: f79ee5f114ea1f24d8f56ccf9eb75c48
+    Id: 20
+  - GUID: 4c3dbdb0d941eee4aa8aedf3721a289b
+    Id: 21
+  - GUID: 8e29671c899ef8c45b2c100f328b7afb
+    Id: 22
+  _contentProfile: 75
+  _addonProfile:
+    RequiresOwnership: 1
+    PreventUseInOlderCampaigns: 1
+    IncludedInAddon: 128
+  _fullyPlayable: 1

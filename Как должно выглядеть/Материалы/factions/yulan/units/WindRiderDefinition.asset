@@ -1,0 +1,144 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 14541939, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: WindRiderDefinition
+  m_EditorClassIdentifier:
+  _id: 7
+  _makeGeneratedEnumValueObsolete: 0
+  _languageKey: WindRider
+  _visualsPath: Factions/Yulan/Units/WindRiderVisuals
+  _audioPath: Factions/Yulan/Units/WindRiderAudio
+  _purchaseCost:
+    CostEntries:
+    - Type: 0
+      Amount: 900
+  _obsoleteGoldCost: 0
+  _stats:
+    _tier: 14
+    _essenceStats:
+      _order: 0
+      _creation: 1
+      _chaos: 0
+      _arcana: 0
+      _destruction: 0
+    _meleeAttack:
+      _offense: 29
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 0
+      _range:
+        min: 0
+        max: 0
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 25
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 11
+      max: 17
+    _movement: 5
+    _initiative: 15
+    _health: 50
+    _maxTroopSize: 15
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 0000000008000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _hasStatsVariant: 1
+  _statsVariant:
+    _tier: 14
+    _essenceStats:
+      _order: 0
+      _creation: 1
+      _chaos: 0
+      _arcana: 0
+      _destruction: 0
+    _meleeAttack:
+      _offense: 12
+      _range:
+        min: 1
+        max: 1
+      _deadlyRange: 0
+      _lobbing: 0
+      _resistancePercent: 0
+    _rangedAttack:
+      _offense: 29
+      _range:
+        min: 0
+        max: 5
+      _deadlyRange: 3
+      _lobbing: 0
+      _resistancePercent: 0
+    _defense: 25
+    _attacks: 1
+    _retaliations: 1
+    _attacksOfOpportunity: 1
+    _damage:
+      min: 6
+      max: 10
+    _movement: 5
+    _initiative: 15
+    _health: 50
+    _maxTroopSize: 10
+    _damageMultiplier: 0
+    _spellDamageResistance: 0
+    _statuses: 00000000
+    _size: 0
+    _canPerformAttacksOfOpportunity: 1
+    _ignoresZoneOfControlCounter: 0
+    _rootSpread: 0
+    _blessed: 0
+    _restrictions: []
+  _troopAbility: 30
+  _abilityRequiresResearch: 0
+  _requiredResearchForAbility: 16
+  _bacterias:
+  - _parentId: 0
+    _id: 0
+    _casterInformation:
+      ScalingLevel: 0
+      SpellDamagePowerPercent: 0
+    BacteriaType: 871
+    Duration:
+      Type: 3
+      Duration: 0
+    TargetType: 0
+  - _parentId: 0
+    _id: 0
+    _casterInformation:
+      ScalingLevel: 0
+      SpellDamagePowerPercent: 0
+    BacteriaType: 1170
+    Duration:
+      Type: 3
+      Duration: 0
+    TargetType: 0
+  _contentProfile: 75
+  _addonProfile:
+    RequiresOwnership: 1
+    PreventUseInOlderCampaigns: 0
+    IncludedInAddon: 128
+  _usage: 0
+  _isExcludedFromRandomPool: 0

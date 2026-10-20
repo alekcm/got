@@ -1,0 +1,624 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 2064306278, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: FactionUIMapping
+  m_EditorClassIdentifier:
+  _neutralUISprites:
+    _spriteReferences:
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 6051364cc4b77624cbe81b6a50555908
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 6051364cc4b77624cbe81b6a50555908
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 6051364cc4b77624cbe81b6a50555908
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _arleonUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: WielderCardBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _lothUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: WielderCardBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 4ca29b96260363149aa41edf654aa2c2
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _baryaUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: WielderCardBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: 75431341122942642ac5f71f8e83a4fe
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _ranaUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: WielderCardBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c0f68daa5e2bf2b4f9354a5b97e42a59
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: c5977c17d9cd33740a9db1362a652606
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vanirUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e52d96600734cfa4a93ed147b5a9c51c
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _rootsUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: e7848699cc9db0c48a5af26287d93595
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _yulanUiSprites:
+    _spriteReferences:
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: AdventureEndTurnSupport
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: AdventureHUDBottomCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: BannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: BannerColorableLarge
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: BannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: BattleQueActiveTroop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: BattleQuickbarBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: ButtonHolder
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: CampaignCompleteTrophy
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: CornerDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: HeaderPatternBackground
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: HorisontalBannerColorable
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: HorisontalBannerDetail
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: HorisontalBannerDirt
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: HorisontalDecorationBar
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: InteractionPanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: MainPanel
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: PanelBottom
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: PanelTop
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: RandomEventImage
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: Standard
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: TopCircle
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: TopCircleSmall
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: TopCircleSymbol
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: TopDecoration
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: WielderCorner
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    - m_AssetGUID: df33503012e62764fbcffd792664d7a8
+      m_SubObjectName: WielderInteractHeader
+      m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

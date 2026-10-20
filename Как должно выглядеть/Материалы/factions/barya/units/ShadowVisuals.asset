@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 785645487, guid: a24d9d417d08760355208c94467bc954, type: 3}
+  m_Name: ShadowVisuals
+  m_EditorClassIdentifier:
+  _portraitPivotOffset: {x: 10, y: -85}
+  _battlePrefabReference:
+    m_AssetGUID: e7f9d08ce08e3304b85b39d87a0c7248
+    m_SubObjectName:
+    m_SubObjectType:
+  _adventurePrefabReference:
+    m_AssetGUID: e26ebd5e19c35ae4d8bb50d339f2fc78
+    m_SubObjectName:
+    m_SubObjectType:
+  _offsetType: 2
+  _moveScale: 1
+  _moveScaleDuration: 0.15
+  _movespeed: 7
+  _meleeSelfEffect:
+    _type: 1
+  _meleeOpponentEffect:
+    _type: 43
+  _meleeOpponentEffectVariant:
+    _type: 1
+  _beginAttack:
+    _type: 1
+  _criticalMeleeOpponentEffect:
+    _type: 44
+  _criticalMeleeOpponentEffectVariant:
+    _type: 1
+  _rangedSelfEffect:
+    _type: 1
+  _beginRangedAttackEffect:
+    _type: 1
+  _rangedOpponentEffect:
+    _type: 1
+  _criticalRangedOpponentEffect:
+    _type: 1
+  _receiveDamageEffect:
+    _type: 120
+  _receiveMassiveDamageEffect:
+    _type: 121
+  _receiveDamageDeathEffect:
+    _type: 1
+  _hitGroundEffect:
+    _type: 182
+  _hitGroundBloodEffect:
+    _type: 117
+  _deathBounceDuration: 1
+  _deathBounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.0017089844
+      inSlope: 8.111671
+      outSlope: 8.111671
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.019986624
+    - serializedVersion: 3
+      time: 0.355
+      value: 0.0044555664
+      inSlope: -3.6104977
+      outSlope: 2.2935433
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03150763
+      outWeight: 0.05391611
+    - serializedVersion: 3
+      time: 0.765
+      value: 0.00091552734
+      inSlope: -2.5845196
+      outSlope: -0.0026313113
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.044907108
+      outWeight: 0.70297486
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _deathKnockbackCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0029449463
+      value: 0
+      inSlope: 1.9413221
+      outSlope: 1.9413221
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.036871333
+    - serializedVersion: 3
+      time: 0.84863186
+      value: 0.9982071
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06480121
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
