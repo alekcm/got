@@ -147,8 +147,11 @@ namespace IronThrone.Unity
             BuildGround(W, H, ox, oz, origin, heights);
             BuildControl(W, H, ox, oz, origin, classes, land, regions);
             BuildWater(W, H, ox, oz, origin);
-            BuildDecor(map, land, classes, regions, heights);
-            BuildBuildings(map, heights);
+            // декор/постройки не должны валить всю карту: частичный вид лучше фолбэка
+            try { BuildDecor(map, land, classes, regions, heights); }
+            catch (Exception ex) { Debug.LogWarning("Decor: " + ex); }
+            try { BuildBuildings(map, heights); }
+            catch (Exception ex) { Debug.LogWarning("Buildings: " + ex); }
 
             SetupCamera(W, H);
             SetupAtmosphere();

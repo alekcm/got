@@ -309,7 +309,7 @@ namespace IronThrone.Unity
             }
             catch (Exception ex)
             {
-                Debug.LogWarning("WorldMapView не построена (фолбэк на 2D): " + ex.Message);
+                Debug.LogWarning("WorldMapView не построена (фолбэк на 2D): " + ex);
                 _worldMap = null;
             }
         }
