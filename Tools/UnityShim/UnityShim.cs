@@ -23,6 +23,26 @@ namespace UnityEngine
         public float x, y, z;
         public Vector3(float x, float y, float z) { this.x = x; this.y = y; this.z = z; }
         public static Vector3 zero => new Vector3(0, 0, 0);
+        public static Vector3 one => new Vector3(1, 1, 1);
+        public static Vector3 up => new Vector3(0, 1, 0);
+        public static Vector3 right => new Vector3(1, 0, 0);
+        public static Vector3 forward => new Vector3(0, 0, 1);
+        public float magnitude => (float)Math.Sqrt(x * x + y * y + z * z);
+        public Vector3 normalized { get { float m = magnitude; return m > 1e-6f ? new Vector3(x / m, y / m, z / m) : zero; } }
+        public static Vector3 operator +(Vector3 a, Vector3 b) => new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+        public static Vector3 operator -(Vector3 a, Vector3 b) => new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+        public static Vector3 operator -(Vector3 a) => new Vector3(-a.x, -a.y, -a.z);
+        public static Vector3 operator *(Vector3 a, float k) => new Vector3(a.x * k, a.y * k, a.z * k);
+        public static Vector3 operator *(float k, Vector3 a) => new Vector3(a.x * k, a.y * k, a.z * k);
+        public static Vector3 operator /(Vector3 a, float k) => new Vector3(a.x / k, a.y / k, a.z / k);
+        public static float Dot(Vector3 a, Vector3 b) => a.x * b.x + a.y * b.y + a.z * b.z;
+        public static Vector3 Cross(Vector3 a, Vector3 b) => new Vector3(
+            a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);
+        public static Vector3 Lerp(Vector3 a, Vector3 b, float t)
+        {
+            t = t < 0 ? 0 : t > 1 ? 1 : t;
+            return new Vector3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
+        }
     }
 
     public struct Rect
@@ -61,14 +81,19 @@ namespace UnityEngine
         public static T FindObjectOfType<T>() where T : Object => null;
     }
 
-    public class Texture : Object { }
+    public enum TextureWrapMode { Repeat, Clamp }
+
+    public class Texture : Object
+    {
+        public TextureWrapMode wrapMode;
+        public int width, height;
+    }
 
     public enum TextureFormat { RGBA32, ARGB32, RGB24 }
     public enum FilterMode { Point, Bilinear, Trilinear }
 
     public class Texture2D : Texture
     {
-        public int width, height;
         public FilterMode filterMode;
         public Color32[] pixels;
         public Texture2D(int w, int h) { width = w; height = h; }
@@ -82,6 +107,9 @@ namespace UnityEngine
     {
         public Vector3 position;
         public Vector3 localScale = new Vector3(1, 1, 1);
+        public Quaternion rotation = Quaternion.identity;
+        public Vector3 eulerAngles = Vector3.zero;
+        public Transform parent;
     }
 
     public class Component : Object
@@ -96,6 +124,7 @@ namespace UnityEngine
 
     public class GameObject : Object
     {
+        public string tag;
         public Transform transform = new Transform();
         public GameObject() { }
         public GameObject(string name) { this.name = name; }
@@ -165,7 +194,14 @@ namespace UnityEngine
     }
 
     public enum EventType { MouseDown, MouseUp, MouseDrag, Repaint, Layout, KeyDown, ScrollWheel, Used }
-    public enum KeyCode { Space = 32, Escape = 27, Tab = 9, Return = 13, Alpha1 = 49, Alpha2 = 50, Alpha3 = 51 }
+    public enum KeyCode
+    {
+        Space = 32, Escape = 27, Tab = 9, Return = 13,
+        Alpha1 = 49, Alpha2 = 50, Alpha3 = 51,
+        W = 119, A = 97, S = 115, D = 100, Q = 113, E = 101,
+        UpArrow = 273, DownArrow = 274, RightArrow = 275, LeftArrow = 276,
+        LeftShift = 304,
+    }
 
     public class Event
     {
@@ -245,8 +281,11 @@ namespace UnityEngine
     {
         public static Vector2 mousePosition;
         public static Vector2 mouseScrollDelta;
+        public static bool GetKey(KeyCode k) => false;
         public static bool GetKeyDown(KeyCode k) => false;
         public static bool GetMouseButtonDown(int b) => false;
+        public static bool GetMouseButtonUp(int b) => false;
+        public static bool GetMouseButton(int b) => false;
     }
 
     public static class Mathf
@@ -262,7 +301,131 @@ namespace UnityEngine
         public static float Clamp01(float v) => v < 0 ? 0 : v > 1 ? 1 : v;
         public static float Sqrt(float v) => (float)Math.Sqrt(v);
         public static float Abs(float v) => Math.Abs(v);
+        public static float Sin(float v) => (float)Math.Sin(v);
+        public static float Cos(float v) => (float)Math.Cos(v);
+        public static float Tan(float v) => (float)Math.Tan(v);
+        public static float Atan2(float y, float x) => (float)Math.Atan2(y, x);
+        public static float Acos(float v) => (float)Math.Acos(v);
+        public static float Pow(float a, float b) => (float)Math.Pow(a, b);
+        public static float Sign(float v) => v >= 0f ? 1f : -1f;
+        public static float Lerp(float a, float b, float t) => a + (Clamp01(t)) * (b - a);
+        public static float Repeat(float t, float len) => t - (float)Math.Floor(t / len) * len;
     }
+
+    public struct Vector4
+    {
+        public float x, y, z, w;
+        public Vector4(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; }
+        public static Vector4 zero => new Vector4(0, 0, 0, 0);
+    }
+
+    public struct Quaternion
+    {
+        public float x, y, z, w;
+        public Quaternion(float x, float y, float z, float w) { this.x = x; this.y = y; this.z = z; this.w = w; }
+        public static Quaternion identity => new Quaternion(0, 0, 0, 1);
+        public static Quaternion Euler(float xDeg, float yDeg, float zDeg) => identity;
+    }
+
+    public class Mesh : Object
+    {
+        public Vector3[] vertices = new Vector3[0];
+        public Vector3[] normals = new Vector3[0];
+        public Vector2[] uv = new Vector2[0];
+        public Color32[] colors32 = new Color32[0];
+        public int[] triangles = new int[0];
+        public void RecalculateNormals() { }
+        public void RecalculateBounds() { }
+    }
+
+    public class MeshFilter : Component
+    {
+        public Mesh sharedMesh;
+        public Mesh mesh { get { return sharedMesh; } set { sharedMesh = value; } }
+    }
+
+    public class Renderer : Component
+    {
+        public Material sharedMaterial;
+        public Material material { get { return sharedMaterial; } set { sharedMaterial = value; } }
+        public bool enabled = true;
+    }
+
+    public class MeshRenderer : Renderer { }
+
+    public class Shader : Object
+    {
+        public static Shader Find(string name) => new Shader { thisName = name };
+        string thisName;
+        public string shaderName => thisName;
+    }
+
+    public class Material : Object
+    {
+        public Shader shader;
+        public Texture mainTexture;
+        public Material(Shader s) { shader = s; }
+        public void SetTexture(string name, Texture t) { }
+        public void SetVector(string name, Vector4 v) { }
+        public void SetColor(string name, Color c) { }
+        public void SetFloat(string name, float v) { }
+        public void EnableKeyword(string k) { }
+    }
+
+    public class Texture2DArray : Texture
+    {
+        public Texture2DArray(int width, int height, int depth, TextureFormat format, bool mipChain) { }
+    }
+
+    public class Sprite : Object
+    {
+        public static Sprite Create(Texture2D tex, Rect rect, Vector2 pivot, float pixelsPerUnit) => new Sprite();
+    }
+
+    public enum CameraClearFlags { Skybox, SolidColor, Depth, Nothing }
+
+    public enum FogMode { Linear, Exponential, ExponentialSquared }
+
+    public class Camera : Component
+    {
+        public CameraClearFlags clearFlags = CameraClearFlags.Skybox;
+        public float fieldOfView = 60f;
+        public float nearClipPlane = 0.3f;
+        public float farClipPlane = 1000f;
+        public float orthographicSize = 5f;
+        public bool orthographic = false;
+        public Color clearColor = new Color(0.2f, 0.25f, 0.3f, 1f);
+        public float aspect => (float)Screen.width / Screen.height;
+        public static Camera main;
+        public Vector3 WorldToScreenPoint(Vector3 world) => Vector3.zero;
+    }
+
+    public class TextAsset : Object
+    {
+        public string text = "";
+    }
+
+    public static class Resources
+    {
+        public static T Load<T>(string path) where T : Object => null;
+    }
+
+    public static class JsonUtility
+    {
+        public static T FromJson<T>(string json) => default(T);
+    }
+
+    public static class RenderSettings
+    {
+        public static bool fog = false;
+        public static Color fogColor = Color.gray;
+        public static float fogDensity = 0.01f;
+        public static FogMode fogMode = FogMode.Linear;
+        public static float fogStartDistance = 0f;
+        public static float fogEndDistance = 100f;
+    }
+
+    public class Light : Component { }
 
     public enum RuntimeInitializeLoadType { AfterSceneLoad, BeforeSceneLoad, AfterAssembliesLoaded }
 

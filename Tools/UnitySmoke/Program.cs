@@ -120,6 +120,27 @@ namespace IronThrone.UnitySmoke
                 Png.Write("/home/user/got/tools/unity_map_preview.png", tex.width, tex.height, tex.pixels);
                 Console.WriteLine($"    {tex.width}x{tex.height} → tools/unity_map_preview.png");
             });
+
+            Step("3D-карта мира (WorldMapView)", () =>
+            {
+                var wm = Get(game, "_worldMap");
+                if (wm == null) throw new Exception("WorldMapView не построена");
+                // меш рельефа и пикинг через камеру
+                var pick = wm.GetType().GetMethod("PickTile", Flags);
+                var ground = wm.GetType().GetMethod("GroundPoint", Flags);
+                var rig = Get(wm, "Rig");
+                if (rig == null) throw new Exception("камера не настроена");
+                var args = new object[] { new Vector2(Screen.width / 2f, Screen.height / 2f), null, 0.1f };
+                bool hit = (bool)ground.Invoke(rig, args);
+                if (!hit) throw new Exception("центр экрана не бьёт в землю");
+                var world = (Vector3)args[1];
+                Console.WriteLine($"    фокус в мире: {world.x:0.0}, {world.z:0.0}");
+                var pargs = new object[] { new Vector2(Screen.width / 2f, Screen.height / 2f), 0, 0 };
+                bool picked = (bool)pick.Invoke(wm, pargs);
+                int c = (int)pargs[1], r = (int)pargs[2];
+                if (!picked) throw new Exception("гекс под центром экрана не найден");
+                Console.WriteLine($"    выбран гекс: {c},{r}");
+            });
             for (int tab = 0; tab < 9; tab++)
             {
                 int t = tab;

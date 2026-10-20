@@ -52,6 +52,7 @@ namespace IronThrone.Unity
         private ContentDb _content;
         private GameState _state;
         private HexMapTexture _map;
+        private WorldMapView _worldMap;
         private UiScreen _screen = UiScreen.Loading;
         private string _error;
 
@@ -89,6 +90,7 @@ namespace IronThrone.Unity
             {
                 _content = UnityContent.Load();
                 PickDefaultFaction();
+                EnsureWorldMap(null);
                 _screen = UiScreen.Menu;
                 // Play в сцене Game — сразу партия с настройками по умолчанию;
                 // Play в MainMenu (или любой другой сцене) — меню.
@@ -180,7 +182,10 @@ namespace IronThrone.Unity
 
         private void DrawMenu()
         {
-            Fill(new Rect(0, 0, Screen.width, Screen.height), _bg);
+            if (_worldMap == null)
+                Fill(new Rect(0, 0, Screen.width, Screen.height), _bg);
+            else
+                Fill(new Rect(0, 0, Screen.width, Screen.height), new Color(0.04f, 0.05f, 0.07f, 0.42f));
             float w = Math.Min(1180, Screen.width - 40);
             float x = (Screen.width - w) / 2f;
             GUI.Label(new Rect(x, 18, w, 60), "ЖЕЛЕЗНЫЙ ТРОН", _title);
@@ -287,6 +292,32 @@ namespace IronThrone.Unity
         private string FaithName(string id) =>
             _content.FaithById.TryGetValue(id ?? "", out var f) ? f.name : "—";
 
+        /// <summary>3D-карта мира: строится один раз (или перестраивается при смене карты).</summary>
+        private void EnsureWorldMap(MapData map)
+        {
+            if (_worldMap != null) return;
+            try
+            {
+                var src = map ?? _state?.Map ?? _content.Map;
+                if (src != null) _worldMap = WorldMapView.Build(src);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning("WorldMapView не построена (фолбэк на 2D): " + ex.Message);
+                _worldMap = null;
+            }
+        }
+
+        private void RebuildWorldMap(MapData map)
+        {
+            if (_worldMap != null)
+            {
+                UnityEngine.Object.Destroy(_worldMap.gameObject);
+                _worldMap = null;
+            }
+            EnsureWorldMap(map);
+        }
+
         private void StartNewGame()
         {
             try
@@ -295,6 +326,7 @@ namespace IronThrone.Unity
                     seed: Environment.TickCount, chosenAdvisors: new List<string>(_advisors), mapMode: _mapMode);
                 TurnEngine.StartGame(_state);
                 _map = HexMapTexture.Build(_state, 24);
+                RebuildWorldMap(_state.Map);
                 _selectedProvince = _state.Province(_state.Faction(_factionId)?.capital ?? "") != null
                     ? _state.Faction(_factionId).capital
                     : _state.Provinces.Keys.FirstOrDefault();
@@ -325,7 +357,8 @@ namespace IronThrone.Unity
         {
             var f = _state.Faction(_state.PlayerFaction);
             float topH = 48, bottomH = 56;
-            Fill(new Rect(0, 0, Screen.width, Screen.height), _bg);
+            if (_worldMap == null)
+                Fill(new Rect(0, 0, Screen.width, Screen.height), _bg);
 
             // верхняя панель
             Fill(new Rect(0, 0, Screen.width, topH), new Color(0.07f, 0.09f, 0.10f, 1f));
@@ -344,7 +377,7 @@ namespace IronThrone.Unity
 
             // карта
             _mapRect = new Rect(8, topH + 8, Screen.width * 0.63f - 12, Screen.height - topH - bottomH - 16);
-            GUI.Box(_mapRect, GUIContent.none, _panel);
+            if (_worldMap == null) GUI.Box(_mapRect, GUIContent.none, _panel);
             DrawMap(_mapRect);
 
             // боковая панель
@@ -520,6 +553,7 @@ namespace IronThrone.Unity
                 if (!File.Exists(path)) { Toast("Сохранение не найдено."); return; }
                 _state = SaveSystem.LoadFromFile(_content, path);
                 _map = HexMapTexture.Build(_state, 24);
+                RebuildWorldMap(_state.Map);
                 _selectedProvince = _state.Provinces.ContainsKey(_selectedProvince ?? "") ? _selectedProvince : _state.Provinces.Keys.FirstOrDefault();
                 _selectedArmy = null;
                 _screen = UiScreen.Game;
@@ -532,6 +566,7 @@ namespace IronThrone.Unity
         // ------------------------------------------------------------------ карта
         private void DrawMap(Rect area)
         {
+            if (_worldMap != null) { DrawMapWorld(area); return; }
             if (_map == null || _map.Texture == null) return;
             float texW = _map.Texture.width, texH = _map.Texture.height;
             float aspect = texW / texH;
@@ -606,6 +641,68 @@ namespace IronThrone.Unity
         private Vector2 MapToScreen(Vector2 mapPixel) => new Vector2(
             _mapDrawRect.x + mapPixel.x / _map.Texture.width * _mapDrawRect.width,
             _mapDrawRect.y + mapPixel.y / _map.Texture.height * _mapDrawRect.height);
+
+        /// <summary>Оверлей поверх 3D-карты: маркеры провинций/армий и клики по гексам.</summary>
+        private void DrawMapWorld(Rect area)
+        {
+            foreach (var p in _state.Provinces.Values)
+            {
+                if (p.def.settlement == null || p.def.settlement.Count < 2) continue;
+                var w = _worldMap.ProvinceMarkerWorld(p.def);
+                var sp = _worldMap.WorldToGui(w);
+                if (sp.x < area.x - 40 || sp.x > area.xMax + 40 || sp.y < area.y - 40 || sp.y > area.yMax + 40) continue;
+                var owner = _state.Faction(p.controller);
+                if (owner != null)
+                    Fill(new Rect(sp.x - 8, sp.y - 13, 7, 7), ParseColor(owner.def.color));
+            }
+            foreach (var a in _state.Armies.Values.Where(a => a.alive && !a.IsEmpty))
+            {
+                var prov = _state.Province(a.province);
+                if (prov?.def.settlement == null || prov.def.settlement.Count < 2) continue;
+                var sp = _worldMap.WorldToGui(_worldMap.ProvinceMarkerWorld(prov.def));
+                if (sp.x < area.x - 40 || sp.x > area.xMax + 40 || sp.y < area.y - 40 || sp.y > area.yMax + 40) continue;
+                var fac = _state.Faction(a.faction);
+                var col = fac != null ? ParseColor(fac.def.color) : Color.white;
+                Fill(new Rect(sp.x + 2, sp.y + 3, 9, 9), col);
+                Fill(new Rect(sp.x + 4, sp.y + 5, 5, 5), a.faction == _state.PlayerFaction ? Color.white : new Color(0.1f, 0.1f, 0.1f));
+            }
+
+            // выделение
+            if (!string.IsNullOrEmpty(_selectedProvince) && _state.Province(_selectedProvince) != null)
+            {
+                var p = _state.Province(_selectedProvince);
+                if (p.def.settlement != null && p.def.settlement.Count >= 2)
+                {
+                    var sp = _worldMap.WorldToGui(_worldMap.ProvinceMarkerWorld(p.def));
+                    var gold = _accent;
+                    Fill(new Rect(sp.x - 16, sp.y - 16, 32, 2), gold);
+                    Fill(new Rect(sp.x - 16, sp.y + 14, 32, 2), gold);
+                    Fill(new Rect(sp.x - 16, sp.y - 16, 2, 32), gold);
+                    Fill(new Rect(sp.x + 14, sp.y - 16, 2, 32), gold);
+                }
+            }
+
+            // клик по 3D-карте
+            var e = Event.current;
+            if (e.type == EventType.MouseDown && e.button == 0 && area.Contains(e.mousePosition))
+            {
+                var provId = _worldMap.PickProvince(e.mousePosition);
+                if (!string.IsNullOrEmpty(provId))
+                {
+                    if (_moveMode && !string.IsNullOrEmpty(_selectedArmy))
+                    {
+                        TryMove(_selectedArmy, provId);
+                    }
+                    else
+                    {
+                        _selectedProvince = provId;
+                        _tab = 0;
+                        _sideScroll = Vector2.zero;
+                    }
+                    e.Use();
+                }
+            }
+        }
 
         private static Color ParseColor(string hex)
         {
