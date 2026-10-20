@@ -157,23 +157,38 @@ namespace IronThrone.Unity
         /// <summary>Собирает Texture2DArray из 16 тайлов 128x128 (порядок = TerrainTileNames).</summary>
         Texture2DArray BuildTerrainArray()
         {
-            Texture2D first = Resources.Load<Texture2D>("Art/Terrain/" + TerrainTileNames[0]);
-            if (first == null) return null;
-            int tw = first.width, th = first.height;
-            var arr = new Texture2DArray(tw, th, TerrainTileNames.Length, TextureFormat.RGBA32, false);
-            bool any = false;
-            for (int i = 0; i < TerrainTileNames.Length; i++)
+            try
             {
-                var tex = Resources.Load<Texture2D>("Art/Terrain/" + TerrainTileNames[i]);
-                if (tex == null) continue;
-                var px = tex.GetPixels32();
-                if (px == null || px.Length != tw * th) continue;
-                arr.SetPixels32(px, 0, i);
-                any = true;
+                Texture2D first = Resources.Load<Texture2D>("Art/Terrain/" + TerrainTileNames[0]);
+                if (first == null) return null;
+                int tw = first.width, th = first.height;
+                var arr = new Texture2DArray(tw, th, TerrainTileNames.Length, TextureFormat.RGBA32, false);
+                bool any = false;
+                for (int i = 0; i < TerrainTileNames.Length; i++)
+                {
+                    try
+                    {
+                        var tex = Resources.Load<Texture2D>("Art/Terrain/" + TerrainTileNames[i]);
+                        if (tex == null) continue;
+                        var px = tex.GetPixels32(); // требует isReadable: 1 в .meta
+                        if (px == null || px.Length != tw * th) continue;
+                        arr.SetPixels32(px, 0, i);
+                        any = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogWarning("Terrain tile " + TerrainTileNames[i] + ": " + ex.Message);
+                    }
+                }
+                if (!any) return null;
+                arr.Apply();
+                return arr;
             }
-            if (!any) return null;
-            arr.Apply();
-            return arr;
+            catch (Exception ex)
+            {
+                Debug.LogWarning("TerrainTextureArray: " + ex.Message);
+                return null;
+            }
         }
 
         void LoadSpriteDb()
