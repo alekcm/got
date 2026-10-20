@@ -203,6 +203,8 @@ namespace IronThrone.Unity.SoqMap
         private Material _shadowMat;
         private Mesh _shadowMesh;
         private Material _objectMat;
+        /// <summary>Все созданные материалы/меши: освобождаются при перегенерации.</summary>
+        private readonly List<Material> _ownedMaterials = new List<Material>();
         private readonly Dictionary<string, Material> _atlasMaterials =
             new Dictionary<string, Material>(StringComparer.OrdinalIgnoreCase);
 
@@ -256,15 +258,16 @@ namespace IronThrone.Unity.SoqMap
         public void Rebuild(AdventureMap map, AdventureCatalog catalog)
         {
             if (_root != null) UnityEngine.Object.Destroy(_root);
-            foreach (var kv in _atlasMaterials)
-                if (kv.Value != null) UnityEngine.Object.Destroy(kv.Value);
             _atlasMaterials.Clear();
-            if (_waterMat != null) UnityEngine.Object.Destroy(_waterMat);
-            if (_shadowMat != null) UnityEngine.Object.Destroy(_shadowMat);
+            for (int i = 0; i < _ownedMaterials.Count; i++)
+                if (_ownedMaterials[i] != null) UnityEngine.Object.Destroy(_ownedMaterials[i]);
+            _ownedMaterials.Clear();
+            if (_shadowMesh != null) UnityEngine.Object.Destroy(_shadowMesh);
             if (_white != null) UnityEngine.Object.Destroy(_white);
             if (_minimap != null) UnityEngine.Object.Destroy(_minimap);
             _waterMat = null;
             _shadowMat = null;
+            _shadowMesh = null;
             _white = null;
             _minimap = null;
             BuildInternal(map, catalog);
@@ -303,6 +306,7 @@ namespace IronThrone.Unity.SoqMap
             var shader = LoadSpriteShader();
             if (shader == null) return null;
             var mat = new Material(shader);
+            _ownedMaterials.Add(mat);
             mat.mainTexture = tex != null ? tex : _white;
             mat.SetColor("_Color", tint);
             mat.SetFloat("_Cutoff", 0.01f);
@@ -319,6 +323,7 @@ namespace IronThrone.Unity.SoqMap
             var shader = LoadSpriteShader();
             if (shader == null) return null;
             var mat = new Material(shader);
+            _ownedMaterials.Add(mat);
             mat.mainTexture = tex != null ? tex : _white;
             mat.SetColor("_Color", Color.white);
             mat.SetFloat("_Cutoff", 0.35f);
@@ -352,6 +357,7 @@ namespace IronThrone.Unity.SoqMap
             tex.SetPixels32(px);
             tex.Apply();
             var mat = new Material(shader);
+            _ownedMaterials.Add(mat);
             mat.mainTexture = tex;
             mat.SetColor("_Color", Color.white);
             mat.SetFloat("_Cutoff", 0.04f);
@@ -498,6 +504,7 @@ namespace IronThrone.Unity.SoqMap
             if (shader == null) return;
 
             _waterMat = new Material(shader);
+            _ownedMaterials.Add(_waterMat);
             var shallow = Resources.Load<Texture2D>("Art/ArleonAdventureWaterShallowSurfaceTexture");
             var deep = Resources.Load<Texture2D>("Art/ArleonAdventureWaterDeepSurfaceTexture");
             if (shallow != null) _waterMat.SetTexture("_ShallowTex", shallow);
