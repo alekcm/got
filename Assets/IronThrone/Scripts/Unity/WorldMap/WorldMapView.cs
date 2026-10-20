@@ -356,6 +356,12 @@ namespace IronThrone.Unity
             return dist;
         }
 
+        /// <summary>Вес 0..1 -> байт канала control-текстуры.</summary>
+        static byte b255(float v)
+        {
+            return (byte)(Mathf.Clamp01(v) * 255f);
+        }
+
         static Texture2D MakeTex(int w, int h, Color32[] px, string name)
         {
             var t = new Texture2D(w, h, TextureFormat.RGBA32, false)
