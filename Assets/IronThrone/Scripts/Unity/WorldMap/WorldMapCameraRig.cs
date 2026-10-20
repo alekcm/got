@@ -25,7 +25,7 @@ namespace IronThrone.Unity
             _cam = cam;
             _mapSize = mapSize;
             _focus = new Vector2(mapSize.x / 2f, mapSize.y / 2f);
-            _dist = Mathf.Clamp(mapSize.y * 0.75f, 18f, 60f);
+            _dist = Mathf.Clamp(mapSize.y * 0.22f, 30f, 120f);
             Apply();
         }
 
@@ -73,12 +73,12 @@ namespace IronThrone.Unity
             float scroll = Input.mouseScrollDelta.y;
             if (Mathf.Abs(scroll) > 0.001f)
             {
-                _dist = Mathf.Clamp(_dist * (1f - scroll * 0.12f), 9f, 75f);
+                _dist = Mathf.Clamp(_dist * (1f - scroll * 0.12f), 22f, 220f);
                 changed = true;
             }
 
             // клампим фокус в пределы карты
-            float margin = 3f;
+            float margin = 12f;
             _focus.x = Mathf.Clamp(_focus.x, margin, Mathf.Max(margin + 1f, _mapSize.x - margin));
             _focus.y = Mathf.Clamp(_focus.y, margin, Mathf.Max(margin + 1f, _mapSize.y - margin));
 

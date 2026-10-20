@@ -1,56 +1,58 @@
-// IronThrone: рельеф глобальной карты (Built-in RP, CG).
-// Сплейтинг: две control-текстуры (A = слои 0-3, B = слои 4-7),
-// индексы слоёв в _LayersA/_LayersB. Рельеф из Texture2DArray (128x128 слои).
+// IronThrone: террейн глобальной карты (Built-in RP, CG), версия 2.
+// 16 биом-классов: веса из 4 control-текстур (RGBA x4), тайлы — Texture2DArray
+// из Resources/Art/Terrain (собирается в рантайме, без битого импорта ленты).
+// Региональный tint + шум из _TintNoise, освещение через light-ramp игры.
 Shader "IronThrone/CartographyTerrain"
 {
     Properties
     {
-        _ControlA ("Splat A (слои 0-3)", 2D) = "black" {}
-        _ControlB ("Splat B (слои 4-7)", 2D) = "black" {}
-        _TerrainArray ("Terrain Texture2DArray", 2DArray) = "" {}
-        _LayersA ("Layer Indices A", Vector) = (0, 1, 2, 3)
-        _LayersB ("Layer Indices B", Vector) = (4, 5, 6, 7)
-        _Tiling ("UV Tiling", Float) = 0.15
-        _Tint ("Tint", Color) = (1, 1, 1, 1)
-        _MapOrigin ("Map Origin (x,z, width, height)", Vector) = (0, 0, 1, 1)
+        _ControlA ("Classes 0-3 Weights", 2D) = "white" {}
+        _ControlB ("Classes 4-7 Weights", 2D) = "white" {}
+        _ControlC ("Classes 8-11 Weights", 2D) = "white" {}
+        _ControlD ("Classes 12-15 Weights", 2D) = "white" {}
+        _TintNoise ("Tint RGB + Noise A", 2D) = "white" {}
+        [NoScaleOffset] _TerrainArray ("Terrain Tiles (16 layers)", 2DArray) = "" {}
+        _LightRamp ("Light Ramp", 2D) = "white" {}
+        _TileWorld ("World Units Per Tile", Float) = 7
+        _MapOrigin ("Map Origin (x,z,width,height)", Vector) = (0, 0, 1, 1)
     }
     SubShader
     {
-        Tags { "RenderType" = "Opaque" "Queue" = "Geometry" }
+        Tags { "RenderType" = "Opaque" }
         LOD 100
 
         Pass
         {
-            Tags { "LightMode" = "ForwardBase" }
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 3.5
             #pragma multi_compile_fog
+            #pragma target 3.5
             #include "UnityCG.cginc"
 
             sampler2D _ControlA;
             sampler2D _ControlB;
+            sampler2D _ControlC;
+            sampler2D _ControlD;
+            sampler2D _TintNoise;
+            sampler2D _LightRamp;
             UNITY_DECLARE_TEX2DARRAY(_TerrainArray);
-            float4 _LayersA;
-            float4 _LayersB;
-            float _Tiling;
-            fixed4 _Tint;
-            float4 _MapOrigin; // x,z = origin, z,w = size
+            float _TileWorld;
+            float4 _MapOrigin;
 
             struct appdata
             {
                 float4 vertex : POSITION;
-                float3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
+                float3 normal : NORMAL;
             };
 
             struct v2f
             {
                 float4 pos : SV_POSITION;
-                float2 worldUV : TEXCOORD0;   // UV карты для control-текстур
-                float2 texUV : TEXCOORD1;     // UV тайлов рельефа
-                float height : TEXCOORD2;     // высота вершины (подсветка)
+                float2 worldUV : TEXCOORD0;
+                float2 worldXZ : TEXCOORD1;
+                float3 normal : TEXCOORD2;
                 UNITY_FOG_COORDS(3)
             };
 
@@ -61,48 +63,56 @@ Shader "IronThrone/CartographyTerrain"
                 float3 wp = mul(unity_ObjectToWorld, v.vertex).xyz;
                 o.worldUV = float2((wp.x - _MapOrigin.x) / _MapOrigin.z,
                                    (wp.z - _MapOrigin.y) / _MapOrigin.w);
-                o.texUV = wp.xz * _Tiling;
-                o.height = wp.y;
+                o.worldXZ = wp.xz;
+                o.normal = UnityObjectToWorldNormal(v.normal);
                 UNITY_TRANSFER_FOG(o, o.pos);
                 return o;
             }
 
-            fixed4 sampleLayer(float layerIndex, float2 uv)
+            float3 SampleLayer(float2 uvw, int layer)
             {
-                return UNITY_SAMPLE_TEX2DARRAY(_TerrainArray, float3(uv, layerIndex));
+                return UNITY_SAMPLE_TEX2DARRAY(_TerrainArray, float3(uvw, layer)).rgb;
             }
 
             fixed4 frag(v2f i) : SV_Target
             {
-                float4 wa = tex2D(_ControlA, i.worldUV);
-                float4 wb = tex2D(_ControlB, i.worldUV);
+                float4 ca = tex2D(_ControlA, i.worldUV);
+                float4 cb = tex2D(_ControlB, i.worldUV);
+                float4 cc = tex2D(_ControlC, i.worldUV);
+                float4 cd = tex2D(_ControlD, i.worldUV);
+                float2 uvw = i.worldXZ / _TileWorld;
 
-                fixed4 col = fixed4(0, 0, 0, 1);
-                float wsum = 0;
-                float4 idxA = _LayersA;
-                float4 idxB = _LayersB;
+                float3 col = float3(0, 0, 0);
+                col += ca.r * SampleLayer(uvw, 0);
+                col += ca.g * SampleLayer(uvw, 1);
+                col += ca.b * SampleLayer(uvw, 2);
+                col += ca.a * SampleLayer(uvw, 3);
+                col += cb.r * SampleLayer(uvw, 4);
+                col += cb.g * SampleLayer(uvw, 5);
+                col += cb.b * SampleLayer(uvw, 6);
+                col += cb.a * SampleLayer(uvw, 7);
+                col += cc.r * SampleLayer(uvw, 8);
+                col += cc.g * SampleLayer(uvw, 9);
+                col += cc.b * SampleLayer(uvw, 10);
+                col += cc.a * SampleLayer(uvw, 11);
+                col += cd.r * SampleLayer(uvw, 12);
+                col += cd.g * SampleLayer(uvw, 13);
+                col += cd.b * SampleLayer(uvw, 14);
+                col += cd.a * SampleLayer(uvw, 15);
 
-                col += sampleLayer(idxA.x, i.texUV) * wa.x; wsum += wa.x;
-                col += sampleLayer(idxA.y, i.texUV) * wa.y; wsum += wa.y;
-                col += sampleLayer(idxA.z, i.texUV) * wa.z; wsum += wa.z;
-                col += sampleLayer(idxA.w, i.texUV) * wa.w; wsum += wa.w;
-                col += sampleLayer(idxB.x, i.texUV) * wb.x; wsum += wb.x;
-                col += sampleLayer(idxB.y, i.texUV) * wb.y; wsum += wb.y;
-                col += sampleLayer(idxB.z, i.texUV) * wb.z; wsum += wb.z;
-                col += sampleLayer(idxB.w, i.texUV) * wb.w; wsum += wb.w;
+                // региональный оттенок + шумовая яркость
+                float4 tn = tex2D(_TintNoise, i.worldUV);
+                col *= tn.rgb * (0.92 + 0.16 * tn.a);
 
-                // морское дно: там, где весов нет
-                fixed4 seabed = fixed4(0.10, 0.16, 0.18, 1);
-                col = lerp(seabed, col / max(wsum, 0.0001), saturate(wsum * 4));
+                // свет через light-ramp игры: N·L -> тёплые вершины, тени холодные
+                float3 n = normalize(i.normal);
+                float ndl = saturate(dot(n, normalize(float3(0.35, 0.85, 0.4))));
+                float3 light = tex2D(_LightRamp, float2(ndl, 0.5)).rgb * 1.9;
+                col *= light;
 
-                // свет: солнце + мягкая подсветка высот
-                float3 sun = normalize(float3(0.35, 0.8, 0.45));
-                float ndl = 0.82 + 0.18 * sun.y;
-                float heightLight = saturate(i.height * 0.35);
-                col.rgb *= _Tint.rgb * (ndl + heightLight * 0.12);
-
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                fixed4 outc = fixed4(col, 1);
+                UNITY_APPLY_FOG(i.fogCoord, outc);
+                return outc;
             }
             ENDCG
         }

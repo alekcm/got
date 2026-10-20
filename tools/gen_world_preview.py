@@ -1,181 +1,271 @@
 #!/usr/bin/env python3
-"""Превью глобальной карты в стиле эталонов (Songs of Conquest 2.5D).
-Те же текстуры/атласы и та же гекс-математика, что и в WorldMapView.
-Пишет tools/world_map_preview.png."""
-import json, math, random
-from PIL import Image, ImageDraw, ImageFilter, ImageChops
+"""Renders a top-down preview of canonical_map.json using the real 16 terrain tiles,
+region tints and atlas decor — mirrors WorldMapView v2 (biome classes, pools, density).
 
-MATS = "Как должно выглядеть/Материалы"
-OUT = "tools/world_map_preview.png"
-SCALE = 2                  # пикселей на условную единицу мира
-HEX_W = 42                 # ширина гекса в пикселях
-ROW_H = int(1.5 / 1.7320508 * HEX_W)
-HEX_H = int(2.0 / 1.7320508 * HEX_W)
-TILE = 52                  # размер штампа текстуры (чуть больше гекса)
+Output: tools/world_map_preview.png
+"""
+import json
+import math
+import os
+import random
 
-TERRAIN_LAYER = {"plains": 4, "forest": 106, "hills": 24, "mountains": 62,
-                 "desert": 40, "marsh": 104, "snow": 96}
+from PIL import Image, ImageEnhance
 
-def terrain_key(t):
-    t = (t or "plains").lower()
-    for k in TERRAIN_LAYER:
-        if t.startswith(k[:4]):
-            return k
-    if t.startswith("step") or t.startswith("sand") or t.startswith("dune"):
-        return "desert"
-    if t.startswith("swa") or t.startswith("bog"):
-        return "marsh"
-    if t.startswith("tun") or t.startswith("fro"):
-        return "snow"
-    return "plains"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CANON = os.path.join(ROOT, "Assets/IronThrone/Resources/IronThroneData/canonical_map.json")
+TERRAIN_DIR = os.path.join(ROOT, "Assets/IronThrone/Resources/Art/Terrain")
+SLICES = os.path.join(ROOT, "Assets/IronThrone/Resources/Art/atlas_slices.json")
+DECO_ATLAS = os.path.join(ROOT, "Assets/IronThrone/Resources/Art/StandaloneAdventureDecorationAtlas.png")
+ENT_ATLAS = os.path.join(ROOT, "Assets/IronThrone/Resources/Art/PermanentMapEntityAtlas.png")
+OUT = os.path.join(ROOT, "tools/world_map_preview.png")
 
-def load_tiles():
-    im = Image.open(f"{MATS}/Texture2DArray/CartographyAdventureTerrainTextureArray.png")
-    tiles = {}
-    for k, layer in TERRAIN_LAYER.items():
-        tiles[k] = im.crop((0, layer * 128, 128, (layer + 1) * 128)).convert("RGB").resize((TILE, TILE), Image.NEAREST)
-    return tiles
+TILE_NAMES = ["000_grass", "010_tundra", "024_dirt", "028_dry", "034_rock_green", "040_sand",
+              "042_sand_rock", "044_fields", "050_autumn", "062_rock", "094_snow_rock", "096_snow",
+              "100_cold_grass", "102_forest_mix", "104_marsh", "106_forest_pine"]
 
-def soft_mask(size, feather=10):
-    m = Image.new("L", (size, size), 0)
-    d = ImageDraw.Draw(m)
-    d.ellipse((feather // 2, feather // 2, size - feather // 2, size - feather // 2), fill=255)
-    return m.filter(ImageFilter.GaussianBlur(feather / 2))
+CLASS_HEIGHT = [1.00, 1.10, 1.05, 1.00, 1.35, 0.95, 1.40, 1.00,
+                1.05, 1.60, 1.90, 1.30, 1.15, 1.20, 0.75, 1.25]
 
-def hex_pos(c, r):
-    x = HEX_W * (c + 0.5 * (r & 1))
-    y = ROW_H * r
-    return x, y
+REGION_TINT = {
+    "dorne": (1.12, 1.02, 0.80), "islands": (0.82, 0.86, 0.92), "wall": (0.92, 0.96, 1.08),
+    "north": (0.86, 0.95, 0.92), "riverlands": (0.94, 1.02, 0.88), "vale": (0.92, 0.98, 1.06),
+    "westerlands": (1.08, 1.00, 0.80), "reach": (1.06, 1.06, 0.84),
+    "stormlands": (0.90, 1.00, 0.95), "crownlands": (1.00, 1.00, 0.92),
+}
+
+
+def hash01(c, r, salt):
+    h = (c * 374761393 + r * 668265263 + salt * 2246822519) & 0xFFFFFFFF
+    h = ((h ^ (h >> 13)) * 1274126177) & 0xFFFFFFFF
+    h = h ^ (h >> 16)
+    return (h & 0xFFFFFF) / 16777215.0
+
+
+def biome_class(region, terrain, c, r):
+    n = hash01(c, r, 91)
+    t = terrain or ""
+    forest = t.startswith("forest") or t.startswith("wood")
+    hills = t.startswith("hill")
+    mount = t.startswith("mount") or t.startswith("peak")
+    snow = t.startswith("snow") or t.startswith("frost")
+    marsh = t.startswith("marsh") or t.startswith("swamp")
+    desert = t.startswith("desert") or t.startswith("sand")
+    if region == "dorne":
+        if hills or mount:
+            return 6 if n < 0.75 else 9
+        return 5 if n < 0.70 else (3 if n < 0.90 else 2)
+    if region == "islands":
+        if hills or mount:
+            return 9 if n < 0.60 else 4
+        return 4 if n < 0.55 else (9 if n < 0.80 else 2)
+    if region == "wall":
+        return 11 if n < 0.60 else (10 if n < 0.85 else 1)
+    if region == "north":
+        if snow:
+            return 11 if n < 0.70 else 10
+        if mount:
+            return 10
+        if hills:
+            return 1 if n < 0.50 else (12 if n < 0.80 else 9)
+        if forest:
+            return 15 if n < 0.75 else 12
+        return 12 if n < 0.70 else (1 if n < 0.90 else 8)
+    if region == "riverlands":
+        if marsh:
+            return 14
+        if forest:
+            return 13 if n < 0.70 else 8
+        if hills or mount:
+            return 4 if n < 0.60 else 9
+        return 0 if n < 0.75 else (13 if n < 0.90 else 7)
+    if region == "vale":
+        if mount:
+            return 10 if n < 0.60 else 9
+        if hills:
+            return 4 if n < 0.60 else 9
+        if forest:
+            return 13
+        return 0 if n < 0.80 else 4
+    if region == "westerlands":
+        if mount:
+            return 9
+        if hills:
+            return 9 if n < 0.60 else 4
+        if forest:
+            return 13
+        return 0 if n < 0.70 else (7 if n < 0.85 else 2)
+    if region == "reach":
+        if hills or mount:
+            return 4 if n < 0.60 else 9
+        if forest:
+            return 13 if n < 0.60 else 0
+        return 0 if n < 0.55 else (7 if n < 0.85 else 3)
+    if region == "stormlands":
+        if hills or mount:
+            return 4 if n < 0.60 else 9
+        if forest:
+            return 13
+        return 0 if n < 0.80 else 7
+    if region == "crownlands":
+        if hills or mount:
+            return 4
+        if forest:
+            return 13 if n < 0.80 else 0
+        return 0 if n < 0.75 else 7
+    return 0
+
+
+def decor_count(cls, c, r):
+    j = int(hash01(c, r, 77) * 7)
+    if cls in (15, 13):
+        return 12 + j
+    if cls in (10, 9):
+        return 10 + (j % 7)
+    if cls in (6, 4):
+        return 6 + (j % 5)
+    if cls == 14:
+        return 4 + (j % 5)
+    if cls in (5, 3):
+        return 2 + (j % 4)
+    return 3 + (j % 4)
+
+
+def pool_for(region, cls, cats):
+    forest = cls in (15, 13)
+    rocky = cls in (9, 10, 6, 4)
+    u = lambda *names: [s for n in names for s in cats.get(n, [])]
+    dry_names = {"deco_11", "deco_12", "deco_16", "deco_20", "deco_30", "deco_31", "deco_32",
+                 "deco_36", "deco_37", "deco_38", "deco_39", "deco_45", "deco_46", "deco_51",
+                 "deco_22", "deco_23", "deco_25", "deco_26", "deco_28"}
+    dry = lambda *names: [s for n in names for s in cats.get(n, []) if s["name"] in dry_names]
+    if region == "dorne":
+        return dry("rocks", "small", "bushes")
+    if region == "islands":
+        return dry("rocks", "small") + u("trees_pine")
+    if region == "wall":
+        return u("trees_pine", "rocks", "small")
+    if region == "north":
+        return u("trees_pine", "trees_big", "bushes") if forest else u("trees_big", "bushes", "small", "rocks")
+    if region == "riverlands":
+        return u("trees_big", "bushes", "trees_pine") if forest else u("bushes", "small", "fields")
+    if region == "vale":
+        return u("rocks", "trees_pine", "small") if rocky else u("trees_big", "bushes", "rocks")
+    if region == "westerlands":
+        return u("rocks", "small", "bushes") if rocky else u("trees_big", "bushes", "rocks")
+    if region == "reach":
+        return u("trees_big", "bushes") if forest else u("fields", "bushes", "small", "trees_big")
+    if region == "stormlands":
+        return u("trees_big", "bushes", "trees_pine") if forest else u("trees_big", "bushes", "rocks", "small")
+    if region == "crownlands":
+        return u("trees_big", "bushes") if forest else u("bushes", "small", "trees_big")
+    return u("trees_big", "bushes", "small")
+
 
 def main():
-    map_data = json.load(open("Assets/IronThrone/Resources/IronThroneData/canonical_map.json"))
-    W, H = map_data["width"], map_data["height"]
-    tiles = {(t["c"], t["r"]): t for t in map_data["tiles"]}
+    d = json.load(open(CANON, encoding="utf-8"))
+    W, H = d["width"], d["height"]
 
-    canvas_w = int(HEX_W * (W + 1.5))
-    canvas_h = int(ROW_H * (H + 1.2))
-    canvas = Image.new("RGB", (canvas_w, canvas_h), (28, 42, 52))
-    mask = soft_mask(TILE, 12)
+    tiles_img = [Image.open(os.path.join(TERRAIN_DIR, n + ".png")).convert("RGB") for n in TILE_NAMES]
 
-    terr = load_tiles()
-    water_tile = Image.open(f"{MATS}/Texture2DArray/CartographyAdventureWaterTextureArray.png") \
-        .crop((0, 0, 128, 128)).convert("RGB").resize((TILE, TILE), Image.NEAREST)
-
-    # ---- вода (сначала, под всем): крупный тайл 128px, без повтора по гексам
-    sea_layer = Image.new("RGB", (canvas_w, canvas_h), (24, 74, 88))
-    wt128 = Image.open(f"{MATS}/Texture2DArray/CartographyAdventureWaterTextureArray.png") \
-        .crop((0, 0, 128, 128)).convert("RGB")
-    for ty in range(0, canvas_h, 128):
-        for tx in range(0, canvas_w, 128):
-            sea_layer.paste(wt128, (tx, ty))
-    canvas.paste(sea_layer, (0, 0))
-
-    # ---- рельеф: мягкие штампы с перекрытием (сплейтинг как в шейдере),
-    #      но только внутри маски суши — чтобы не вылезать в воду
-    land_img = Image.new("RGB", (canvas_w, canvas_h), (70, 90, 60))
-    landm = Image.new("L", (canvas_w, canvas_h), 0)
-    ld = ImageDraw.Draw(landm)
-    for r in range(H + 1):
-        for c in range(W + 1):
-            t = tiles.get((c, r))
-            if not t or t.get("sea"):
-                continue
-            k = terrain_key(t.get("terrain"))
-            x, y = hex_pos(c, r)
-            land_img.paste(terr[k], (int(x - TILE / 2), int(y - TILE / 2)), mask)
-            ld.ellipse((x - HEX_W * 0.56, y - HEX_W * 0.48, x + HEX_W * 0.56, y + HEX_W * 0.48), fill=255)
-    landm = landm.filter(ImageFilter.GaussianBlur(2))
-    canvas.paste(land_img, (0, 0), landm)
-
-    # ---- береговая пена: кольцо вдоль уреза воды (расширение маски суши)
-    dilated = landm.filter(ImageFilter.MaxFilter(11)).filter(ImageFilter.GaussianBlur(2))
-    foam = ImageChops.subtract(dilated, landm).filter(ImageFilter.GaussianBlur(3))
-    canvas.paste(Image.new("RGB", (canvas_w, canvas_h), (200, 228, 224)), (0, 0),
-                 foam.point(lambda v: int(v * 0.62)))
-
-    # ---- декор из атласа
-    db = json.load(open("Assets/IronThrone/Resources/Art/atlas_slices.json"))["sprites"]
-    deco = Image.open(f"{MATS}/Texture2D/StandaloneAdventureDecorationAtlas.png").convert("RGBA")
-    ents = Image.open(f"{MATS}/Texture2D/PermanentMapEntityAtlas.png").convert("RGBA")
-
-    def sprite_img(s, atlas):
-        x, y, w, h = s["x"], s["y"], s["w"], s["h"]
-        top = atlas.size[1] - y - h
-        return atlas.crop((x, top, x + w, top + h))
-
-    pools = {}
-    for s in db:
-        pools.setdefault(s["cat"] if s["atlas"].startswith("Standalone") else "building", []).append(s)
-
-    rnd = random.Random(20261020)
-    draw_list = sorted(tiles.keys(), key=lambda cr: (cr[1], cr[0]))
-    for (c, r) in draw_list:
-        t = tiles[(c, r)]
-        if t.get("sea"):
-            continue
-        k = terrain_key(t.get("terrain"))
-        x, y = hex_pos(c, r)
-        picks = []
-        if k == "forest":
-            picks = rnd.choices(pools.get("trees_big", []) + pools.get("trees_pine", []), k=2)
-        elif k == "mountains":
-            picks = rnd.choices(pools.get("rocks", []), k=2)
-        elif k == "hills":
-            picks = rnd.choices(pools.get("rocks", []) + pools.get("trees_pine", []), k=2)
-        elif k == "marsh":
-            picks = rnd.choices(pools.get("bushes", []) + pools.get("rocks", []), k=1)
-        elif k == "snow":
-            picks = rnd.choices(pools.get("trees_pine", []) + pools.get("bushes", []), k=1)
-        elif k == "desert":
-            picks = rnd.choices(pools.get("rocks", []), k=1)
+    slices = json.load(open(SLICES, encoding="utf-8"))["sprites"]
+    cats = {}
+    buildings = {}
+    deco_atlas = Image.open(DECO_ATLAS).convert("RGBA")
+    ent_atlas = Image.open(ENT_ATLAS).convert("RGBA")
+    for s in slices:
+        if s["atlas"] == "StandaloneAdventureDecorationAtlas":
+            cats.setdefault(s["cat"], []).append(s)
         else:
-            if rnd.random() < 0.45:
-                picks = rnd.choices(pools.get("fields", []) + pools.get("bushes", []) + pools.get("small", []), k=1)
-        for s in picks:
-            sp = sprite_img(s, deco)
-            if s["cat"] == "fields":
-                fw = int(HEX_W * 1.15)
-                sp = sp.resize((fw, fw), Image.LANCZOS)
-                canvas.paste(sp, (int(x - fw / 2), int(y - fw / 2)), sp)
+            buildings[s["name"]] = s
+
+    # hex cell: flat-top-ish rectangle per hex for a quick impression
+    CS = 26  # cell px
+    PAD = 30
+    img = Image.new("RGB", (W * CS + PAD * 2, H * CS + PAD * 2), (36, 78, 96))
+    # subtle sea gradient
+    for y in range(img.height):
+        k = y / img.height
+        col = (int(30 + 18 * k), int(70 + 16 * k), int(92 + 12 * k))
+        for x in range(0, img.width, 8):
+            img.paste(Image.new("RGB", (8, 1), col), (x, y))
+
+    tiles = {(t["c"], t["r"]): t for t in d["tiles"]}
+    rnd = random.Random(1234)
+
+    for r in range(H):
+        for c in range(W):
+            t = tiles[(c, r)]
+            x0 = PAD + c * CS + (CS // 2 if r & 1 else 0)
+            y0 = PAD + r * CS
+            if t["sea"]:
                 continue
-            # масштаб как в WorldMapView: h/32 юнита * (HEX_W/1.732) пикс/юнит
-            th = max(8, int(s["h"] / 32.0 * (HEX_W / 1.7320508)))
-            th = min(th, 72)
-            tw = max(6, int(sp.size[0] * th / sp.size[1]))
-            sp = sp.resize((tw, th), Image.LANCZOS)
-            jx = rnd.uniform(-HEX_W * 0.22, HEX_W * 0.22)
-            canvas.paste(sp, (int(x + jx - tw / 2), int(y - th * 0.72)), sp)
+            cls = biome_class(t["region"], t["terrain"], c, r)
+            tile = tiles_img[cls].resize((CS + 2, CS + 2), Image.BILINEAR)
+            tint = REGION_TINT.get(t["region"], (1, 1, 1))
+            # region tint + height shading (fake relief)
+            tile = ImageEnhance.Brightness(tile).enhance(0.92 + 0.10 * hash01(c, r, 55))
+            px = tile.load()
+            for yy in range(CS + 2):
+                for xx in range(CS + 2):
+                    rr, gg, bb = px[xx, yy]
+                    px[xx, yy] = (min(255, int(rr * tint[0])), min(255, int(gg * tint[1])),
+                                  min(255, int(bb * tint[2])))
+            img.paste(tile, (x0 - 1, y0 - 1))
 
-    # ---- постройки
-    for p in map_data.get("provinces", []):
-        st = p.get("settlement")
-        if not st or len(st) < 2:
+    # decor
+    for r in range(H):
+        for c in range(W):
+            t = tiles[(c, r)]
+            if t["sea"]:
+                continue
+            cls = biome_class(t["region"], t["terrain"], c, r)
+            pool = pool_for(t["region"], cls, cats)
+            if not pool:
+                continue
+            x0 = PAD + c * CS + (CS // 2 if r & 1 else 0)
+            y0 = PAD + r * CS
+            n = decor_count(cls, c, r)
+            for k in range(n):
+                s = pool[int(hash01(c, r, k * 7 + 3) * len(pool)) % len(pool)]
+                dx = (hash01(c, r, k * 13 + 1) - 0.5) * CS * 1.5
+                dy = (hash01(c, r, k * 13 + 2) - 0.5) * CS * 1.4
+                sc = 0.28 + hash01(c, r, k * 13 + 5) * 0.22
+                if cls in (9, 10, 6):
+                    sc *= 1.25
+                sp = deco_atlas.crop((s["x"], deco_atlas.height - s["y"] - s["h"],
+                                      s["x"] + s["w"], deco_atlas.height - s["y"]))
+                sp = sp.resize((max(2, int(s["w"] * sc)), max(2, int(s["h"] * sc))), Image.BILINEAR)
+                img.paste(sp, (int(x0 + dx - sp.width / 2), int(y0 + dy - sp.height)), sp)
+
+    # buildings
+    for p in d["provinces"]:
+        if len(p["settlement"]) < 2:
             continue
-        c, r = st[0], st[1]
-        key = "green_town" if p.get("isCapital") else rnd.choice(["village", "hut", "hut2", "temple"])
-        cand = [s for s in db if s["name"] == key] or [s for s in db if s["name"] in ("village", "hut")]
-        if not cand:
+        c, r = p["settlement"]
+        if p.get("isCapital", p.get("is_capital")):
+            key = "green_town"
+        elif p["port"] and "hut2" in buildings:
+            key = "hut2"
+        else:
+            opts = {"dorne": ["pyramid", "temple", "village", "hut"],
+                    "islands": ["hut", "hut2", "village"],
+                    "reach": ["village", "hut", "temple", "fountain", "hut2"]}.get(
+                p["region"], ["village", "hut", "hut2", "temple", "fountain"])
+            key = opts[int(hash01(c, r, 17) * len(opts)) % len(opts)]
+        s = buildings.get(key)
+        if not s:
             continue
-        s = cand[0]
-        sp = sprite_img(s, ents)
-        th = int(HEX_W * 1.15)
-        tw = max(8, int(sp.size[0] * th / sp.size[1]))
-        sp = sp.resize((tw, th), Image.LANCZOS)
-        x, y = hex_pos(c, r)
-        canvas.paste(sp, (int(x - tw / 2), int(y - th * 0.78)), sp)
+        x0 = PAD + c * CS + (CS // 2 if r & 1 else 0)
+        y0 = PAD + r * CS
+        sp = ent_atlas.crop((s["x"], ent_atlas.height - s["y"] - s["h"],
+                             s["x"] + s["w"], ent_atlas.height - s["y"]))
+        sc = 0.34
+        sp = sp.resize((max(3, int(s["w"] * sc)), max(3, int(s["h"] * sc))), Image.BILINEAR)
+        img.paste(sp, (int(x0 - sp.width / 2), int(y0 - sp.height + 4)), sp)
 
-    # ---- атмосфера: тёплый градиент + виньетка
-    grad = Image.new("RGB", (canvas_w, canvas_h), (255, 244, 214))
-    gy = Image.linear_gradient("L").resize((canvas_w, canvas_h))
-    canvas = Image.composite(canvas, ImageChops.multiply(canvas, grad), gy.point(lambda v: 255 - int(v * 0.35)))
-    vig = Image.new("L", (canvas_w, canvas_h), 0)
-    vd = ImageDraw.Draw(vig)
-    vd.ellipse((-canvas_w * 0.25, -canvas_h * 0.35, canvas_w * 1.25, canvas_h * 1.35), fill=255)
-    vig = vig.filter(ImageFilter.GaussianBlur(80))
-    canvas = ImageChops.multiply(canvas, Image.merge("RGB", (vig.point(lambda v: 128 + v // 2),) * 3))
+    img.save(OUT)
+    print(f"-> {OUT} ({img.width}, {img.height})")
 
-    canvas.save(OUT)
-    print("->", OUT, canvas.size)
 
 if __name__ == "__main__":
     main()

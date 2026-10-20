@@ -125,9 +125,11 @@ namespace UnityEngine
     public class GameObject : Object
     {
         public string tag;
+        public bool activeSelf = true;
         public Transform transform = new Transform();
         public GameObject() { }
         public GameObject(string name) { this.name = name; }
+        public void SetActive(bool value) { activeSelf = value; }
         public T AddComponent<T>() where T : Component, new()
         {
             var c = new T { gameObject = this };
@@ -375,6 +377,9 @@ namespace UnityEngine
     public class Texture2DArray : Texture
     {
         public Texture2DArray(int width, int height, int depth, TextureFormat format, bool mipChain) { }
+        public void SetPixels32(Color32[] colors, int mipLevel, int slice) { }
+        public void Apply() { }
+        public void Apply(bool updateMipmaps) { }
     }
 
     public class Sprite : Object

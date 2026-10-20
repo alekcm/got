@@ -90,7 +90,7 @@ namespace IronThrone.Unity
             {
                 _content = UnityContent.Load();
                 PickDefaultFaction();
-                EnsureWorldMap(null);
+                // Карта мира — только внутри партии; в меню её нет (правка пользователя).
                 _screen = UiScreen.Menu;
                 // Play в сцене Game — сразу партия с настройками по умолчанию;
                 // Play в MainMenu (или любой другой сцене) — меню.
@@ -274,6 +274,7 @@ namespace IronThrone.Unity
             {
                 _screen = UiScreen.Game;
                 LoadGameScene(GameSceneName);
+                if (_worldMap != null) { _worldMap.ReattachCamera(); _worldMap.SetVisible(true); }
                 Toast("Партия продолжена: ход " + _state.Turn);
             }
             if (File.Exists(UnityContent.SavePath) || File.Exists(UnityContent.AutoSavePath))
@@ -299,7 +300,12 @@ namespace IronThrone.Unity
             try
             {
                 var src = map ?? _state?.Map ?? _content.Map;
-                if (src != null) _worldMap = WorldMapView.Build(src);
+                if (src != null)
+                {
+                    _worldMap = WorldMapView.Build(src);
+                    // живёт в DontDestroyOnLoad-объекте — переживает переключение сцен
+                    _worldMap.transform.parent = transform;
+                }
             }
             catch (Exception ex)
             {
@@ -326,7 +332,6 @@ namespace IronThrone.Unity
                     seed: Environment.TickCount, chosenAdvisors: new List<string>(_advisors), mapMode: _mapMode);
                 TurnEngine.StartGame(_state);
                 _map = HexMapTexture.Build(_state, 24);
-                RebuildWorldMap(_state.Map);
                 _selectedProvince = _state.Province(_state.Faction(_factionId)?.capital ?? "") != null
                     ? _state.Faction(_factionId).capital
                     : _state.Provinces.Keys.FirstOrDefault();
@@ -335,6 +340,9 @@ namespace IronThrone.Unity
                 _sideScroll = Vector2.zero;
                 _screen = UiScreen.Game;
                 LoadGameScene(GameSceneName);
+                // карту строим ПОСЛЕ переключения сцены (своя камера в Game)
+                RebuildWorldMap(_state.Map);
+                if (_worldMap != null) _worldMap.SetVisible(true);
                 Toast("Партия начата. Ход 1.");
             }
             catch (Exception ex)
@@ -348,6 +356,7 @@ namespace IronThrone.Unity
         private void ReturnToMenu()
         {
             _screen = UiScreen.Menu;
+            if (_worldMap != null) _worldMap.SetVisible(false);
             PickDefaultFaction();
             LoadGameScene(MenuSceneName);
         }
@@ -553,11 +562,12 @@ namespace IronThrone.Unity
                 if (!File.Exists(path)) { Toast("Сохранение не найдено."); return; }
                 _state = SaveSystem.LoadFromFile(_content, path);
                 _map = HexMapTexture.Build(_state, 24);
-                RebuildWorldMap(_state.Map);
                 _selectedProvince = _state.Provinces.ContainsKey(_selectedProvince ?? "") ? _selectedProvince : _state.Provinces.Keys.FirstOrDefault();
                 _selectedArmy = null;
                 _screen = UiScreen.Game;
                 LoadGameScene(GameSceneName);
+                RebuildWorldMap(_state.Map);
+                if (_worldMap != null) _worldMap.SetVisible(true);
                 Toast("Загружено: ход " + _state.Turn);
             }
             catch (Exception ex) { Toast("Не удалось загрузить: " + ex.Message); Debug.LogError(ex); }

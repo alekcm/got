@@ -1,6 +1,7 @@
 // IronThrone: координаты глобальной карты (гексы <-> мировые XZ).
 // Математика совпадает с HexMapTexture (odd-r offset, pointy-top),
-// но вместо пикселей — метры 3D-сцены.
+// но вместо пикселей — метры 3D-сцены. Масштаб гекса HexSize = 3.8:
+// вся карта ~12x площади старого прототипа (как требовал пользователь).
 using System;
 using UnityEngine;
 
@@ -8,9 +9,10 @@ namespace IronThrone.Unity
 {
     public static class WorldMapCoords
     {
-        public const float HexSize = 1.0f;
-        public const float HexWidth = 1.7320508f * HexSize; // sqrt(3)
-        public const float RowHeight = 1.5f * HexSize;
+        /// <summary>Мировой размер гекса. 3.8 — карта мира крупная, облёт камерой.</summary>
+        public static float HexSize = 3.8f;
+        public static float HexWidth => 1.7320508f * HexSize; // sqrt(3)
+        public static float RowHeight => 1.5f * HexSize;
 
         /// <summary>Центр гекса (c, r) в мировых координатах XZ.</summary>
         public static Vector3 HexToWorld(int c, int r, float y = 0f)
