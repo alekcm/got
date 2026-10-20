@@ -394,7 +394,7 @@ namespace UnityEngine
         public float farClipPlane = 1000f;
         public float orthographicSize = 5f;
         public bool orthographic = false;
-        public Color clearColor = new Color(0.2f, 0.25f, 0.3f, 1f);
+        public Color backgroundColor = new Color(0.2f, 0.25f, 0.3f, 1f);
         public float aspect => (float)Screen.width / Screen.height;
         public static Camera main;
         public Vector3 WorldToScreenPoint(Vector3 world) => Vector3.zero;

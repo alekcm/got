@@ -600,7 +600,7 @@ namespace IronThrone.Unity
             }
             MapCamera = cam;
             cam.clearFlags = CameraClearFlags.SolidColor;
-            cam.clearColor = new Color(0.32f, 0.42f, 0.52f, 1f);
+            cam.backgroundColor = new Color(0.32f, 0.42f, 0.52f, 1f);
             cam.fieldOfView = 50f;
             cam.nearClipPlane = 0.3f;
             cam.farClipPlane = 400f;
