@@ -7,6 +7,7 @@ using IronThrone.Core.AI;
 using IronThrone.Core.Battle;
 using IronThrone.Core.Content;
 using IronThrone.Core.Game;
+using IronThrone.Core.Worldgen;
 
 namespace IronThrone.Headless
 {
@@ -22,8 +23,21 @@ namespace IronThrone.Headless
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            string root = args.Length > 0 ? args[0] : FindContentDir();
-            int turns = args.Length > 1 && int.TryParse(args[1], out var t) ? t : DefaultTurns;
+            // Аргументы: [путь к IronThroneData] [ходы] [флаги]. Флаги можно ставить
+            // первыми — путь и число ходов выбираются из позиционных аргументов.
+            string root = null;
+            int turns = DefaultTurns;
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].StartsWith("--", StringComparison.Ordinal))
+                {
+                    if (args[i] == "--seeds") i++; // значение флага — не позиционный аргумент
+                    continue;
+                }
+                if (root == null) root = args[i];
+                else if (int.TryParse(args[i], out var parsedTurns)) turns = parsedTurns;
+            }
+            if (root == null) root = FindContentDir();
             bool quick = args.Contains("--quick");
             bool randomMap = args.Contains("--random");
             bool mapCheck = args.Contains("--mapcheck");
@@ -34,6 +48,20 @@ namespace IronThrone.Headless
             {
                 Console.Error.WriteLine("Папка IronThroneData не найдена.");
                 return 2;
+            }
+
+            // Генератор карт Songs of Conquest: проверяем детерминизм и качество карт
+            // без Unity. Запуск: Tools/Headless --soqmap [--seeds 6]
+            if (args.Contains("--soqmap"))
+            {
+                string mapGenDir = Path.Combine(root, "MapGen");
+                Console.WriteLine("Генератор карт SoQ: " + Path.GetFullPath(mapGenDir));
+                var pack = SoqRmgLoader.LoadFromDirectory(mapGenDir);
+                int seedCount = 4;
+                for (int i = 0; i < args.Length - 1; i++)
+                    if (args[i] == "--seeds" && int.TryParse(args[i + 1], out var parsed)) seedCount = Math.Max(1, Math.Min(32, parsed));
+                bool mapsOk = SoqMapCheck.Run(pack, seedCount, Console.WriteLine);
+                return mapsOk ? 0 : 1;
             }
 
             Console.WriteLine($"Контент: {Path.GetFullPath(root)}");

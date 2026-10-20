@@ -23,6 +23,7 @@ namespace IronThrone.EditorTools
         private const string TargetDir = "Assets/StreamingAssets/IronThroneData";
         private const string MenuScenePath = "Assets/Scenes/MainMenu.unity";
         private const string GameScenePath = "Assets/Scenes/Game.unity";
+        private const string SoqMapScenePath = "Assets/Scenes/SoQMap.unity";
 
         public int callbackOrder => 0;
 
@@ -32,12 +33,12 @@ namespace IronThrone.EditorTools
             EnsureScenes();
         }
 
-        [MenuItem("Iron Throne/Настроить сцены (MainMenu, Game)")]
+        [MenuItem("Iron Throne/Настроить сцены (MainMenu, Game, SoQMap)")]
         public static void SetupScenes()
         {
             EnsureScenes();
             AssetDatabase.SaveAssets();
-            Debug.Log("Iron Throne: сцены готовы — " + MenuScenePath + ", " + GameScenePath + ". Нажмите Play в MainMenu.");
+            Debug.Log("Iron Throne: сцены готовы — " + MenuScenePath + ", " + GameScenePath + ", " + SoqMapScenePath + ". Нажмите Play в MainMenu.");
         }
 
         [MenuItem("Iron Throne/Подготовить StreamingAssets")]
@@ -52,6 +53,7 @@ namespace IronThrone.EditorTools
         {
             EnsureScene(MenuScenePath);
             EnsureScene(GameScenePath);
+            EnsureScene(SoqMapScenePath);
             RegisterScenes();
         }
 
@@ -67,12 +69,13 @@ namespace IronThrone.EditorTools
         private static void RegisterScenes()
         {
             var others = EditorBuildSettings.scenes
-                .Where(s => s.path != MenuScenePath && s.path != GameScenePath)
+                .Where(s => s.path != MenuScenePath && s.path != GameScenePath && s.path != SoqMapScenePath)
                 .ToList();
             var list = new List<EditorBuildSettingsScene>
             {
                 new EditorBuildSettingsScene(MenuScenePath, true),
                 new EditorBuildSettingsScene(GameScenePath, true),
+                new EditorBuildSettingsScene(SoqMapScenePath, true),
             };
             list.AddRange(others);
             var current = EditorBuildSettings.scenes;
@@ -85,9 +88,12 @@ namespace IronThrone.EditorTools
         {
             if (!Directory.Exists(SourceDir)) return;
             Directory.CreateDirectory(TargetDir);
-            foreach (var file in Directory.GetFiles(SourceDir, "*.json", SearchOption.TopDirectoryOnly))
+            // копируем и подпапки (MapGen с layout/blueprint/каталогом объектов)
+            foreach (var file in Directory.GetFiles(SourceDir, "*.json", SearchOption.AllDirectories))
             {
-                var dst = Path.Combine(TargetDir, Path.GetFileName(file));
+                var relative = file.Substring(SourceDir.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                var dst = Path.Combine(TargetDir, relative);
+                Directory.CreateDirectory(Path.GetDirectoryName(dst));
                 File.Copy(file, dst, true);
             }
             AssetDatabase.Refresh();

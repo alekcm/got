@@ -1,0 +1,284 @@
+{
+  "type": "random-map-generator-blueprint",
+  "name": "default",
+  "startingResources": {
+    "gold": 3000,
+    "wood": 6,
+    "stone": 6,
+    "ancientAmber": 0,
+    "glimmerWeave": 0,
+    "celestialOre": 0
+  },
+  "regions": [
+    {
+      "identifier": "player_start",
+      "comment": "стартовый регион игрока: экономика, первый найм, немного добычи",
+      "iterations": 1,
+      "shuffle": true,
+      "entries": [
+        {
+          "comment": "базовые шахты рядом с городом",
+          "objects": ["GoldMine", "WoodMine", "StoneMine", "Farmhouse", "WaterMill"],
+          "type": "random",
+          "count": [2, 3],
+          "distance": 0.2,
+          "guardChance": 0.4,
+          "guardTier": ["Low", "Medium"],
+          "difficulty": [1, 2],
+          "location": ["Any"]
+        },
+        {
+          "comment": "первый отрядный дом",
+          "objects": ["DwellingSmall"],
+          "count": 1,
+          "distance": 0.3,
+          "guardChance": 0.5,
+          "guardTier": ["Low"],
+          "difficulty": [1, 2]
+        },
+        {
+          "comment": "мелкая добыча для разведки",
+          "objects": ["TreasureChest", "PileOfGold", "PileOfWood", "PileOfStone"],
+          "count": [2, 3],
+          "distance": 0.35,
+          "guardChance": 0.5,
+          "guardTier": ["Low"],
+          "difficulty": [1, 2]
+        },
+        {
+          "comment": "таверна у дороги",
+          "objects": ["Tavern"],
+          "count": 1,
+          "distance": 0.3,
+          "guardChance": 0,
+          "location": ["NearRoad", "OutInTheOpen"]
+        },
+        {
+          "comment": "патрули вокруг старта",
+          "objects": ["GuardBandit", "GuardWolf"],
+          "count": [1, 2],
+          "distance": 0.4,
+          "guardChance": 0,
+          "guardTier": ["Low"]
+        }
+      ]
+    },
+    {
+      "identifier": "player_support",
+      "comment": "вторая область игрока — экономика и немного охраны",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["GoldMine", "AmberMine", "GlimmerLoom", "WoodMine", "StoneMine"],
+          "count": [1, 2],
+          "distance": 0.1,
+          "guardChance": 0.45,
+          "guardTier": ["Low", "Medium"],
+          "difficulty": [2, 3]
+        },
+        {
+          "objects": ["TreasureChest", "PileOfGold"],
+          "count": [1, 2],
+          "distance": 0.4,
+          "guardChance": 0.5,
+          "guardTier": ["Low"],
+          "difficulty": [1, 2]
+        },
+        {
+          "objects": ["MushroomGrove", "SageCap", "Weirwood"],
+          "count": 1,
+          "distance": 0.5,
+          "guardChance": 0,
+          "location": ["OutInTheOpen"]
+        }
+      ]
+    },
+    {
+      "identifier": "treasure_low",
+      "comment": "малые сокровищницы: ресурсы и немного охраны",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["TreasureChest", "PileOfGold", "PileOfStone", "PileOfWood"],
+          "count": [2, 3],
+          "distance": 0.15,
+          "guardChance": 0.4,
+          "guardTier": ["Low"],
+          "difficulty": [1, 2]
+        },
+        {
+          "objects": ["Weirwood", "TangledBurrow", "GoldStream"],
+          "count": 1,
+          "distance": 0.4,
+          "guardChance": 0.2,
+          "guardTier": ["Low"]
+        }
+      ]
+    },
+    {
+      "identifier": "treasure_medium",
+      "comment": "средняя добыча: сундуки, отрядные дома, артефакты",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["TreasureChest", "TreasureTrove"],
+          "count": [1, 2],
+          "distance": 0.2,
+          "guardChance": 0.7,
+          "guardTier": ["Medium", "High"],
+          "difficulty": [3, 4]
+        },
+        {
+          "objects": ["DwellingMedium"],
+          "count": 1,
+          "distance": 0.3,
+          "guardChance": 0.6,
+          "guardTier": ["Medium"],
+          "difficulty": [3, 4]
+        },
+        {
+          "objects": ["ArtifactLow", "ArtifactMedium"],
+          "count": 1,
+          "distance": 0.4,
+          "guardChance": 0.6,
+          "guardTier": ["Medium"],
+          "difficulty": [3, 4]
+        }
+      ]
+    },
+    {
+      "identifier": "treasure_high",
+      "comment": "богатая область: сильная охрана, лучшие награды",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["TreasureTrove", "ArtifactHigh"],
+          "count": 1,
+          "distance": 0.25,
+          "guardChance": 0.85,
+          "guardTier": ["High"],
+          "difficulty": [4, 6]
+        },
+        {
+          "objects": ["DwellingLarge", "DwellingMedium"],
+          "count": 1,
+          "distance": 0.35,
+          "guardChance": 0.75,
+          "guardTier": ["High"],
+          "difficulty": [4, 6]
+        },
+        {
+          "objects": ["CelestialMine"],
+          "count": 1,
+          "distance": 0.5,
+          "guardChance": 0.8,
+          "guardTier": ["High"],
+          "difficulty": [4, 6]
+        }
+      ]
+    },
+    {
+      "identifier": "center",
+      "comment": "центр карты: главная цель и сильные стражи",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["ArtifactHigh", "TreasureTrove"],
+          "count": 2,
+          "distance": 0.3,
+          "guardChance": 0.9,
+          "guardTier": ["High"],
+          "difficulty": [5, 7]
+        },
+        {
+          "objects": ["DwellingLarge"],
+          "count": 1,
+          "distance": 0.4,
+          "guardChance": 0.8,
+          "guardTier": ["High"],
+          "difficulty": [5, 7]
+        },
+        {
+          "objects": ["GoldMine", "CelestialMine"],
+          "count": [1, 2],
+          "distance": 0.5,
+          "guardChance": 0.7,
+          "guardTier": ["Medium", "High"],
+          "difficulty": [4, 6]
+        }
+      ]
+    },
+    {
+      "identifier": "beacon",
+      "comment": "маяк: цель карты и её охрана",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["GuardLeader", "GuardArcher"],
+          "count": [2, 3],
+          "distance": 0.15,
+          "guardChance": 0,
+          "guardTier": ["High"],
+          "difficulty": [5, 7]
+        },
+        {
+          "objects": ["ArtifactHigh"],
+          "count": 1,
+          "distance": 0.4,
+          "guardChance": 0.6,
+          "guardTier": ["High"],
+          "difficulty": [5, 7]
+        }
+      ]
+    },
+    {
+      "identifier": "default",
+      "comment": "придорожные объекты и общий запас для любой области",
+      "iterations": 2,
+      "shuffle": true,
+      "entries": [
+        {
+          "objects": ["Tavern", "BanditCamp", "Ruins"],
+          "count": 1,
+          "distance": 0.2,
+          "guardChance": 0.3,
+          "guardTier": ["Random"],
+          "location": ["NearRoad", "OutInTheOpen"]
+        },
+        {
+          "objects": ["PileOfGold", "PileOfWood", "PileOfStone", "TreasureChest"],
+          "count": 1,
+          "guardChance": 0.35,
+          "guardTier": ["Low"],
+          "location": ["NearRoad", "OutInTheOpen"]
+        },
+        {
+          "objects": ["MushroomGrove", "SageCap", "Weirwood", "TangledBurrow", "GoldStream"],
+          "count": 1,
+          "distance": 0.3,
+          "guardChance": 0.1,
+          "guardTier": ["Low"]
+        },
+        {
+          "objects": ["GuardBandit", "GuardWolf"],
+          "count": [1, 2],
+          "guardChance": 0,
+          "guardTier": ["Low"]
+        }
+      ]
+    },
+    {
+      "identifier": "fill",
+      "comment": "остатки суши: природный декор и мелкие находки",
+      "iterations": 1,
+      "entries": [
+        {
+          "objects": ["PileOfWood", "PileOfStone", "PileOfGold", "MushroomGrove", "SageCap"],
+          "count": 1,
+          "guardChance": 0,
+          "location": ["OutInTheOpen"]
+        }
+      ]
+    }
+  ]
+}

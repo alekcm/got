@@ -1,0 +1,807 @@
+{
+  "type": "random-map-generator-layout",
+  "id": "duel",
+  "name": "Дуэль (2 игрока)",
+  "description": "Классическая карта на двоих: два стартовых угла, спорный центр с Камнем победы и маяком, охраняемые проходы. Значения fill задают долю суши под регион.",
+  "blueprint": "default",
+  "playerCount": 2,
+  "size": 48,
+  "randomizeStartingPositions": true,
+  "gameMode": [
+    0,
+    1,
+    2
+  ],
+  "hostileRestrictions": true,
+  "competitiveGroupedRegions": true,
+  "layouts": [
+    {
+      "name": "Перекрёсток",
+      "nodes": [
+        {
+          "id": 1,
+          "comment": "стартовый угол игрока 1",
+          "point": {
+            "x": [
+              0.08,
+              0.22
+            ],
+            "y": [
+              0.06,
+              0.22
+            ]
+          },
+          "fill": 0.07,
+          "player": 1,
+          "region_identifier": [
+            "player_start"
+          ],
+          "primary_building": [
+            "AgnosticTown"
+          ],
+          "biome": "temperate",
+          "displayName": "Студёный берег",
+          "guardTier": [
+            "Low"
+          ],
+          "children": [
+            {
+              "id": 11,
+              "point": {
+                "x": [
+                  0.2,
+                  0.34
+                ],
+                "y": [
+                  0.08,
+                  0.24
+                ]
+              },
+              "fill": 0.03,
+              "region_identifier": [
+                "player_support"
+              ],
+              "biome": "north",
+              "displayName": "Сосновая падь",
+              "road": 1
+            },
+            {
+              "id": 12,
+              "point": {
+                "x": [
+                  0.05,
+                  0.18
+                ],
+                "y": [
+                  0.24,
+                  0.38
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_low"
+              ],
+              "biome": "north",
+              "displayName": "Мшистые камни",
+              "road": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "comment": "стартовый угол игрока 2",
+          "point": {
+            "x": [
+              0.78,
+              0.92
+            ],
+            "y": [
+              0.78,
+              0.94
+            ]
+          },
+          "fill": 0.07,
+          "player": 2,
+          "region_identifier": [
+            "player_start"
+          ],
+          "primary_building": [
+            "AgnosticTown"
+          ],
+          "biome": "temperate",
+          "displayName": "Солёные пески",
+          "guardTier": [
+            "Low"
+          ],
+          "children": [
+            {
+              "id": 21,
+              "point": {
+                "x": [
+                  0.66,
+                  0.8
+                ],
+                "y": [
+                  0.76,
+                  0.92
+                ]
+              },
+              "fill": 0.03,
+              "region_identifier": [
+                "player_support"
+              ],
+              "biome": "desert",
+              "displayName": "Сухой овраг",
+              "road": 1
+            },
+            {
+              "id": 22,
+              "point": {
+                "x": [
+                  0.82,
+                  0.95
+                ],
+                "y": [
+                  0.62,
+                  0.76
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_low"
+              ],
+              "biome": "desert",
+              "displayName": "Костяной колодец",
+              "road": 1
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "comment": "спорный центр",
+          "point": {
+            "x": [
+              0.42,
+              0.58
+            ],
+            "y": [
+              0.42,
+              0.58
+            ]
+          },
+          "fill": 0.09,
+          "region_identifier": [
+            "center"
+          ],
+          "primary_building": [
+            "StoneOfWinning"
+          ],
+          "biome": "temperate",
+          "displayName": "Спорный камень",
+          "difficulty": [
+            3,
+            5
+          ],
+          "guardTier": [
+            "Medium",
+            "High"
+          ],
+          "children": [
+            {
+              "id": 31,
+              "point": {
+                "x": [
+                  0.5,
+                  0.64
+                ],
+                "y": [
+                  0.5,
+                  0.64
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "beacon"
+              ],
+              "primary_building": [
+                "Beacon"
+              ],
+              "biome": "temperate",
+              "displayName": "Маяк",
+              "road": 2,
+              "guardChance": 0.6,
+              "guardTier": [
+                "High"
+              ]
+            },
+            {
+              "id": 32,
+              "point": {
+                "x": [
+                  0.34,
+                  0.46
+                ],
+                "y": [
+                  0.34,
+                  0.46
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_medium"
+              ],
+              "biome": "temperate",
+              "displayName": "Заросший тракт",
+              "road": 2
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "point": {
+            "x": [
+              0.38,
+              0.62
+            ],
+            "y": [
+              0.74,
+              0.94
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_medium"
+          ],
+          "biome": "north",
+          "displayName": "Северные пустоши",
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "id": 5,
+          "point": {
+            "x": [
+              0.38,
+              0.62
+            ],
+            "y": [
+              0.06,
+              0.26
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_medium"
+          ],
+          "biome": "desert",
+          "displayName": "Южные барханы",
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "id": 6,
+          "point": {
+            "x": [
+              0.74,
+              0.92
+            ],
+            "y": [
+              0.38,
+              0.62
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_high"
+          ],
+          "biome": "wasteland",
+          "displayName": "Пепельный перевал",
+          "guardTier": [
+            "High"
+          ]
+        },
+        {
+          "id": 7,
+          "point": {
+            "x": [
+              0.08,
+              0.26
+            ],
+            "y": [
+              0.38,
+              0.62
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_high"
+          ],
+          "biome": "swamp",
+          "displayName": "Гнилые топи",
+          "guardTier": [
+            "High"
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "nodeFrom": 1,
+          "nodeTo": 4,
+          "group": 0,
+          "road": 1,
+          "guardChance": 0.25,
+          "guardTier": [
+            "Low"
+          ],
+          "difficulty": [
+            1,
+            2
+          ]
+        },
+        {
+          "nodeFrom": 2,
+          "nodeTo": 5,
+          "group": 0,
+          "road": 1,
+          "guardChance": 0.25,
+          "guardTier": [
+            "Low"
+          ],
+          "difficulty": [
+            1,
+            2
+          ]
+        },
+        {
+          "nodeFrom": 1,
+          "nodeTo": 7,
+          "group": 0,
+          "road": 1,
+          "guardChance": 0.35,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            2,
+            3
+          ]
+        },
+        {
+          "nodeFrom": 2,
+          "nodeTo": 6,
+          "group": 0,
+          "road": 1,
+          "guardChance": 0.35,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            2,
+            3
+          ]
+        },
+        {
+          "nodeFrom": 7,
+          "nodeTo": 3,
+          "group": 0,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            3,
+            4
+          ]
+        },
+        {
+          "nodeFrom": 6,
+          "nodeTo": 3,
+          "group": 0,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            3,
+            4
+          ]
+        },
+        {
+          "nodeFrom": 4,
+          "nodeTo": 3,
+          "group": 0,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            3,
+            4
+          ]
+        },
+        {
+          "nodeFrom": 5,
+          "nodeTo": 3,
+          "group": 0,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ],
+          "difficulty": [
+            3,
+            4
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Две реки",
+      "nodes": [
+        {
+          "id": 1,
+          "point": {
+            "x": [
+              0.08,
+              0.22
+            ],
+            "y": [
+              0.34,
+              0.5
+            ]
+          },
+          "fill": 0.075,
+          "player": 1,
+          "region_identifier": [
+            "player_start"
+          ],
+          "primary_building": [
+            "AgnosticTown"
+          ],
+          "biome": "temperate",
+          "displayName": "Западный брод",
+          "children": [
+            {
+              "id": 11,
+              "point": {
+                "x": [
+                  0.2,
+                  0.34
+                ],
+                "y": [
+                  0.3,
+                  0.46
+                ]
+              },
+              "fill": 0.03,
+              "region_identifier": [
+                "player_support"
+              ],
+              "biome": "temperate",
+              "road": 1
+            },
+            {
+              "id": 12,
+              "point": {
+                "x": [
+                  0.08,
+                  0.2
+                ],
+                "y": [
+                  0.52,
+                  0.68
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_low"
+              ],
+              "biome": "temperate",
+              "road": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "point": {
+            "x": [
+              0.78,
+              0.92
+            ],
+            "y": [
+              0.5,
+              0.66
+            ]
+          },
+          "fill": 0.075,
+          "player": 2,
+          "region_identifier": [
+            "player_start"
+          ],
+          "primary_building": [
+            "AgnosticTown"
+          ],
+          "biome": "temperate",
+          "displayName": "Восточная топь",
+          "children": [
+            {
+              "id": 21,
+              "point": {
+                "x": [
+                  0.66,
+                  0.8
+                ],
+                "y": [
+                  0.54,
+                  0.7
+                ]
+              },
+              "fill": 0.03,
+              "region_identifier": [
+                "player_support"
+              ],
+              "biome": "swamp",
+              "road": 1
+            },
+            {
+              "id": 22,
+              "point": {
+                "x": [
+                  0.8,
+                  0.94
+                ],
+                "y": [
+                  0.32,
+                  0.48
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_low"
+              ],
+              "biome": "swamp",
+              "road": 1
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "point": {
+            "x": [
+              0.42,
+              0.58
+            ],
+            "y": [
+              0.42,
+              0.58
+            ]
+          },
+          "fill": 0.09,
+          "region_identifier": [
+            "center"
+          ],
+          "primary_building": [
+            "StoneOfWinning"
+          ],
+          "biome": "temperate",
+          "displayName": "Слияние",
+          "difficulty": [
+            3,
+            5
+          ],
+          "children": [
+            {
+              "id": 31,
+              "point": {
+                "x": [
+                  0.5,
+                  0.6
+                ],
+                "y": [
+                  0.26,
+                  0.4
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "beacon"
+              ],
+              "primary_building": [
+                "Beacon"
+              ],
+              "biome": "temperate",
+              "road": 2,
+              "guardChance": 0.7
+            },
+            {
+              "id": 32,
+              "point": {
+                "x": [
+                  0.4,
+                  0.5
+                ],
+                "y": [
+                  0.6,
+                  0.74
+                ]
+              },
+              "fill": 0.025,
+              "region_identifier": [
+                "treasure_medium"
+              ],
+              "biome": "swamp",
+              "road": 2
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "point": {
+            "x": [
+              0.34,
+              0.5
+            ],
+            "y": [
+              0.78,
+              0.94
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_high"
+          ],
+          "biome": "north",
+          "displayName": "Ледостав",
+          "guardTier": [
+            "High"
+          ]
+        },
+        {
+          "id": 5,
+          "point": {
+            "x": [
+              0.5,
+              0.66
+            ],
+            "y": [
+              0.06,
+              0.22
+            ]
+          },
+          "fill": 0.05,
+          "region_identifier": [
+            "treasure_high"
+          ],
+          "biome": "desert",
+          "displayName": "Сожжённый тракт",
+          "guardTier": [
+            "High"
+          ]
+        },
+        {
+          "id": 6,
+          "point": {
+            "x": [
+              0.24,
+              0.36
+            ],
+            "y": [
+              0.62,
+              0.76
+            ]
+          },
+          "fill": 0.04,
+          "region_identifier": [
+            "treasure_medium"
+          ],
+          "biome": "highlands",
+          "displayName": "Каменный зуб",
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "id": 7,
+          "point": {
+            "x": [
+              0.64,
+              0.76
+            ],
+            "y": [
+              0.2,
+              0.34
+            ]
+          },
+          "fill": 0.04,
+          "region_identifier": [
+            "treasure_medium"
+          ],
+          "biome": "wasteland",
+          "displayName": "Ржавые холмы",
+          "guardTier": [
+            "Medium"
+          ]
+        }
+      ],
+      "connections": [
+        {
+          "nodeFrom": 1,
+          "nodeTo": 3,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "nodeFrom": 2,
+          "nodeTo": 3,
+          "road": 2,
+          "guardChance": 0.5,
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "nodeFrom": 1,
+          "nodeTo": 6,
+          "road": 1,
+          "guardChance": 0.3,
+          "guardTier": [
+            "Low"
+          ]
+        },
+        {
+          "nodeFrom": 2,
+          "nodeTo": 7,
+          "road": 1,
+          "guardChance": 0.3,
+          "guardTier": [
+            "Low"
+          ]
+        },
+        {
+          "nodeFrom": 6,
+          "nodeTo": 4,
+          "road": 1,
+          "guardChance": 0.35,
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "nodeFrom": 7,
+          "nodeTo": 5,
+          "road": 1,
+          "guardChance": 0.35,
+          "guardTier": [
+            "Medium"
+          ]
+        },
+        {
+          "nodeFrom": 4,
+          "nodeTo": 3,
+          "road": 2,
+          "guardChance": 0.55,
+          "guardTier": [
+            "High"
+          ]
+        },
+        {
+          "nodeFrom": 5,
+          "nodeTo": 3,
+          "road": 2,
+          "guardChance": 0.55,
+          "guardTier": [
+            "High"
+          ]
+        }
+      ]
+    }
+  ]
+}

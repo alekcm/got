@@ -21,8 +21,10 @@ namespace IronThrone.Unity
         public const string MenuSceneName = "MainMenu";
         /// <summary>Имя сцены партии.</summary>
         public const string GameSceneName = "Game";
+        /// <summary>Имя сцены генератора карт Songs of Conquest.</summary>
+        public const string SoqMapSceneName = "SoQMap";
 
-        private enum UiScreen { Loading, Menu, Game, Error }
+        private enum UiScreen { Loading, Menu, Game, Error, None }
 
         private static IronThroneGame _instance;
 
@@ -94,8 +96,15 @@ namespace IronThrone.Unity
                 _screen = UiScreen.Menu;
                 // Play в сцене Game — сразу партия с настройками по умолчанию;
                 // Play в MainMenu (или любой другой сцене) — меню.
-                if (ActiveSceneName() == GameSceneName)
+                // Сцена SoQMap рисует собственный интерфейс — меню поверх неё не нужно.
+                if (ActiveSceneName() == SoqMapSceneName)
+                {
+                    _screen = UiScreen.None;
+                }
+                else if (ActiveSceneName() == GameSceneName)
+                {
                     StartNewGame();
+                }
             }
             catch (Exception ex)
             {
@@ -107,6 +116,15 @@ namespace IronThrone.Unity
 
         private void Update()
         {
+            // Сцена генератора карт живёт сама: как только игрок вернулся в меню/партию,
+            // снова показываем соответствующий экран.
+            if (_screen == UiScreen.None)
+            {
+                string active = ActiveSceneName();
+                if (active == MenuSceneName) _screen = UiScreen.Menu;
+                else if (active == GameSceneName && _state != null) _screen = UiScreen.Game;
+                return;
+            }
             if (_screen != UiScreen.Game) return;
             if (_battle != null) { TickBattle(); return; }
             if (Input.GetKeyDown(KeyCode.Space)) NextTurn();
@@ -131,6 +149,8 @@ namespace IronThrone.Unity
                 case UiScreen.Game:
                     if (_battle != null) DrawBattle();
                     else DrawGame();
+                    break;
+                case UiScreen.None:
                     break;
             }
         }
@@ -284,6 +304,11 @@ namespace IronThrone.Unity
             }
             if (GUILayout.Button("Как играть", _button, GUILayout.Height(44), GUILayout.Width(180)))
                 _showHelp = true;
+            if (GUILayout.Button("Карта SoQ (генератор)", _button, GUILayout.Height(44), GUILayout.Width(220)))
+            {
+                _screen = UiScreen.None;
+                LoadGameScene(SoqMapSceneName);
+            }
             if (!canStart) GUILayout.Label("Выберите двух советников, чтобы начать.", _small);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();

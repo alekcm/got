@@ -200,7 +200,8 @@ namespace UnityEngine
     {
         Space = 32, Escape = 27, Tab = 9, Return = 13,
         Alpha1 = 49, Alpha2 = 50, Alpha3 = 51,
-        W = 119, A = 97, S = 115, D = 100, Q = 113, E = 101,
+        W = 119, A = 97, S = 115, D = 100, Q = 113, E = 101, R = 114, N = 110, F = 102,
+        F1 = 282, F2 = 283,
         UpArrow = 273, DownArrow = 274, RightArrow = 275, LeftArrow = 276,
         LeftShift = 304,
     }
@@ -228,6 +229,8 @@ namespace UnityEngine
         public static void DrawTexture(Rect r, Texture tex, ScaleMode mode) { }
         public static void DrawTexture(Rect r, Texture tex) { }
         public static void DrawTextureWithTexCoords(Rect r, Texture tex, Rect coords) { }
+        public static string TextField(Rect r, string text, GUIStyle style = null) => text;
+        public static string TextField(Rect r, string text, int maxLength, GUIStyle style = null) => text;
     }
 
     public static class GUILayout
@@ -244,7 +247,10 @@ namespace UnityEngine
         public static void Label(string text, GUIStyle style = null, params GUILayoutOption[] o) { }
         public static bool Button(string text, GUIStyle style = null, params GUILayoutOption[] o) => false;
         public static void Space(float px) { }
+        public static bool Toggle(bool value, string text, GUIStyle style = null, params GUILayoutOption[] o) => value;
         public static void FlexibleSpace() { }
+        public static string TextField(string text, int maxLength, params GUILayoutOption[] o) => text;
+        public static string TextField(string text, params GUILayoutOption[] o) => text;
         public static Vector2 BeginScrollView(Vector2 pos, params GUILayoutOption[] o) => pos;
         public static Vector2 BeginScrollView(Vector2 pos, bool alwaysShowHorizontal, bool alwaysShowVertical, params GUILayoutOption[] o) => pos;
         public static void EndScrollView() { }
@@ -296,7 +302,10 @@ namespace UnityEngine
         public static float Clamp(float v, float a, float b) => v < a ? a : v > b ? b : v;
         public static int Clamp(int v, int a, int b) => v < a ? a : v > b ? b : v;
         public static float Min(float a, float b) => a < b ? a : b;
+        public static int Min(int a, int b) => a < b ? a : b;
         public static float Max(float a, float b) => a > b ? a : b;
+        public static int Max(int a, int b) => a > b ? a : b;
+        public static int Abs(int v) => v < 0 ? -v : v;
         public static int RoundToInt(float v) => (int)Math.Round(v);
         public static int FloorToInt(float v) => (int)Math.Floor(v);
         public static int CeilToInt(float v) => (int)Math.Ceiling(v);

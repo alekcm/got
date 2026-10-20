@@ -10,6 +10,10 @@ namespace IronThrone.Unity
     public static class UnityContent
     {
         private static ContentDb _cached;
+        private static string _dir;
+
+        /// <summary>Папка, из которой загружен контент (для MapGen и других подпапок).</summary>
+        public static string ContentDirectory => _dir;
 
         public static ContentDb Load()
         {
@@ -25,6 +29,7 @@ namespace IronThrone.Unity
             foreach (var dir in candidates)
             {
                 if (!Directory.Exists(dir)) continue;
+                _dir = dir;
                 _cached = ContentLoader.LoadFromDirectory(dir);
                 Debug.Log("Iron Throne: контент загружен из " + dir);
                 return _cached;

@@ -1,0 +1,557 @@
+{
+  "objects": [
+    {
+      "id": "AgnosticTown",
+      "name": "Город",
+      "category": "settlement",
+      "sprite": "TownTemperate",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "TownNorth"
+        },
+        {
+          "biome": "desert",
+          "sprite": "TownDesert"
+        },
+        {
+          "biome": "swamp",
+          "sprite": "TownSwamp"
+        }
+      ],
+      "scale": 1.75,
+      "blocking": true,
+      "guardTier": "Random",
+      "tooltip": "Стартовый город игрока (в SoQ — AgnosticTown)."
+    },
+    {
+      "id": "LargeSettlement",
+      "name": "Большое поселение",
+      "category": "settlement",
+      "sprite": "SettlementLargeTemperate",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "SettlementLargeNorth"
+        },
+        {
+          "biome": "desert",
+          "sprite": "SettlementLargeDesert"
+        },
+        {
+          "biome": "swamp",
+          "sprite": "SettlementLargeSwamp"
+        }
+      ],
+      "scale": 1.45,
+      "blocking": true,
+      "tooltip": "Поселение 3 уровня: даёт найм и большой участок."
+    },
+    {
+      "id": "SmallSettlement",
+      "name": "Малое поселение",
+      "category": "settlement",
+      "sprite": "SettlementSmallTemperate",
+      "scale": 1.25,
+      "blocking": true,
+      "tooltip": "Поселение 2 уровня."
+    },
+    {
+      "id": "Tavern",
+      "name": "Таверна",
+      "category": "neutral",
+      "sprite": "Tavern",
+      "scale": 1.0,
+      "blocking": true,
+      "maxPerMap": 2,
+      "guardTier": "Random",
+      "tooltip": "Слухи, наёмники и задания."
+    },
+    {
+      "id": "BanditCamp",
+      "name": "Лагерь разбойников",
+      "category": "neutral",
+      "sprite": "Camp4",
+      "scale": 1.4,
+      "blocking": true,
+      "maxPerMap": 5,
+      "guardTier": "Medium",
+      "tooltip": "Нейтральный лагерь: охрана и добыча."
+    },
+    {
+      "id": "Ruins",
+      "name": "Руины",
+      "category": "neutral",
+      "sprite": "Ruins",
+      "scale": 1.0,
+      "blocking": true,
+      "maxPerMap": 5,
+      "guardTier": "Random",
+      "tooltip": "Развалины: охраняемая находка."
+    },
+    {
+      "id": "GoldMine",
+      "name": "Золотая шахта",
+      "category": "resource",
+      "sprite": "GoldMine_Arleon",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "GoldMine_Vanir"
+        },
+        {
+          "biome": "desert",
+          "sprite": "GoldMine_Barya"
+        },
+        {
+          "biome": "swamp",
+          "sprite": "GoldMine_Rana"
+        },
+        {
+          "biome": "highlands",
+          "sprite": "GoldMine_Yulan"
+        },
+        {
+          "biome": "wasteland",
+          "sprite": "GoldMine_Loth"
+        }
+      ],
+      "scale": 1.05,
+      "blocking": true,
+      "guardTier": "Medium",
+      "tooltip": "+золото каждый ход."
+    },
+    {
+      "id": "AmberMine",
+      "name": "Янтарная шахта",
+      "category": "resource",
+      "sprite": "AmberMine",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Medium",
+      "tooltip": "+древний янтарь каждый ход."
+    },
+    {
+      "id": "StoneMine",
+      "name": "Каменоломня",
+      "category": "resource",
+      "sprite": "StoneMine",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Medium",
+      "tooltip": "+камень каждый ход."
+    },
+    {
+      "id": "WoodMine",
+      "name": "Лесопилка",
+      "category": "resource",
+      "sprite": "WoodMine",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Medium",
+      "tooltip": "+дерево каждый ход."
+    },
+    {
+      "id": "CelestialMine",
+      "name": "Шахта небесной руды",
+      "category": "resource",
+      "sprite": "CelestialMine",
+      "scale": 1.0,
+      "blocking": true,
+      "maxPerMap": 4,
+      "guardTier": "High",
+      "tooltip": "Редкий ресурс: небесная руда."
+    },
+    {
+      "id": "GlimmerLoom",
+      "name": "Мерцающий станок",
+      "category": "resource",
+      "sprite": "GlimmerLoom",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Medium",
+      "tooltip": "+мерцающая ткань."
+    },
+    {
+      "id": "Farmhouse",
+      "name": "Ферма",
+      "category": "resource",
+      "sprite": "Farmhouse",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Low",
+      "tooltip": "Еда и рост города."
+    },
+    {
+      "id": "WaterMill",
+      "name": "Водяная мельница",
+      "category": "resource",
+      "sprite": "WaterMill",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "Low",
+      "tooltip": "Золото и еда."
+    },
+    {
+      "id": "DwellingSmall",
+      "name": "Малый отрядный дом",
+      "category": "dwelling",
+      "sprite": "Camp1",
+      "scale": 1.15,
+      "blocking": true,
+      "maxPerMap": 6,
+      "guardTier": "Low",
+      "tooltip": "Найм малых отрядов (в SoQ — TroopDwellingSmall)."
+    },
+    {
+      "id": "DwellingMedium",
+      "name": "Средний отрядный дом",
+      "category": "dwelling",
+      "sprite": "Camp3",
+      "scale": 1.2,
+      "blocking": true,
+      "maxPerMap": 4,
+      "guardTier": "Medium",
+      "tooltip": "Найм средних отрядов."
+    },
+    {
+      "id": "DwellingLarge",
+      "name": "Большой отрядный дом",
+      "category": "dwelling",
+      "sprite": "Camp4",
+      "scale": 1.3,
+      "blocking": true,
+      "maxPerMap": 3,
+      "guardTier": "High",
+      "tooltip": "Найм крупных отрядов."
+    },
+    {
+      "id": "TreasureChest",
+      "name": "Сундук с сокровищами",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseSmall",
+      "scale": 0.7,
+      "blocking": false,
+      "guardTier": "Random",
+      "tooltip": "Сундук с сокровищем (арт-заглушка: в дампе нет сундуков)."
+    },
+    {
+      "id": "TreasureTrove",
+      "name": "Богатый клад",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseMedium",
+      "scale": 0.85,
+      "blocking": true,
+      "maxPerMap": 8,
+      "guardTier": "High",
+      "tooltip": "Клад (арт-заглушка)."
+    },
+    {
+      "id": "PileOfGold",
+      "name": "Куча золота",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseSmall",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Куча золота (арт-заглушка)."
+    },
+    {
+      "id": "PileOfStone",
+      "name": "Куча камня",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseMedium",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Куча камня (арт-заглушка)."
+    },
+    {
+      "id": "PileOfWood",
+      "name": "Куча дерева",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseSmall",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Куча дерева (арт-заглушка)."
+    },
+    {
+      "id": "ArtifactLow",
+      "name": "Артефакт (слабый)",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseSmall",
+      "scale": 0.7,
+      "blocking": false,
+      "guardTier": "Medium",
+      "tooltip": "Артефакт низкой силы (заглушка)."
+    },
+    {
+      "id": "ArtifactMedium",
+      "name": "Артефакт (средний)",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseMedium",
+      "scale": 0.8,
+      "blocking": false,
+      "guardTier": "Medium",
+      "tooltip": "Артефакт средней силы (заглушка)."
+    },
+    {
+      "id": "ArtifactHigh",
+      "name": "Артефакт (сильный)",
+      "category": "treasure",
+      "sprite": "PlaceholderBaseLarge",
+      "scale": 0.95,
+      "blocking": true,
+      "maxPerMap": 4,
+      "guardTier": "High",
+      "tooltip": "Артефакт высокой силы (заглушка)."
+    },
+    {
+      "id": "Beacon",
+      "name": "Маяк",
+      "category": "objective",
+      "sprite": "BeaconOn",
+      "scale": 1.0,
+      "blocking": true,
+      "unique": true,
+      "maxPerMap": 1,
+      "guardTier": "High",
+      "tooltip": "Цель режима «Маяки»: удержать и зажечь."
+    },
+    {
+      "id": "BeaconOff",
+      "name": "Погасший маяк",
+      "category": "objective",
+      "sprite": "BeaconOff",
+      "scale": 1.0,
+      "blocking": true,
+      "guardTier": "High",
+      "tooltip": "Погасший маяк (вариант цели)."
+    },
+    {
+      "id": "StoneOfWinning",
+      "name": "Камень победы",
+      "category": "objective",
+      "sprite": "StoneOfWinning",
+      "scale": 1.15,
+      "blocking": true,
+      "unique": true,
+      "maxPerMap": 1,
+      "guardTier": "High",
+      "tooltip": "Каменный монумент — цель карты."
+    },
+    {
+      "id": "ArcaneSpire",
+      "name": "Магический шпиль",
+      "category": "objective",
+      "sprite": "ArcaneSpire",
+      "scale": 1.1,
+      "blocking": true,
+      "maxPerMap": 1,
+      "guardTier": "High",
+      "tooltip": "Шпиль магии."
+    },
+    {
+      "id": "Portal",
+      "name": "Древний портал",
+      "category": "objective",
+      "sprite": "Portal",
+      "scale": 1.0,
+      "blocking": true,
+      "unique": true,
+      "maxPerMap": 1,
+      "guardTier": "High",
+      "tooltip": "Портал в далёкий край (в SoQ — телепорт)."
+    },
+    {
+      "id": "Weirwood",
+      "name": "Чардрево",
+      "category": "neutral",
+      "sprite": "Weirwood",
+      "scale": 1.0,
+      "blocking": true,
+      "maxPerMap": 8,
+      "guardTier": "Random",
+      "tooltip": "Священное дерево: бонус к вере."
+    },
+    {
+      "id": "MushroomGrove",
+      "name": "Грибная роща",
+      "category": "neutral",
+      "sprite": "MushroomGrove",
+      "scale": 1.0,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Редкие грибы (стиль Roots)."
+    },
+    {
+      "id": "SageCap",
+      "name": "Шалфейный гриб",
+      "category": "neutral",
+      "sprite": "SageCap",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Мелкий ресурс."
+    },
+    {
+      "id": "TangledBurrow",
+      "name": "Заросшая нора",
+      "category": "neutral",
+      "sprite": "TangledBurrow",
+      "scale": 1.1,
+      "blocking": true,
+      "maxPerMap": 6,
+      "guardTier": "Medium",
+      "tooltip": "Логово (стиль Roots)."
+    },
+    {
+      "id": "GoldStream",
+      "name": "Золотой ручей",
+      "category": "neutral",
+      "sprite": "GoldStream",
+      "scale": 1.0,
+      "blocking": false,
+      "maxPerMap": 6,
+      "guardTier": "Medium",
+      "tooltip": "Золото на поверхности."
+    },
+    {
+      "id": "GuardBandit",
+      "name": "Разбойники",
+      "category": "guard",
+      "sprite": "GuardBandit",
+      "scale": 0.85,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Страж объекта."
+    },
+    {
+      "id": "GuardArcher",
+      "name": "Лучники-разбойники",
+      "category": "guard",
+      "sprite": "GuardArcher",
+      "scale": 0.85,
+      "blocking": false,
+      "guardTier": "Medium",
+      "tooltip": "Страж объекта."
+    },
+    {
+      "id": "GuardWolf",
+      "name": "Волчья стая",
+      "category": "guard",
+      "sprite": "GuardWolf",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "Low",
+      "tooltip": "Быстрый страж."
+    },
+    {
+      "id": "GuardLeader",
+      "name": "Вожак разбойников",
+      "category": "guard",
+      "sprite": "GuardLeader",
+      "scale": 0.9,
+      "blocking": false,
+      "guardTier": "High",
+      "tooltip": "Сильный страж."
+    },
+    {
+      "id": "DecorTree",
+      "name": "Дерево",
+      "category": "decor",
+      "sprite": "DecorTreeC",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "DecorPineC"
+        },
+        {
+          "biome": "desert",
+          "sprite": "DecorTreeB"
+        },
+        {
+          "biome": "swamp",
+          "sprite": "DecorTreeB"
+        },
+        {
+          "biome": "highlands",
+          "sprite": "DecorPineB"
+        },
+        {
+          "biome": "wasteland",
+          "sprite": "DecorTreeA"
+        }
+      ],
+      "scale": 0.95,
+      "blocking": false,
+      "guardTier": "Random",
+      "tooltip": "Декор пустой земли."
+    },
+    {
+      "id": "DecorTreeTall",
+      "name": "Высокое дерево",
+      "category": "decor",
+      "sprite": "DecorTreeA",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "DecorPineD"
+        },
+        {
+          "biome": "highlands",
+          "sprite": "DecorPineA"
+        },
+        {
+          "biome": "desert",
+          "sprite": "DecorTreeA"
+        },
+        {
+          "biome": "swamp",
+          "sprite": "DecorTreeC"
+        }
+      ],
+      "scale": 1.05,
+      "blocking": false,
+      "guardTier": "Random",
+      "tooltip": "Декор пустой земли."
+    },
+    {
+      "id": "DecorGrove",
+      "name": "Роща",
+      "category": "decor",
+      "sprite": "DecorTreeB",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "DecorPineB"
+        },
+        {
+          "biome": "desert",
+          "sprite": "DecorTreeC"
+        }
+      ],
+      "scale": 0.85,
+      "blocking": false,
+      "guardTier": "Random",
+      "tooltip": "Декор пустой земли."
+    },
+    {
+      "id": "DecorSapling",
+      "name": "Молодое дерево",
+      "category": "decor",
+      "sprite": "DecorTreeB",
+      "variants": [
+        {
+          "biome": "north",
+          "sprite": "DecorPineD"
+        }
+      ],
+      "scale": 0.5,
+      "blocking": false,
+      "guardTier": "Random",
+      "tooltip": "Декор пустой земли."
+    }
+  ]
+}

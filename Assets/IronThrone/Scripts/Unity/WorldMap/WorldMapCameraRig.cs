@@ -29,6 +29,26 @@ namespace IronThrone.Unity
             Apply();
         }
 
+        /// <summary>Навести камеру на точку карты с заданной дистанцией (для витрин/катсцен).</summary>
+        public void FocusOn(Vector2 focus, float dist)
+        {
+            _focus = focus;
+            _dist = Mathf.Clamp(dist, 12f, 900f);
+            Apply();
+        }
+
+        /// <summary>Подобрать дистанцию так, чтобы карта целиком попала в кадр.</summary>
+        public void Fit(Vector2 mapSize, float padding = 1.06f)
+        {
+            _mapSize = mapSize;
+            _focus = new Vector2(mapSize.x * 0.5f, mapSize.y * 0.5f);
+            // FOV вертикальный; при наклоне 52° земля «сжимается» по вертикали кадра
+            float halfAngle = Fov * 0.5f * Mathf.PI / 180f;
+            float groundPerUnit = Mathf.Tan(halfAngle) / Mathf.Max(0.2f, Mathf.Sin(PitchRad));
+            _dist = Mathf.Clamp(mapSize.y * 0.5f / Mathf.Max(0.05f, groundPerUnit) * padding, 20f, 900f);
+            Apply();
+        }
+
         void Update()
         {
             if (_cam == null) return;
@@ -73,7 +93,7 @@ namespace IronThrone.Unity
             float scroll = Input.mouseScrollDelta.y;
             if (Mathf.Abs(scroll) > 0.001f)
             {
-                _dist = Mathf.Clamp(_dist * (1f - scroll * 0.12f), 22f, 220f);
+                _dist = Mathf.Clamp(_dist * (1f - scroll * 0.12f), 22f, 900f);
                 changed = true;
             }
 
