@@ -197,14 +197,35 @@ ATLAS_SIZE = {
     "soq_settlements": (512, 512),
     "soq_nature": (256, 512),
     "soq_units": (256, 256),
-    "soq_decor": (256, 512),
+    "soq_decor": (512, 1024),
 }
 
-# Декор пустой земли: деревья, камни, кусты. SoQ засевает карту такой
-# «мелочью», иначе суша выглядит пустой. Режется из уже нарезанных атласов.
-# только деревья: «камни/кусты» в дампе — размытые пятна земли, как стенди они смотрятся плохо
-DECOR_CATS = ("trees_big", "trees_pine")
-DECOR_LIMIT = {"trees_big": 3, "trees_pine": 4}
+# Декор пустой земли — то, чем SoQ засевает сушу: деревья, кусты, камни,
+# пучки травы, сухостой и грядки. Режется из уже нарезанных атласов
+# (atlas_slices.json): там лежат готовые rect'ы StandaloneAdventureDecorationAtlas.
+#   prefix — префикс имени в атласе проекта, limit — сколько вариантов брать,
+#   flat   — рисовать лежащим пятном (камни, трава, грядки), а не стенди.
+DECOR_CATS = {
+    "trees_big": ("DecorTree", 3, False),
+    "trees_pine": ("DecorPine", 4, False),
+    "bushes": ("DecorBush", 6, False),
+    "rocks": ("DecorRock", 7, True),
+    "small": ("DecorTuft", 12, True),
+    "dead_trees": ("DecorDead", 3, False),
+    "fields": ("DecorCrop", 8, True),
+}
+# срезы-«сухостой» лежат в misc и берутся по именам — см. DECOR_EXTRA
+# Значение — имя нарезки в том же атласе, либо (атлас, имя) для другого атласа.
+DECOR_EXTRA = {
+    "DecorDeadA": "deco_47",
+    "DecorDeadB": "deco_48",
+    "DecorDeadC": "deco_49",
+    # Горные массивы и плато: блокеры края карты из ArleonAdventureDecorationAtlas —
+    # именно ими SoQ обводит горные области и границу карты.
+    "DecorMountainA": ("ArleonAdventureDecorationAtlas", "mtn_a"),
+    "DecorMountainB": ("ArleonAdventureDecorationAtlas", "mtn_b"),
+    "DecorHillFlat": ("ArleonAdventureDecorationAtlas", "hill_a"),
+}
 
 RECT_RE = re.compile(
     r"m_Rect:\s*\n\s*serializedVersion: \d+\s*\n\s*x: (-?[\d.]+)\s*\n\s*y: (-?[\d.]+)\s*\n"
@@ -484,21 +505,32 @@ def bake_extra_slices():
 
 
 def bake_decor():
-    """Деревья/камни/кусты: по нескольку вариантов на категорию."""
+    """Деревья/кусты/камни/трава/грядки: по нескольку вариантов на категорию."""
     out = {}
     groups = {}
+    by_name = {}
+    by_key = {}
     for entry in _read_atlas_slices():
+        by_name[entry.get("name")] = entry
+        by_key[(entry.get("atlas"), entry.get("name"))] = entry
         cat = entry.get("cat")
         if cat in DECOR_CATS:
             groups.setdefault(cat, []).append(entry)
-    prefix = {"trees_big": "DecorTree", "trees_pine": "DecorPine"}
     for cat, entries in groups.items():
-        entries.sort(key=lambda e: e["name"], reverse=True)  # крупные первые
-        for i, entry in enumerate(entries[: DECOR_LIMIT[cat]]):
+        prefix, limit, _flat = DECOR_CATS[cat]
+        # крупные первыми; у small/rocks порядок в атласе и так «по размеру»
+        entries.sort(key=lambda e: (-e["h"], e["name"]))
+        for i, entry in enumerate(entries[:limit]):
             img = _crop_atlas(entry)
             if img is None:
                 continue
-            name = "%s%s" % (prefix[cat], "ABCDEFG"[i])
+            name = "%s%s" % (prefix, "ABCDEFGHIJKLMNOP"[i])
+            out[name] = img
+            ATLAS_OF[name] = "soq_decor"
+    for name, src in DECOR_EXTRA.items():
+        entry = by_key.get(src) if isinstance(src, tuple) else by_name.get(src)
+        img = _crop_atlas(entry) if entry else None
+        if img is not None:
             out[name] = img
             ATLAS_OF[name] = "soq_decor"
     return out

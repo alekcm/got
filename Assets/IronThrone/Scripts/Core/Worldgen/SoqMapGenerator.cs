@@ -132,6 +132,7 @@ namespace IronThrone.Core.Worldgen
                 PlaceBlueprintObjects();
                 FillEmptyTiles();
                 ScatterDecor();
+                ScatterMountains();
                 Validate();
 
                 if (_pack.Warnings.Count > 0)
@@ -936,6 +937,35 @@ namespace IronThrone.Core.Worldgen
             // ---------------------------------------------------------- 4. рельеф
             private void AssignTerrain()
             {
+                // Patch-шум нормируется по рангу внутри биома: сырой Fbm живёт в узком
+                // диапазоне (~0.30..0.85, медиана 0.5), из-за чего «редкие» классы
+                // (скалы, горные массивы) не появлялись на маленьких картах.
+                // После нормировки пороги в AdvTerrainInfo.Pick — это проценты площади.
+                var rawPatch = new float[_size * _size];
+                var byBiome = new Dictionary<AdvBiome, List<float>>();
+                for (int y = 0; y < _size; y++)
+                {
+                    for (int x = 0; x < _size; x++)
+                    {
+                        var tile = _map.Tiles[y * _size + x];
+                        if (tile.sea) continue;
+                        var region0 = tile.region >= 0 ? _map.Regions[tile.region] : null;
+                        var biome0 = region0 != null ? region0.biome : AdvBiome.Temperate;
+                        float raw = _noise.Fbm(x * 0.075f + (region0 != null ? region0.id * 7.3f : 0f), y * 0.075f, 3, 0.55f);
+                        rawPatch[y * _size + x] = raw;
+                        List<float> list;
+                        if (!byBiome.TryGetValue(biome0, out list)) { list = new List<float>(); byBiome[biome0] = list; }
+                        list.Add(raw);
+                    }
+                }
+                var sortedByBiome = new Dictionary<AdvBiome, float[]>();
+                foreach (var pair in byBiome)
+                {
+                    var arr = pair.Value.ToArray();
+                    Array.Sort(arr);
+                    sortedByBiome[pair.Key] = arr;
+                }
+
                 for (int y = 0; y < _size; y++)
                 {
                     for (int x = 0; x < _size; x++)
@@ -946,7 +976,7 @@ namespace IronThrone.Core.Worldgen
                         var biome = region != null ? region.biome : AdvBiome.Temperate;
                         // пятна крупнее тайла: частота 0.075 даёт массивы леса/полей
                         // размером в несколько тайлов, как на картах SoQ
-                        float patch = _noise.Fbm(x * 0.075f + (region != null ? region.id * 7.3f : 0f), y * 0.075f, 3, 0.55f);
+                        float patch = RankOf(sortedByBiome, biome, rawPatch[y * _size + x]);
                         bool nearSea = false;
                         int seaNeighbors = 0;
                         for (int d = 0; d < 4; d++)
@@ -959,6 +989,20 @@ namespace IronThrone.Core.Worldgen
                         tile.elevation = AdvTerrainInfo.IsMountain(tile.terrain) ? 2 : (int)Math.Round(AdvTerrainInfo.Height[(int)tile.terrain]) - 1;
                     }
                 }
+            }
+
+            /// <summary>Ранг значения внутри биома в [0,1] (доля тайлов биома ниже).</summary>
+            private static float RankOf(Dictionary<AdvBiome, float[]> sorted, AdvBiome biome, float value)
+            {
+                float[] arr;
+                if (!sorted.TryGetValue(biome, out arr) || arr.Length < 2) return 0.5f;
+                int lo = 0, hi = arr.Length;
+                while (lo < hi)
+                {
+                    int mid = (lo + hi) >> 1;
+                    if (arr[mid] < value) lo = mid + 1; else hi = mid;
+                }
+                return lo / (float)(arr.Length - 1);
             }
 
             // ---------------------------------------------------------- 5. города
@@ -1438,23 +1482,94 @@ namespace IronThrone.Core.Worldgen
                 for (int i = 0; i < _catalog.Objects.Count; i++)
                 {
                     var def = _catalog.Objects[i];
+                    if (def.mountain) continue; // крупные горы ставит отдельный проход
                     if (string.Equals(def.category, "decor", StringComparison.OrdinalIgnoreCase))
                         decorDefs.Add(def);
                 }
                 if (decorDefs.Count == 0) return;
 
                 int nextId = 1;
+                var picks = new List<AdvObjectDef>();
                 foreach (var tile in _map.AllTiles())
                 {
                     if (tile.sea || tile.road || _occupiedAt(tile.x, tile.y)) continue;
                     float density = DecorDensity(tile.terrain);
                     if (density <= 0f) continue;
-                    // хеш от координат и сида: декор не сдвигает очередь RNG для объектов
-                    if (SoqRng.Hash01(tile.x, tile.y, _map.Seed * 31 + 7) > density) continue;
-                    int pick = (int)(SoqRng.Hash01(tile.x, tile.y, _map.Seed * 71 + 13) * decorDefs.Count);
+
+                    // рощи: плотность модулируется низкочастотным шумом, иначе
+                    // деревья стоят равномерной сеткой, а не куртинами, как в SoQ
+                    float grove = SoqRng.GroveNoise(tile.x, tile.y, _map.Seed * 977 + 41);
+                    float groveK = 0.25f + 1.5f * grove * grove;
+
+                    // сколько «мелочей» кладём на тайл: целая часть + вероятностная дробь
+                    float r = SoqRng.Hash01(tile.x, tile.y, _map.Seed * 31 + 7);
+                    float scaled = density * groveK + (r - 0.5f) * 0.9f;
+                    int count = (int)Math.Floor(scaled);
+                    if (SoqRng.Hash01(tile.x, tile.y, _map.Seed * 31 + 19) < scaled - count) count++;
+                    if (count <= 0) continue;
+                    if (count > 4) count = 4;
+
+                    // какие именно предметы растут на этом классе рельефа
+                    picks.Clear();
+                    string terrain = tile.terrain.ToString();
+                    for (int i = 0; i < decorDefs.Count; i++)
+                    {
+                        var def = decorDefs[i];
+                        if (def.terrain.Count == 0) { picks.Add(def); continue; }
+                        for (int k = 0; k < def.terrain.Count; k++)
+                            if (string.Equals(def.terrain[k], terrain, StringComparison.OrdinalIgnoreCase))
+                            { picks.Add(def); break; }
+                    }
+                    if (picks.Count == 0) picks.AddRange(decorDefs);
+
+                    for (int k = 0; k < count; k++)
+                    {
+                        int pick = (int)(SoqRng.Hash01(tile.x * 7 + k, tile.y * 13 + k, _map.Seed * 71 + 13) * picks.Count);
+                        if (pick < 0) pick = 0;
+                        if (pick >= picks.Count) pick = picks.Count - 1;
+                        var def = picks[pick];
+                        _map.Decor.Add(new AdventureObject
+                        {
+                            id = nextId++,
+                            defId = def.id,
+                            name = def.name,
+                            category = def.category,
+                            x = tile.x,
+                            y = tile.y,
+                            region = tile.region,
+                            decor = true,
+                        });
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Горные массивы. В SoQ горы — не тайл, а крупные спрайты-блокеры, которыми
+            /// обведены скалистые области; поэтому они ставятся отдельным проходом, а не
+            /// в общем пуле декора (иначе на каждом каменном тайле вырастала бы гора).
+            /// </summary>
+            private void ScatterMountains()
+            {
+                var defs = new List<AdvObjectDef>();
+                for (int i = 0; i < _catalog.Objects.Count; i++)
+                {
+                    var def = _catalog.Objects[i];
+                    if (def.mountain) defs.Add(def);
+                }
+                if (defs.Count == 0) return;
+
+                int nextId = 100000;
+                foreach (var tile in _map.AllTiles())
+                {
+                    if (tile.sea || tile.road || _occupiedAt(tile.x, tile.y)) continue;
+                    float chance = MountainChance(tile.terrain);
+                    if (chance <= 0f) continue;
+                    if (SoqRng.Hash01(tile.x, tile.y, _map.Seed * 131 + 5) > chance) continue;
+
+                    int pick = (int)(SoqRng.Hash01(tile.x, tile.y, _map.Seed * 137 + 11) * defs.Count);
                     if (pick < 0) pick = 0;
-                    if (pick >= decorDefs.Count) pick = decorDefs.Count - 1;
-                    var def = decorDefs[pick];
+                    if (pick >= defs.Count) pick = defs.Count - 1;
+                    var def = defs[pick];
                     _map.Decor.Add(new AdventureObject
                     {
                         id = nextId++,
@@ -1469,26 +1584,46 @@ namespace IronThrone.Core.Worldgen
                 }
             }
 
+            /// <summary>Вероятность горного массива на тайл по классу рельефа.</summary>
+            private static float MountainChance(AdvTerrain t)
+            {
+                switch (t)
+                {
+                    case AdvTerrain.Rock: return 0.65f;
+                    case AdvTerrain.SnowRock: return 0.30f;
+                    case AdvTerrain.RockGreen: return 0.10f;
+                    case AdvTerrain.SandRock: return 0.12f;
+                    default: return 0f;
+                }
+            }
+
+            /// <summary>Ожидаемое число предметов декора на тайл по классу рельефа.</summary>
             private static float DecorDensity(AdvTerrain t)
             {
                 switch (t)
                 {
-                    case AdvTerrain.ForestMix:
-                    case AdvTerrain.ForestPine: return 0.26f;
-                    case AdvTerrain.Autumn: return 0.16f;
-                    case AdvTerrain.Marsh: return 0.13f;
-                    case AdvTerrain.Grass:
-                    case AdvTerrain.Fields:
-                    case AdvTerrain.ColdGrass: return 0.08f;
-                    case AdvTerrain.Tundra:
-                    case AdvTerrain.Snow: return 0.06f;
+                    // лес уже нарисован кронами в самом тайле — стенди поверх него
+                    // нужны редко, иначе получается «щётка»
+                    // лес в SoQ — плотный частокол, луг — редкие куртины.
+                    // Значения подобраны так, чтобы лес читался как стена
+                    // деревьев, а открытые луга оставались открытыми.
+                    case AdvTerrain.ForestPine: return 1.35f;
+                    case AdvTerrain.ForestMix: return 1.15f;
+                    case AdvTerrain.Autumn: return 0.55f;
+                    case AdvTerrain.Fields: return 0.30f;
+                    case AdvTerrain.Marsh: return 0.55f;
+                    case AdvTerrain.Grass: return 0.16f;
+                    case AdvTerrain.ColdGrass: return 0.18f;
+                    case AdvTerrain.RockGreen: return 0.5f;
+                    case AdvTerrain.Tundra: return 0.22f;
                     case AdvTerrain.Rock:
-                    case AdvTerrain.RockGreen:
-                    case AdvTerrain.SnowRock: return 0.05f;
-                    case AdvTerrain.Sand:
+                    case AdvTerrain.SnowRock: return 0.45f;
+                    case AdvTerrain.Snow: return 0.14f;
+                    case AdvTerrain.Dirt: return 0.22f;
                     case AdvTerrain.Dry:
-                    case AdvTerrain.SandRock: return 0.025f;
-                    default: return 0.07f;
+                    case AdvTerrain.SandRock: return 0.25f;
+                    case AdvTerrain.Sand: return 0.12f;
+                    default: return 0.35f;
                 }
             }
 

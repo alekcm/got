@@ -19,6 +19,7 @@ Assets/IronThrone/Scripts/Core/Worldgen/SoqMapGenerator.cs:
 """
 import argparse
 import json
+import bisect
 import math
 import os
 import sys
@@ -548,7 +549,12 @@ def generate(layout, sub, blueprint, catalog, seed, land_fraction=0.70):
             connect(a, b, conn.get("road", 1), conn.get("guardChance", 0), conn.get("guardTier", ["Random"])[0])
 
     # ---------------------------------------------------------------- рельеф
-    terrain = ["Grass"] * (size * size)
+    # Patch-шум нормируется по рангу внутри биома: сырой Fbm живёт в узком
+    # диапазоне (~0.30..0.85, медиана 0.5), поэтому «редкие» классы (скалы, горы)
+    # на маленьких картах не появлялись вообще. После нормировки пороги в
+    # pick_terrain — это проценты площади, одинаковые на карте любого размера.
+    raw = {}
+    by_biome = {}
     for y in range(size):
         for x in range(size):
             idx = y * size + x
@@ -557,6 +563,25 @@ def generate(layout, sub, blueprint, catalog, seed, land_fraction=0.70):
             rid = region_of[idx]
             biome = regions[rid]["biome"] if rid >= 0 else "Temperate"
             patch = noise.fbm(x * 0.075 + (rid * 7.3 if rid >= 0 else 0), y * 0.075, 3, 0.55)
+            raw[idx] = patch
+            by_biome.setdefault(biome, []).append(patch)
+    sorted_by_biome = {b: sorted(v) for b, v in by_biome.items()}
+
+    def rank_of(biome, value):
+        vals = sorted_by_biome[biome]
+        if len(vals) < 2:
+            return 0.5
+        return bisect.bisect_left(vals, value) / float(len(vals) - 1)
+
+    terrain = ["Grass"] * (size * size)
+    for y in range(size):
+        for x in range(size):
+            idx = y * size + x
+            if not land[idx]:
+                continue
+            rid = region_of[idx]
+            biome = regions[rid]["biome"] if rid >= 0 else "Temperate"
+            patch = rank_of(biome, raw[idx])
             near_sea = any(0 <= x + dx < size and 0 <= y + dy < size and not land[(y + dy) * size + (x + dx)]
                            for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)))
             coast = (1 if near_sea else 0) / 4.0 + noise.eval(x * 0.3, y * 0.3) * 0.35
@@ -729,30 +754,30 @@ def generate(layout, sub, blueprint, catalog, seed, land_fraction=0.70):
 
 def pick_terrain(biome, patch, coast, near_sea):
     if biome == "North":
-        # как AdvTerrainInfo.Pick: снег и сосны — основа, скалы — редкость
-        if near_sea and coast > 0.55 and patch < 0.30: return "ColdGrass"
-        if patch < 0.45: return "Snow"
-        if patch < 0.62: return "ForestPine"
+        if near_sea and coast > 0.55 and patch < 0.22: return "ColdGrass"
+        if patch < 0.40: return "Snow"
+        if patch < 0.58: return "ForestPine"
         if patch < 0.80: return "ColdGrass"
-        if patch < 0.92: return "Tundra"
+        if patch < 0.91: return "Tundra"
         return "SnowRock"
     if biome == "Desert":
         if near_sea and coast > 0.6: return "Sand"
-        return "Sand" if patch < 0.4 else ("Dry" if patch < 0.62 else ("SandRock" if patch < 0.82 else "Rock"))
+        return "Sand" if patch < 0.40 else ("Dry" if patch < 0.62 else ("SandRock" if patch < 0.82 else "Rock"))
     if biome == "Swamp":
-        return "Marsh" if patch < 0.34 else ("ForestMix" if patch < 0.62 else ("Dirt" if patch < 0.82 else "Grass"))
+        return "Marsh" if patch < 0.35 else ("ForestMix" if patch < 0.62 else ("Dirt" if patch < 0.82 else "Grass"))
     if biome == "Highlands":
-        return "Rock" if patch < 0.3 else ("RockGreen" if patch < 0.52 else ("Grass" if patch < 0.7 else ("ForestPine" if patch < 0.86 else "Fields")))
+        return "Rock" if patch < 0.30 else ("RockGreen" if patch < 0.52 else ("Grass" if patch < 0.70 else ("ForestPine" if patch < 0.86 else "Fields")))
     if biome == "Wasteland":
-        return "Dirt" if patch < 0.3 else ("Dry" if patch < 0.52 else ("Rock" if patch < 0.7 else ("RockGreen" if patch < 0.86 else "Autumn")))
+        return "Dirt" if patch < 0.30 else ("Dry" if patch < 0.52 else ("Rock" if patch < 0.70 else ("RockGreen" if patch < 0.86 else "Autumn")))
     if near_sea and coast > 0.6 and patch < 0.5: return "Sand"
-    if patch < 0.44: return "Grass"
-    if patch < 0.62: return "ForestMix"
-    if patch < 0.76: return "Fields"
-    if patch < 0.86: return "Autumn"
-    if patch < 0.92: return "ForestPine"
-    if patch < 0.96: return "Marsh"
-    return "RockGreen"
+    if patch < 0.34: return "Grass"
+    if patch < 0.54: return "ForestMix"
+    if patch < 0.64: return "Fields"
+    if patch < 0.74: return "Autumn"
+    if patch < 0.86: return "ForestPine"
+    if patch < 0.90: return "Marsh"
+    if patch < 0.95: return "RockGreen"
+    return "Rock"
 
 
 def render(result, path, tile_px=10):

@@ -34,6 +34,12 @@ namespace IronThrone.Core.Worldgen
         public string tooltip;
         /// <summary>Варианты спрайта по биому региона (север/пустыня/топи/...).</summary>
         public readonly List<AdvObjectVariant> variants = new List<AdvObjectVariant>();
+        /// <summary>Декор лежит на земле плоским пятном (камни, трава, грядки), а не стенди.</summary>
+        public bool flat;
+        /// <summary>Крупный спрайт-блокер (горный массив): ставится отдельным проходом ScatterMountains.</summary>
+        public bool mountain;
+        /// <summary>На каких классах рельефа сеять этот декор (пусто — на любых).</summary>
+        public readonly List<string> terrain = new List<string>();
 
         /// <summary>Спрайт для конкретного биома: вариант, иначе основной.</summary>
         public string SpriteForBiome(AdvBiome biome)

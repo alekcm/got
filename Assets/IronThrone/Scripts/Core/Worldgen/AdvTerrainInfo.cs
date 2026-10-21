@@ -79,9 +79,9 @@ namespace IronThrone.Core.Worldgen
         /// </summary>
         public static readonly float[] Brightness =
         {
-            1.36f, 1.45f, 1.69f, 1.62f, 1.67f, 1.00f,
-            1.22f, 1.08f, 1.26f, 1.69f, 1.46f, 0.95f,
-            1.32f, 1.70f, 1.48f, 1.70f,
+            1.00f, 1.00f, 1.00f, 1.00f, 1.00f, 1.00f,
+            1.00f, 1.00f, 1.00f, 1.00f, 1.00f, 1.00f,
+            1.00f, 1.00f, 1.00f, 1.00f,
         };
 
         /// <summary>Стоимость прохода в «очках движения» (для будущих армий и для A* дорог).</summary>
@@ -121,73 +121,53 @@ namespace IronThrone.Core.Worldgen
         {
             switch (b)
             {
-                case AdvBiome.North: return "Север";
-                case AdvBiome.Desert: return "Пустошь";
-                case AdvBiome.Swamp: return "Топи";
-                case AdvBiome.Highlands: return "Горы";
-                case AdvBiome.Wasteland: return "Пепельные земли";
-                default: return "Умеренный край";
-            }
-        }
-
-        // ------------------------------------------------------------------ генерация рельефа
-        /// <summary>
-        /// Выбор класса рельефа для тайла: биом задаёт веса, шум делает пятна
-        /// (лес массивом, пески полосами), берег получает песок/сушь.
-        /// </summary>
-        public static AdvTerrain Pick(AdvBiome biome, float patchNoise, float coastFactor, bool nearSea, AdvTerrain? forced)
-        {
-            if (forced.HasValue) return forced.Value;
-            float n = patchNoise;
-            switch (biome)
-            {
                 case AdvBiome.North:
-                    // снег и сосны — основа севера; снежные скалы — редкая деталь,
-                    // иначе регион превращается в белую «рябь» (текстура 094_snow_rock)
-                    if (nearSea && coastFactor > 0.55f && n < 0.30f) return AdvTerrain.ColdGrass;
-                    if (n < 0.45f) return AdvTerrain.Snow;
-                    if (n < 0.62f) return AdvTerrain.ForestPine;
-                    if (n < 0.80f) return AdvTerrain.ColdGrass;
-                    if (n < 0.92f) return AdvTerrain.Tundra;
-                    return AdvTerrain.SnowRock;
+                    // Пороги — доли площади биома (AdvTerrainInfo.Pick получает
+                    // ранг шума внутри биома, см. SoqMapGenerator.AssignTerrain).
+                    if (nearSea && coastFactor > 0.55f && n < 0.22f) return AdvTerrain.ColdGrass;
+                    if (n < 0.40f) return AdvTerrain.Snow;           // 40%
+                    if (n < 0.58f) return AdvTerrain.ForestPine;     // 18%
+                    if (n < 0.80f) return AdvTerrain.ColdGrass;      // 22%
+                    if (n < 0.91f) return AdvTerrain.Tundra;         // 11%
+                    return AdvTerrain.SnowRock;                       //  9% — снежные скалы
 
                 case AdvBiome.Desert:
                     if (nearSea && coastFactor > 0.6f) return AdvTerrain.Sand;
-                    if (n < 0.40f) return AdvTerrain.Sand;
-                    if (n < 0.62f) return AdvTerrain.Dry;
-                    if (n < 0.82f) return AdvTerrain.SandRock;
-                    return AdvTerrain.Rock;
+                    if (n < 0.40f) return AdvTerrain.Sand;           // 40%
+                    if (n < 0.62f) return AdvTerrain.Dry;            // 22%
+                    if (n < 0.82f) return AdvTerrain.SandRock;       // 20%
+                    return AdvTerrain.Rock;                           // 18% — скалы-месасы
 
                 case AdvBiome.Swamp:
-                    if (n < 0.34f) return AdvTerrain.Marsh;
-                    if (n < 0.62f) return AdvTerrain.ForestMix;
-                    if (n < 0.82f) return AdvTerrain.Dirt;
-                    return AdvTerrain.Grass;
+                    if (n < 0.35f) return AdvTerrain.Marsh;          // 35%
+                    if (n < 0.62f) return AdvTerrain.ForestMix;      // 27%
+                    if (n < 0.82f) return AdvTerrain.Dirt;           // 20%
+                    return AdvTerrain.Grass;                          // 18%
 
                 case AdvBiome.Highlands:
-                    if (n < 0.30f) return AdvTerrain.Rock;
-                    if (n < 0.52f) return AdvTerrain.RockGreen;
-                    if (n < 0.70f) return AdvTerrain.Grass;
-                    if (n < 0.86f) return AdvTerrain.ForestPine;
-                    return AdvTerrain.Fields;
+                    if (n < 0.30f) return AdvTerrain.Rock;           // 30% — горный край
+                    if (n < 0.52f) return AdvTerrain.RockGreen;      // 22%
+                    if (n < 0.70f) return AdvTerrain.Grass;          // 18%
+                    if (n < 0.86f) return AdvTerrain.ForestPine;     // 16%
+                    return AdvTerrain.Fields;                         // 14%
 
                 case AdvBiome.Wasteland:
-                    if (n < 0.30f) return AdvTerrain.Dirt;
-                    if (n < 0.52f) return AdvTerrain.Dry;
-                    if (n < 0.70f) return AdvTerrain.Rock;
-                    if (n < 0.86f) return AdvTerrain.RockGreen;
-                    return AdvTerrain.Autumn;
+                    if (n < 0.30f) return AdvTerrain.Dirt;           // 30%
+                    if (n < 0.52f) return AdvTerrain.Dry;            // 22%
+                    if (n < 0.70f) return AdvTerrain.Rock;           // 18%
+                    if (n < 0.86f) return AdvTerrain.RockGreen;      // 16%
+                    return AdvTerrain.Autumn;                         // 14%
 
-                default: // Temperate
+                default: // Temperate — как в SoQ: луга основа, лес — пятнами
                     if (nearSea && coastFactor > 0.6f && n < 0.5f) return AdvTerrain.Sand;
-                    // луга и лес — основа; поля/осень/болото — редкие вкрапления
-                    if (n < 0.40f) return AdvTerrain.Grass;
-                    if (n < 0.64f) return AdvTerrain.ForestMix;
-                    if (n < 0.76f) return AdvTerrain.Fields;
-                    if (n < 0.86f) return AdvTerrain.Autumn;
-                    if (n < 0.93f) return AdvTerrain.ForestPine;
-                    if (n < 0.97f) return AdvTerrain.Marsh;
-                    return AdvTerrain.RockGreen;
+                    if (n < 0.34f) return AdvTerrain.Grass;          // 34% — открытые луга
+                    if (n < 0.54f) return AdvTerrain.ForestMix;      // 20% — смешанный лес
+                    if (n < 0.64f) return AdvTerrain.Fields;         // 10% — поля
+                    if (n < 0.74f) return AdvTerrain.Autumn;         // 10% — осенние рощи
+                    if (n < 0.86f) return AdvTerrain.ForestPine;     // 12% — сосны
+                    if (n < 0.90f) return AdvTerrain.Marsh;          //  4% — болотца
+                    if (n < 0.95f) return AdvTerrain.RockGreen;      //  5% — зелёные скалы
+                    return AdvTerrain.Rock;                           //  5% — скалы (горные массивы)
             }
         }
     }

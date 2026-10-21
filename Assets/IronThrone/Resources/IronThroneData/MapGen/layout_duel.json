@@ -252,7 +252,7 @@
           "region_identifier": [
             "treasure_medium"
           ],
-          "biome": "north",
+          "biome": "temperate",
           "displayName": "Северные пустоши",
           "guardTier": [
             "Medium"
@@ -274,7 +274,7 @@
           "region_identifier": [
             "treasure_medium"
           ],
-          "biome": "desert",
+          "biome": "temperate",
           "displayName": "Южные барханы",
           "guardTier": [
             "Medium"
@@ -296,7 +296,7 @@
           "region_identifier": [
             "treasure_high"
           ],
-          "biome": "wasteland",
+          "biome": "temperate",
           "displayName": "Пепельный перевал",
           "guardTier": [
             "High"
@@ -318,7 +318,7 @@
           "region_identifier": [
             "treasure_high"
           ],
-          "biome": "swamp",
+          "biome": "temperate",
           "displayName": "Гнилые топи",
           "guardTier": [
             "High"
@@ -438,7 +438,8 @@
             4
           ]
         }
-      ]
+      ],
+      "biome": "temperate"
     },
     {
       "name": "Две реки",
@@ -655,7 +656,7 @@
           "region_identifier": [
             "treasure_high"
           ],
-          "biome": "north",
+          "biome": "temperate",
           "displayName": "Ледостав",
           "guardTier": [
             "High"
@@ -677,7 +678,7 @@
           "region_identifier": [
             "treasure_high"
           ],
-          "biome": "desert",
+          "biome": "temperate",
           "displayName": "Сожжённый тракт",
           "guardTier": [
             "High"
@@ -699,7 +700,7 @@
           "region_identifier": [
             "treasure_medium"
           ],
-          "biome": "highlands",
+          "biome": "temperate",
           "displayName": "Каменный зуб",
           "guardTier": [
             "Medium"
@@ -721,7 +722,7 @@
           "region_identifier": [
             "treasure_medium"
           ],
-          "biome": "wasteland",
+          "biome": "temperate",
           "displayName": "Ржавые холмы",
           "guardTier": [
             "Medium"
@@ -801,7 +802,8 @@
             "High"
           ]
         }
-      ]
+      ],
+      "biome": "temperate"
     }
   ]
 }

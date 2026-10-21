@@ -168,6 +168,14 @@ namespace IronThrone.Unity.SoqMap
             else if (Input.GetKeyDown(KeyCode.N)) RandomSeed();
             else if (Input.GetKeyDown(KeyCode.Escape)) BackToMenu();
             else if (Input.GetKeyDown(KeyCode.F1)) _showHelp = !_showHelp;
+            else if (Input.GetKeyDown(KeyCode.F)) FitAll();
+        }
+
+        /// <summary>Показать карту целиком (как обзорная камера в SoQ).</summary>
+        public void FitAll()
+        {
+            if (_view == null || _view.Rig == null || _map == null) return;
+            _view.Rig.Fit(new Vector2(_map.Width * SoqMapView.TileSize, _map.Height * SoqMapView.TileSize));
         }
 
         private static void BackToMenu()
@@ -351,7 +359,7 @@ namespace IronThrone.Unity.SoqMap
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("← В главное меню  (Esc)", _button, GUILayout.Height(28))) BackToMenu();
             if (_showHelp)
-                GUILayout.Label("WASD/стрелки — камера, колесо — зум, средняя кнопка — тянуть. R — перегенерировать, N — новый сид.", _small);
+                GUILayout.Label("WASD/стрелки — камера, колесо — зум, средняя кнопка — тянуть, F — вся карта. R — перегенерировать, N — новый сид.", _small);
             GUILayout.EndArea();
 
             DrawMapOverlay(panelRect);

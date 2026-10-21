@@ -347,7 +347,10 @@ namespace IronThrone.Core.Worldgen
                     guardTier = string.IsNullOrEmpty(o["guardTier"].AsString) ? "Random" : o["guardTier"].AsString,
                     maxPerMap = Int(o, "maxPerMap", 0),
                     tooltip = o["tooltip"].AsString,
+                    flat = Bool(o, "flat", false),
+                    mountain = Bool(o, "mountain", false),
                 };
+                ReadStringList(o["terrain"], def.terrain);
                 if (string.IsNullOrEmpty(def.id))
                 {
                     warnings.Add("каталог: объект без id — пропущен");

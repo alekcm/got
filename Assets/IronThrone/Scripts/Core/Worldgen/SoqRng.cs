@@ -114,6 +114,28 @@ namespace IronThrone.Core.Worldgen
         public static float Hash01(int x, int y, int salt) => (Hash(x, y, salt) & 0xFFFFFF) / 16777215f;
 
         /// <summary>
+        /// Стабильный «рощевой» шум по координатам тайла — без состояния и без
+        /// зависимости от порядка обхода. Нужен, чтобы декор собирался куртинами.
+        /// </summary>
+        public static float GroveNoise(int x, int y, int salt)
+        {
+            float sum = 0f, amp = 1f, norm = 0f;
+            int fx = 0x9E37, fy = 0x85EB;
+            for (int o = 0; o < 3; o++)
+            {
+                int ix = (x << (o + 1)) / 3;   // грубая сетка на первой октаве
+                int iy = (y << (o + 1)) / 3;
+                float v = Hash01(ix, iy, salt + fx * 7 + fy * 13 + o * 101);
+                sum += v * amp;
+                norm += amp;
+                amp *= 0.55f;
+                fx = fx * 31 + 17;
+                fy = fy * 17 + 31;
+            }
+            return norm > 0f ? sum / norm : 0f;
+        }
+
+        /// <summary>
         /// Простой value-noise с бикубической интерполяцией. Решётка строится из
         /// перестановок, зависящих от сида, поэтому шум воспроизводим.
         /// </summary>

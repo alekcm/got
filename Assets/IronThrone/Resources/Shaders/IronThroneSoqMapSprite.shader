@@ -14,13 +14,20 @@ Shader "IronThrone/SoqMapSprite"
         _UseRamp ("Use light ramp", Range(0, 1)) = 0
         _RampStrength ("Ramp strength", Range(0, 2)) = 1
         _RampFlat ("Ramp flatten", Range(0, 1)) = 0.25
+        _SrcBlend ("Src blend", Float) = 1
+        _DstBlend ("Dst blend", Float) = 0
+        _ZWrite ("ZWrite", Float) = 1
+        [NoScaleOffset] _MaskTex ("Mask", 2D) = "white" {}
+        _UseMask ("Use mask", Range(0, 1)) = 0
+        _MaskPower ("Mask power", Float) = 1
     }
     SubShader
     {
         Tags { "Queue" = "AlphaTest" "RenderType" = "TransparentCutout" "IgnoreProjector" = "True" }
         LOD 100
         Cull Off
-        ZWrite On
+        Blend [_SrcBlend] [_DstBlend]
+        ZWrite [_ZWrite]
 
         Pass
         {
@@ -38,6 +45,9 @@ Shader "IronThrone/SoqMapSprite"
             float _UseRamp;
             float _RampStrength;
             float _RampFlat;
+            sampler2D _MaskTex;
+            float _UseMask;
+            float _MaskPower;
 
             struct appdata
             {
@@ -50,6 +60,7 @@ Shader "IronThrone/SoqMapSprite"
             {
                 float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float2 maskUV : TEXCOORD2;
                 float4 color : COLOR;
                 UNITY_FOG_COORDS(1)
             };
@@ -59,6 +70,7 @@ Shader "IronThrone/SoqMapSprite"
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.maskUV = v.uv;
                 o.color = v.color * _Color;
                 UNITY_TRANSFER_FOG(o, o.pos);
                 return o;
@@ -67,6 +79,12 @@ Shader "IronThrone/SoqMapSprite"
             fixed4 frag(v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv) * i.color;
+                if (_UseMask > 0.5)
+                {
+                    // дорога «вплавлена» в землю: маска задаёт и форму, и прозрачность
+                    float m = saturate(tex2D(_MaskTex, i.maskUV).r * _MaskPower);
+                    col.a *= m;
+                }
                 clip(col.a - _Cutoff);
 
                 if (_UseRamp > 0.5)

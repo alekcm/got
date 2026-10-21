@@ -1,6 +1,6 @@
 // IronThrone: 2.5D-вид сгенерированной карты приключений в духе Songs of Conquest.
 // Квадратная сетка (как в SoQ), наклонные стенди-спрайты объектов, плоская земля
-// из 16 тайлов Resources/Art/Terrain, дороги, границы регионов, вода и миникарта.
+// из 16 тайлов Resources/Art/SoQ/Terrain, дороги, вода и миникарта.
 // Вся география приходит из SoqMapGenerator; здесь только отрисовка.
 using System;
 using System.Collections.Generic;
@@ -168,14 +168,18 @@ namespace IronThrone.Unity.SoqMap
         /// </summary>
         public const float ObjectScale = 1.6f;
         /// <summary>
-        /// Тайлы рельефа в Resources/Art/Terrain нарисованы тёмными: в WorldMapView их
-        /// подсвечивает ramp-шейдер. Здесь освещения нет, поэтому компенсируем цветом.
+        /// Тайлы рельефа уже нормализованы по средней яркости (tools/soq_bake_terrain.py),
+        /// поэтому здесь только общая поправка на «сочность» картинки.
         /// </summary>
-        public const float GroundBrightness = 1.5f;
+        public const float GroundBrightness = 1.05f;
         /// <summary>Сколько тайлов занимает один период текстуры (общий UV-континуум).</summary>
         public const float GroundUvScale = 0.5f;
+        /// <summary>Разрешение control-текстур (веса биомов) в сэмплах на тайл.</summary>
+        private const int ControlDetail = 4;
 
         private static readonly string[] TerrainFiles = AdvTerrainInfo.TileNames;
+        /// <summary>Папка тайлов рельефа карты SoQ внутри Resources.</summary>
+        private const string TerrainRoot = "Art/SoQ/Terrain/";
 
         private static readonly Color[] RegionPalette =
         {
@@ -200,6 +204,12 @@ namespace IronThrone.Unity.SoqMap
         private Texture2D _white;
         private Material _groundMat;
         private Material _waterMat;
+        private Texture2D _coastTex;
+        private Texture2DArray _terrainArray;
+        private Texture2D _macroTex;
+        private Texture2D _detailTex;
+        private Texture2D _roadMask;
+        private Mesh _flatMesh;
         private Material _shadowMat;
         private Mesh _shadowMesh;
         private Material _objectMat;
@@ -246,7 +256,8 @@ namespace IronThrone.Unity.SoqMap
 
             BuildGround();
             BuildWater();
-            BuildRoadsAndBorders();
+            BuildRoads();
+            BuildBorders();
             BuildDecor();
             BuildObjects();
             BuildMinimap();
@@ -263,6 +274,16 @@ namespace IronThrone.Unity.SoqMap
                 if (_ownedMaterials[i] != null) UnityEngine.Object.Destroy(_ownedMaterials[i]);
             _ownedMaterials.Clear();
             if (_shadowMesh != null) UnityEngine.Object.Destroy(_shadowMesh);
+            if (_coastTex != null) UnityEngine.Object.Destroy(_coastTex);
+            if (_macroTex != null) UnityEngine.Object.Destroy(_macroTex);
+            if (_detailTex != null) UnityEngine.Object.Destroy(_detailTex);
+            if (_roadMask != null) UnityEngine.Object.Destroy(_roadMask);
+            _macroTex = null;
+            _detailTex = null;
+            if (_flatMesh != null) UnityEngine.Object.Destroy(_flatMesh);
+            _coastTex = null;
+            _roadMask = null;
+            _flatMesh = null;
             if (_white != null) UnityEngine.Object.Destroy(_white);
             if (_minimap != null) UnityEngine.Object.Destroy(_minimap);
             _waterMat = null;
@@ -351,7 +372,7 @@ namespace IronThrone.Unity.SoqMap
                     float dx = (x - c) / c, dy = (y - c) / c;
                     float d = Mathf.Sqrt(dx * dx + dy * dy);
                     float a = Mathf.Clamp01(1f - d);
-                    a *= a * 0.55f;
+                    a *= a * 0.38f;
                     px[y * size + x] = new Color32(0, 0, 0, (byte)(a * 255f));
                 }
             tex.SetPixels32(px);
@@ -391,99 +412,350 @@ namespace IronThrone.Unity.SoqMap
             var mr = go.AddComponent<MeshRenderer>();
             mr.sharedMaterial = _shadowMat;
         }
-
         // ---------------------------------------------------------------- земля
+
+        /// <summary>
+        /// Меш земли: одна сетка на всю карту. Цвет не в вертексных цветах, а
+        /// в шейдере: 16 классов рельефа смешиваются по весам из control-текстур,
+        /// поэтому переходы между биомами мягкие, как в SoQ.
+        /// </summary>
         private void BuildGround()
         {
             if (_map == null) return;
-            var byClass = new List<AdventureTile>[TerrainFiles.Length];
-            for (int i = 0; i < byClass.Length; i++) byClass[i] = new List<AdventureTile>();
-            foreach (var tile in _map.AllTiles())
-            {
-                if (tile.sea) continue;
-                int cls = Mathf.Clamp((int)tile.terrain, 0, TerrainFiles.Length - 1);
-                byClass[cls].Add(tile);
-            }
+            int W = _map.Width, H = _map.Height;
 
-            var tex = new Texture2D[TerrainFiles.Length];
-            for (int cls = 0; cls < TerrainFiles.Length; cls++)
-                tex[cls] = Resources.Load<Texture2D>("Art/Terrain/" + TerrainFiles[cls]);
+            _terrainArray = BuildTerrainArray();
+            var shader = Resources.Load<Shader>("Shaders/IronThroneSoqMapGround");
+            if (shader == null) shader = Shader.Find("IronThrone/SoqMapGround");
+            if (shader == null) return;
 
-            for (int cls = 0; cls < byClass.Length; cls++)
+            _groundMat = new Material(shader);
+            _ownedMaterials.Add(_groundMat);
+            if (_terrainArray != null) _groundMat.SetTexture("_TerrainArray", _terrainArray);
+            _groundMat.SetFloat("_Brightness", GroundBrightness);
+            _groundMat.SetColor("_SandColor", new Color(0.78f, 0.70f, 0.48f));
+            _groundMat.SetColor("_WaterColor", new Color(0.07f, 0.17f, 0.20f));
+            _groundMat.SetFloat("_ShoreWidth", 0.42f);
+            // фактура повторяется каждые ~3.2 тайла: реже — заметна сетка,
+            // чаще — теряется рисунок
+            _groundMat.SetFloat("_TileScale", W / 3.2f);
+
+            // два масштаба «погоды» карты: крупные пятна и мелкое зерно.
+            // Без них земля читается как однотонная заливка, особенно когда
+            // камера смотрит на карту целиком
+            float world = W * TileSize;
+            _macroTex = BuildNoiseTexture(128, 6, 11, "SoqGroundMacro");
+            _detailTex = BuildNoiseTexture(128, 48, 29, "SoqGroundDetail");
+            _groundMat.SetTexture("_MacroTex", _macroTex);
+            _groundMat.SetTexture("_DetailTex", _detailTex);
+            _groundMat.SetFloat("_MacroScale", world / 46f);
+            _groundMat.SetFloat("_DetailScale", world / 2.6f);
+            _groundMat.SetFloat("_MacroStrength", 0.11f);
+            _groundMat.SetFloat("_DetailStrength", 0.07f);
+            _groundMat.SetFloat("_ForestShade", 0.30f);
+
+            BuildControlTextures(W, H);
+
+            // сетка: 2 ячейки на тайл — рельеф не «ломается» по клеткам
+            const int perTile = 2;
+            int cx = W * perTile, cz = H * perTile;
+            float sizeX = W * TileSize, sizeZ = H * TileSize;
+            var verts = new Vector3[(cx + 1) * (cz + 1)];
+            var uvs = new Vector2[verts.Length];
+            int vi = 0;
+            for (int j = 0; j <= cz; j++)
             {
-                var tiles = byClass[cls];
-                if (tiles.Count == 0) continue;
-                var classMat = CreateGroundMaterial(tex[cls], Color.white);
-                // меш разбивается на куски: у Mesh индекс 16-битный (максимум 65535 вершин)
-                const int chunk = 4000;
-                for (int start = 0; start < tiles.Count; start += chunk)
+                for (int i = 0; i <= cx; i++)
                 {
-                    int count = Mathf.Min(chunk, tiles.Count - start);
-                    var verts = new List<Vector3>(count * 4);
-                    var uvs = new List<Vector2>(count * 4);
-                    var colors = new List<Color32>(count * 4);
-                    var tris = new List<int>(count * 6);
-                    float half = TileSize * 0.5f;
-
-                    for (int i = start; i < start + count; i++)
-                    {
-                        var tile = tiles[i];
-                        float cx = (tile.x + 0.5f) * TileSize;
-                        float cz = (tile.y + 0.5f) * TileSize;
-                        var tint = GroundTint(tile);
-                        int v = verts.Count;
-                        verts.Add(new Vector3(cx - half, GroundY, cz - half));
-                        verts.Add(new Vector3(cx + half, GroundY, cz - half));
-                        verts.Add(new Vector3(cx + half, GroundY, cz + half));
-                        verts.Add(new Vector3(cx - half, GroundY, cz + half));
-                        // UV в мировых координатах: соседние тайлы одного класса продолжают
-                        // друг друга, и карта не выглядит лоскутным одеялом 1×1.
-                        float u0 = tile.x * GroundUvScale, v0 = tile.y * GroundUvScale;
-                        float u1 = u0 + GroundUvScale, v1 = v0 + GroundUvScale;
-                        uvs.Add(new Vector2(u0, v0));
-                        uvs.Add(new Vector2(u1, v0));
-                        uvs.Add(new Vector2(u1, v1));
-                        uvs.Add(new Vector2(u0, v1));
-                        colors.Add(tint);
-                        colors.Add(tint);
-                        colors.Add(tint);
-                        colors.Add(tint);
-                        tris.Add(v + 0); tris.Add(v + 2); tris.Add(v + 1);
-                        tris.Add(v + 0); tris.Add(v + 3); tris.Add(v + 2);
-                    }
-
-                    var mesh = new Mesh { name = "ground_" + TerrainFiles[cls] };
-                    mesh.vertices = verts.ToArray();
-                    mesh.uv = uvs.ToArray();
-                    mesh.colors32 = colors.ToArray();
-                    mesh.triangles = tris.ToArray();
-                    mesh.RecalculateNormals();
-                    mesh.RecalculateBounds();
-
-                    _groundMat = classMat;
-                    AttachMesh("ground_" + TerrainFiles[cls] + "_" + start, mesh, classMat, _groundRoot.transform);
+                    float x = sizeX * i / cx;
+                    float z = sizeZ * j / cz;
+                    verts[vi] = new Vector3(x, GroundY, z);
+                    // uv = координаты карты 0..1: шейдер сам решает, какой тайл рисовать
+                    uvs[vi] = new Vector2((float)i / cx, (float)j / cz);
+                    vi++;
                 }
             }
+            var tris = new int[cx * cz * 6];
+            int ti = 0;
+            for (int j = 0; j < cz; j++)
+            {
+                for (int i = 0; i < cx; i++)
+                {
+                    int v0 = j * (cx + 1) + i;
+                    int v1 = v0 + 1;
+                    int v2 = v0 + (cx + 1);
+                    int v3 = v2 + 1;
+                    tris[ti++] = v0; tris[ti++] = v2; tris[ti++] = v1;
+                    tris[ti++] = v1; tris[ti++] = v2; tris[ti++] = v3;
+                }
+            }
+            var mesh = new Mesh { name = "ground" };
+            mesh.vertices = verts;
+            mesh.uv = uvs;
+            mesh.triangles = tris;
+            mesh.RecalculateBounds();
+            AttachMesh("ground", mesh, _groundMat, _groundRoot.transform);
         }
 
-        private Color32 GroundTint(AdventureTile tile)
+        /// <summary>
+        /// Texture2DArray из 16 тайлов Resources/Art/SoQ/Terrain. Это отдельный
+        /// набор, испечённый из настоящих текстур SoQ (tools/soq_bake_terrain.py):
+        /// тайлы основной карты партии (Art/Terrain) не меняются.
+        /// </summary>
+        private static Texture2DArray BuildTerrainArray()
         {
-            int cls = Mathf.Clamp((int)tile.terrain, 0, AdvTerrainInfo.Brightness.Length - 1);
-            float bright = AdvTerrainInfo.Brightness[cls] * GroundBrightness / 1.5f;
-            var region = _map.RegionAt(tile.x, tile.y);
-            var baseColor = Color.white;
-            if (region != null)
+            var first = Resources.Load<Texture2D>(TerrainRoot + TerrainFiles[0]);
+            if (first == null) return null;
+            int tw = first.width, th = first.height;
+            var arr = new Texture2DArray(tw, th, TerrainFiles.Length, TextureFormat.RGBA32, false);
+            arr.filterMode = FilterMode.Bilinear;
+            arr.wrapMode = TextureWrapMode.Repeat;
+            for (int i = 0; i < TerrainFiles.Length; i++)
             {
-                var rc = RegionColor(region);
-                baseColor = Color.Lerp(Color.white, rc, 0.10f);
+                var tex = Resources.Load<Texture2D>(TerrainRoot + TerrainFiles[i]);
+                if (tex == null) continue;
+                var px = tex.GetPixels32();
+                if (px == null || px.Length != tw * th) continue;
+                arr.SetPixels32(px, 0, i);
             }
-            // лёгкая вариация, чтобы одинаковые тайлы не сливались
-            float n = SoqRng.Hash01(tile.x, tile.y, 17) * 0.10f - 0.05f;
-            return new Color(
-                Mathf.Clamp01((baseColor.r + n) * bright),
-                Mathf.Clamp01((baseColor.g + n) * bright),
-                Mathf.Clamp01((baseColor.b + n) * bright),
-                1f);
+            arr.Apply();
+            return arr;
+        }
+
+        /// <summary>
+        /// Бесшовная (по построению — тайлится) карта value-noise: решётка
+        /// cells x cells со сглаженными переходами. Мелкое зерно даёт «шум»
+        /// текстуры, крупная — пятна света и тени на лугах.
+        /// </summary>
+        private static Texture2D BuildNoiseTexture(int size, int cells, int seed, string name)
+        {
+            var px = new Color32[size * size];
+            for (int y = 0; y < size; y++)
+            {
+                float fy = (y + 0.5f) / size * cells;
+                int y0 = Mathf.FloorToInt(fy);
+                float ty = fy - y0;
+                ty = ty * ty * (3f - 2f * ty);
+                for (int x = 0; x < size; x++)
+                {
+                    float fx = (x + 0.5f) / size * cells;
+                    int x0 = Mathf.FloorToInt(fx);
+                    float tx = fx - x0;
+                    tx = tx * tx * (3f - 2f * tx);
+
+                    // решётка замкнута по модулю cells — текстура тайлится
+                    int ax = ((x0 % cells) + cells) % cells;
+                    int ay = ((y0 % cells) + cells) % cells;
+                    int bx = (ax + 1) % cells;
+                    int by = (ay + 1) % cells;
+                    float v00 = SoqRng.Hash01(ax, ay, seed);
+                    float v10 = SoqRng.Hash01(bx, ay, seed);
+                    float v01 = SoqRng.Hash01(ax, by, seed);
+                    float v11 = SoqRng.Hash01(bx, by, seed);
+                    float v = Mathf.Lerp(Mathf.Lerp(v00, v10, tx), Mathf.Lerp(v01, v11, tx), ty);
+                    byte b = (byte)(Mathf.Clamp01(v) * 255f);
+                    px[y * size + x] = new Color32(b, b, b, 255);
+                }
+            }
+            var tex = MakeTex(size, size, px, name);
+            tex.filterMode = FilterMode.Bilinear;
+            tex.wrapMode = TextureWrapMode.Repeat;
+            return tex;
+        }
+
+        /// <summary>
+        /// Control-текстуры: на каждый сэмпл — билинейные веса четырёх ближайших
+        /// тайлов. Плюс карта берега (R = суша, G = расстояние до суши).
+        /// </summary>
+        private void BuildControlTextures(int W, int H)
+        {
+            int tw = W * ControlDetail, th = H * ControlDetail;
+            var c0 = new Color32[tw * th];
+            var c1 = new Color32[tw * th];
+            var c2 = new Color32[tw * th];
+            var c3 = new Color32[tw * th];
+            var coast = new Color32[tw * th];
+
+            var depth = ComputeWaterDepth(W, H);
+            var coastField = ComputeCoastField(W, H);
+            var wts = new float[TerrainFiles.Length];
+
+            for (int j = 0; j < th; j++)
+            {
+                float ty = (j + 0.5f) / ControlDetail - 0.5f;   // в координатах тайлов
+                int y0 = Mathf.FloorToInt(ty);
+                float fy = ty - y0;
+                for (int i = 0; i < tw; i++)
+                {
+                    float tx = (i + 0.5f) / ControlDetail - 0.5f;
+                    int x0 = Mathf.FloorToInt(tx);
+                    float fx = tx - x0;
+
+                    for (int k = 0; k < wts.Length; k++) wts[k] = 0f;
+                    float land = 0f;
+                    AccumTile(x0, y0, (1 - fx) * (1 - fy), W, H, wts, ref land);
+                    AccumTile(x0 + 1, y0, fx * (1 - fy), W, H, wts, ref land);
+                    AccumTile(x0, y0 + 1, (1 - fx) * fy, W, H, wts, ref land);
+                    AccumTile(x0 + 1, y0 + 1, fx * fy, W, H, wts, ref land);
+
+                    float sum = 0f;
+                    for (int k = 0; k < wts.Length; k++) sum += wts[k];
+                    if (sum > 0.0001f)
+                        for (int k = 0; k < wts.Length; k++) wts[k] /= sum;
+
+                    int p = j * tw + i;
+                    c0[p] = Pack4(wts, 0);
+                    c1[p] = Pack4(wts, 4);
+                    c2[p] = Pack4(wts, 8);
+                    c3[p] = Pack4(wts, 12);
+
+                    int cx0 = Mathf.Clamp(i / ControlDetail, 0, W - 1);
+                    int cy0 = Mathf.Clamp(j / ControlDetail, 0, H - 1);
+                    // глубина берётся с тайла: 0 у берега, 1 в открытом море
+                    byte d = (byte)(Mathf.Clamp01(depth[cy0 * W + cx0]) * 255f);
+                    // берег — сглаженное поле расстояния, а не флаг тайла:
+                    // именно это убирает «лесенку» по краю островов
+                    byte lf = (byte)(Mathf.Clamp01(coastField[cy0 * W + cx0]) * 255f);
+                    coast[p] = new Color32(lf, d, 0, 255);
+                }
+            }
+
+            _groundMat.SetTexture("_ControlA", MakeTex(tw, th, c0, "ControlA"));
+            _groundMat.SetTexture("_ControlB", MakeTex(tw, th, c1, "ControlB"));
+            _groundMat.SetTexture("_ControlC", MakeTex(tw, th, c2, "ControlC"));
+            _groundMat.SetTexture("_ControlD", MakeTex(tw, th, c3, "ControlD"));
+            if (_coastTex != null) UnityEngine.Object.Destroy(_coastTex);
+            _coastTex = MakeTex(tw, th, coast, "Coast");
+            _groundMat.SetTexture("_Coast", _coastTex);
+        }
+
+        private void AccumTile(int x, int y, float w, int W, int H, float[] wts, ref float land)
+        {
+            if (w <= 0f) return;
+            var tile = _map.Tile(Mathf.Clamp(x, 0, W - 1), Mathf.Clamp(y, 0, H - 1));
+            if (tile == null || tile.sea) return;
+            int cls = Mathf.Clamp((int)tile.terrain, 0, wts.Length - 1);
+            wts[cls] += w;
+            land += w;
+        }
+
+        private static Color32 Pack4(float[] wts, int offset)
+        {
+            return new Color32(
+                (byte)(Mathf.Clamp01(wts[offset + 0]) * 255f),
+                (byte)(Mathf.Clamp01(wts[offset + 1]) * 255f),
+                (byte)(Mathf.Clamp01(wts[offset + 2]) * 255f),
+                (byte)(Mathf.Clamp01(wts[offset + 3]) * 255f));
+        }
+
+        /// <summary>Расстояние от моря до суши в тайлах, нормированное к 0..1.</summary>
+        private float[] ComputeWaterDepth(int W, int H)
+        {
+            int n = W * H;
+            var depth = new float[n];
+            var visited = new bool[n];
+            var queue = new Queue<int>();
+            for (int i = 0; i < n; i++)
+            {
+                var t = _map.Tiles[i];
+                if (!t.sea) { visited[i] = true; queue.Enqueue(i); }
+            }
+            int level = 0;
+            const int maxDist = 8;
+            while (queue.Count > 0 && level <= maxDist)
+            {
+                int count = queue.Count;
+                for (int k = 0; k < count; k++)
+                {
+                    int cur = queue.Dequeue();
+                    int x = cur % W, y = cur / W;
+                    for (int d = 0; d < 4; d++)
+                    {
+                        int nx = x + AdventureMap.Dx[d], ny = y + AdventureMap.Dy[d];
+                        if (!_map.InBounds(nx, ny)) continue;
+                        int ni = ny * W + nx;
+                        if (visited[ni]) continue;
+                        visited[ni] = true;
+                        depth[ni] = (level + 1) / (float)maxDist;
+                        queue.Enqueue(ni);
+                    }
+                }
+                level++;
+            }
+            return depth;
+        }
+
+        /// <summary>
+        /// Поле берега 0..1 (0.5 — линия воды). Считается как расстояние до линии
+        /// воды в тайлах: у суши 0.5..1, у моря 0..0.5. Край острова получается
+        /// плавным, а не ступеньками по клеткам.
+        /// </summary>
+        private float[] ComputeCoastField(int W, int H)
+        {
+            int n = W * H;
+            var field = new float[n];
+            var visited = new bool[n];
+            var queue = new Queue<int>();
+            for (int i = 0; i < n; i++)
+            {
+                // база: суша = 1, море = 0; у самой воды уточним по расстоянию
+                field[i] = _map.Tiles[i].sea ? 0f : 1f;
+                if (IsCoastTile(i % W, i / W))
+                {
+                    field[i] = 0.5f;
+                    visited[i] = true;
+                    queue.Enqueue(i);
+                }
+            }
+            const int spread = 3;
+            int level = 0;
+            while (queue.Count > 0 && level < spread)
+            {
+                int count = queue.Count;
+                for (int k = 0; k < count; k++)
+                {
+                    int cur = queue.Dequeue();
+                    int x = cur % W, y = cur / W;
+                    bool sea = _map.Tiles[cur].sea;
+                    for (int d = 0; d < 4; d++)
+                    {
+                        int nx = x + AdventureMap.Dx[d], ny = y + AdventureMap.Dy[d];
+                        if (!_map.InBounds(nx, ny)) continue;
+                        int ni = ny * W + nx;
+                        if (visited[ni]) continue;
+                        if (_map.Tiles[ni].sea != sea) continue;
+                        visited[ni] = true;
+                        float step = (level + 1) / (float)(spread + 1);
+                        field[ni] = sea ? 0.5f - step * 0.45f : 0.5f + step * 0.45f;
+                        queue.Enqueue(ni);
+                    }
+                }
+                level++;
+            }
+            return field;
+        }
+
+        private bool IsCoastTile(int x, int y)
+        {
+            bool sea = _map.Tile(x, y) != null && _map.Tile(x, y).sea;
+            for (int d = 0; d < 4; d++)
+            {
+                var nb = _map.Tile(x + AdventureMap.Dx[d], y + AdventureMap.Dy[d]);
+                if (nb == null) continue;
+                if (nb.sea != sea) return true;
+            }
+            return false;
+        }
+
+        private static Texture2D MakeTex(int w, int h, Color32[] px, string name)
+        {
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            tex.name = name;
+            tex.wrapMode = TextureWrapMode.Clamp;
+            tex.filterMode = FilterMode.Bilinear;
+            tex.SetPixels32(px);
+            tex.Apply();
+            return tex;
         }
 
         public Color RegionColor(AdventureRegion region)
@@ -498,7 +770,8 @@ namespace IronThrone.Unity.SoqMap
         private void BuildWater()
         {
             if (_map == null) return;
-            float size = _map.Width * TileSize;
+            float sizeX = _map.Width * TileSize;
+            float sizeZ = _map.Height * TileSize;
             var shader = Resources.Load<Shader>("Shaders/IronThroneSoqMapWater");
             if (shader == null) shader = Shader.Find("IronThrone/SoqMapWater");
             if (shader == null) return;
@@ -509,113 +782,178 @@ namespace IronThrone.Unity.SoqMap
             var deep = Resources.Load<Texture2D>("Art/ArleonAdventureWaterDeepSurfaceTexture");
             if (shallow != null) _waterMat.SetTexture("_ShallowTex", shallow);
             if (deep != null) _waterMat.SetTexture("_DeepTex", deep);
-            _waterMat.SetColor("_Color", new Color(0.20f, 0.38f, 0.48f, 0.94f));
-            _waterMat.SetFloat("_Tiling", 0.10f);
-            _waterMat.SetFloat("_Speed", 0.015f);
+            if (_coastTex != null) _waterMat.SetTexture("_Coast", _coastTex);
+            _waterMat.SetColor("_Color", new Color(0.09f, 0.22f, 0.24f, 0.94f));
+            _waterMat.SetColor("_ShallowColor", new Color(0.26f, 0.44f, 0.40f, 1f));
+            _waterMat.SetColor("_FoamColor", new Color(0.80f, 0.90f, 0.90f, 1f));
+            _waterMat.SetFloat("_Tiling", 0.055f);
+            _waterMat.SetFloat("_Speed", 0.010f);
+            _waterMat.SetFloat("_FoamWidth", 0.075f);
 
             var verts = new[]
             {
-                new Vector3(0, 0, 0), new Vector3(size, 0, 0),
-                new Vector3(size, 0, size), new Vector3(0, 0, size),
+                new Vector3(0, 0, 0), new Vector3(sizeX, 0, 0),
+                new Vector3(sizeX, 0, sizeZ), new Vector3(0, 0, sizeZ),
             };
             var uvs = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
             var mesh = new Mesh { name = "water", vertices = verts, uv = uvs, triangles = new[] { 0, 2, 1, 0, 3, 2 } };
             mesh.RecalculateBounds();
-            AttachMesh("water", mesh, _waterMat, _root.transform);
+            var go = new GameObject("water");
+            go.transform.parent = _root.transform;
+            go.transform.position = new Vector3(0f, GroundY + 0.53f, 0f);
+            var mf = go.AddComponent<MeshFilter>();
+            mf.sharedMesh = mesh;
+            var mr = go.AddComponent<MeshRenderer>();
+            mr.sharedMaterial = _waterMat;
         }
 
-        // ---------------------------------------------------------------- дороги и границы
-        private void BuildRoadsAndBorders()
+        // ---------------------------------------------------------------- дороги
+
+        /// <summary>
+        /// Дороги рисуются не отдельными квадами, а маской: в узлах дорожной сети
+        /// ставится «пятно», вдоль связей — капсула, маска размывается. Поэтому
+        /// перекрёстки круглые, а лента непрерывная — как в SoQ, где дорога
+        /// вплавлена в землю, а не лежит поверх клеток.
+        /// </summary>
+        private void BuildRoads()
         {
             if (_map == null) return;
-            var roadVerts = new List<Vector3>();
-            var roadColors = new List<Color32>();
-            var roadTris = new List<int>();
-            var roadColor = new Color(0.64f, 0.49f, 0.30f);
-            var borderVerts = new List<Vector3>();
-            var borderColors = new List<Color32>();
-            var borderTris = new List<int>();
+            var roadTex = Resources.Load<Texture2D>("Art/SoQ/soq_road");
+            int W = _map.Width, H = _map.Height;
+            const int samples = 4;                  // сэмплов маски на тайл
+            int tw = W * samples, th = H * samples;
+            var mask = new float[tw * th];
+            float radius = TileSize * 0.175f;
+            float cell = TileSize / samples;
 
-            float half = TileSize * 0.5f;
-            float roadHalf = TileSize * 0.16f;
-            float borderWidth = TileSize * 0.035f;
+            // узлы + капсулы вдоль связей
+            foreach (var tile in _map.AllTiles())
+            {
+                if (tile.sea || !tile.road) continue;
+                float cx = (tile.x + 0.5f) * TileSize;
+                float cz = (tile.y + 0.5f) * TileSize;
+                SplatDisc(mask, tw, th, cell, cx, cz, radius * 1.25f);
+                for (int d = 0; d < 4; d++)
+                {
+                    int nx = tile.x + AdventureMap.Dx[d], ny = tile.y + AdventureMap.Dy[d];
+                    var nt = _map.Tile(nx, ny);
+                    if (nt == null || nt.sea || !nt.road) continue;
+                    if (ny < tile.y || (ny == tile.y && nx < tile.x)) continue;
+                    float ex = (nx + 0.5f) * TileSize;
+                    float ez = (ny + 0.5f) * TileSize;
+                    SplatCapsule(mask, tw, th, cell, cx, cz, ex, ez, radius);
+                }
+            }
 
+            // размытие снимает лесенку от клеток; затем кромка поджимается,
+            // чтобы полотно читалось как дорога, а не как облако пыли
+            for (int pass = 0; pass < 2; pass++)
+                mask = Blur(mask, tw, th);
+            for (int i = 0; i < mask.Length; i++)
+            {
+                float v = Mathf.Clamp01((mask[i] - 0.28f) / 0.44f);
+                mask[i] = v * v * (3f - 2f * v);
+            }
+
+            var px = new Color32[tw * th];
+            for (int i = 0; i < px.Length; i++)
+            {
+                byte a = (byte)(Mathf.Clamp01(mask[i]) * 255f);
+                px[i] = new Color32(a, a, a, a);
+            }
+            var maskTex = MakeTex(tw, th, px, "RoadMask");
+            maskTex.wrapMode = TextureWrapMode.Clamp;
+            _roadMask = maskTex;
+
+            var shader = LoadSpriteShader();
+            if (shader == null) return;
+
+            var mat = new Material(shader);
+            _ownedMaterials.Add(mat);
+            mat.mainTexture = roadTex != null ? roadTex : _white;
+            mat.SetTexture("_MaskTex", maskTex);
+            mat.SetFloat("_UseMask", 1f);
+            mat.SetFloat("_MaskPower", 1.0f);
+            mat.SetColor("_Color", new Color(0.98f, 0.95f, 0.90f, 1f));
+            mat.SetFloat("_Cutoff", 0.01f);
+            mat.SetFloat("_UseRamp", 0f);
+            mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetFloat("_ZWrite", 0f);
+            mat.renderQueue = 2450;
+
+            // плоскость на всю карту: UV = координаты карты, текстура дороги тайлится миром
+            float sizeX = W * TileSize, sizeZ = H * TileSize;
+            var verts = new[]
+            {
+                new Vector3(0, GroundY + 0.014f, 0),
+                new Vector3(sizeX, GroundY + 0.014f, 0),
+                new Vector3(sizeX, GroundY + 0.014f, sizeZ),
+                new Vector3(0, GroundY + 0.014f, sizeZ),
+            };
+            // UV: 0..1 по карте (для маски), а тайлинг фактуры — через _MainTex_ST
+            var uvs = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
+            mat.mainTextureScale = new Vector2(sizeX / (TileSize * 0.9f), sizeZ / (TileSize * 0.9f));
+            var mesh = new Mesh { name = "roads", vertices = verts, uv = uvs, triangles = new[] { 0, 2, 1, 0, 3, 2 } };
+            mesh.RecalculateBounds();
+            AttachMesh("roads", mesh, mat, _root.transform);
+        }
+
+        /// <summary>
+        /// Границы регионов: тонкая цветная линия по кромке владений (как в SoQ —
+        /// цвет региона виден на стыке, где заканчивается один и начинается другой).
+        /// </summary>
+        private void BuildBorders()
+        {
+            if (_map == null) return;
+            var verts = new List<Vector3>();
+            var colors = new List<Color32>();
+            var tris = new List<int>();
+            float width = TileSize * 0.045f;
             foreach (var tile in _map.AllTiles())
             {
                 if (tile.sea) continue;
-                float cx = (tile.x + 0.5f) * TileSize;
-                float cz = (tile.y + 0.5f) * TileSize;
-                var region = _map.RegionAt(tile.x, tile.y);
-                var regionColor = RegionColor(region);
-
-                if (tile.road)
-                {
-                    float ry = GroundY + 0.004f;
-                    // центр перекрёстка
-                    AddQuad(roadVerts, roadColors, roadTris,
-                        new Vector3(cx - roadHalf, ry, cz - roadHalf),
-                        new Vector3(cx + roadHalf, ry, cz + roadHalf),
-                        roadColor, 0.85f);
-                    // «рукава» к соседям по дороге
-                    for (int d = 0; d < 4; d++)
-                    {
-                        int nx = tile.x + AdventureMap.Dx[d], ny = tile.y + AdventureMap.Dy[d];
-                        var nt = _map.Tile(nx, ny);
-                        if (nt == null || nt.sea || !nt.road) continue;
-                        float dx = AdventureMap.Dx[d], dy = AdventureMap.Dy[d];
-                        float ex = cx + dx * half;
-                        float ez = cz + dy * half;
-                        // перпендикуляр к направлению дороги в плоскости x/z
-                        float px = dy * roadHalf;
-                        float pz = dx * roadHalf;
-                        AddQuadRaw(roadVerts, roadColors, roadTris,
-                            new Vector3(cx - px, ry, cz - pz),
-                            new Vector3(ex + px, ry, ez + pz),
-                            new Color(roadColor.r, roadColor.g, roadColor.b, 0.8f));
-                    }
-                }
-
-                // границы: только там, где сосед — другой регион или море
-                AddBorderEdge(borderVerts, borderColors, borderTris, tile, 1, 0, borderWidth, regionColor);
-                AddBorderEdge(borderVerts, borderColors, borderTris, tile, -1, 0, borderWidth, regionColor);
-                AddBorderEdge(borderVerts, borderColors, borderTris, tile, 0, 1, borderWidth, regionColor);
-                AddBorderEdge(borderVerts, borderColors, borderTris, tile, 0, -1, borderWidth, regionColor);
+                var color = RegionColor(_map.RegionAt(tile.x, tile.y));
+                AddBorderEdge(verts, colors, tris, tile, 1, 0, width, color);
+                AddBorderEdge(verts, colors, tris, tile, -1, 0, width, color);
+                AddBorderEdge(verts, colors, tris, tile, 0, 1, width, color);
+                AddBorderEdge(verts, colors, tris, tile, 0, -1, width, color);
             }
+            if (tris.Count == 0) return;
 
-            if (roadTris.Count > 0)
-            {
-                var mesh = new Mesh { name = "roads" };
-                mesh.vertices = roadVerts.ToArray();
-                mesh.colors32 = roadColors.ToArray();
-                mesh.triangles = roadTris.ToArray();
-                var mat = CreateGroundMaterial(_white, Color.white);
-                AttachMesh("roads", mesh, mat, _root.transform);
-            }
+            var mat = CreateGroundMaterial(_white, Color.white);
+            if (mat == null) return;
+            mat.SetFloat("_Cutoff", 0.01f);
+            mat.SetFloat("_UseRamp", 0f);
+            mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetFloat("_ZWrite", 0f);
+            mat.renderQueue = 2440;   // под дорогой (2450), над землёй
 
-            if (borderTris.Count > 0)
-            {
-                var mesh = new Mesh { name = "borders" };
-                mesh.vertices = borderVerts.ToArray();
-                mesh.colors32 = borderColors.ToArray();
-                mesh.triangles = borderTris.ToArray();
-                var mat = CreateGroundMaterial(_white, Color.white);
-                AttachMesh("borders", mesh, mat, _root.transform);
-            }
+            var mesh = new Mesh { name = "borders" };
+            mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            mesh.vertices = verts.ToArray();
+            mesh.colors32 = colors.ToArray();
+            mesh.triangles = tris.ToArray();
+            mesh.RecalculateBounds();
+            AttachMesh("borders", mesh, mat, _root.transform);
         }
 
+        /// <summary>Квад вдоль кромки тайла, если сосед — другой регион или море.</summary>
         private void AddBorderEdge(List<Vector3> verts, List<Color32> colors, List<int> tris,
             AdventureTile tile, int dx, int dy, float width, Color color)
         {
-            int nx = tile.x + dx, ny = tile.y + dy;
-            var neighbor = _map.Tile(nx, ny);
-            var selfRegion = tile.region;
-            if (neighbor != null && !neighbor.sea && neighbor.region == selfRegion) return;
+            var neighbor = _map.Tile(tile.x + dx, tile.y + dy);
+            // по берегу линию не рисуем: там уже работает подсветка мелководья,
+            // а цветная кромка вдоль всего острова выглядит как обводка
+            if (neighbor == null || neighbor.sea) return;
+            if (neighbor.region == tile.region) return;
 
             float cx = (tile.x + 0.5f) * TileSize;
             float cz = (tile.y + 0.5f) * TileSize;
             float half = TileSize * 0.5f;
             float y = GroundY + 0.012f;
-            Color32 c = new Color(color.r, color.g, color.b, 0.75f);
+            Color32 c = new Color(color.r, color.g, color.b, 0.30f);
 
             if (dx != 0)
             {
@@ -647,17 +985,73 @@ namespace IronThrone.Unity.SoqMap
             tris.Add(v + 0); tris.Add(v + 3); tris.Add(v + 2);
         }
 
-        private static void AddQuad(List<Vector3> verts, List<Color32> colors, List<int> tris,
-            Vector3 a, Vector3 b, Color color, float alpha)
+        private static void SplatDisc(float[] mask, int tw, int th, float cell, float cx, float cz, float radius)
         {
-            AddQuadRaw(verts, colors, tris, a, b, new Color(color.r, color.g, color.b, alpha));
+            int x0 = Mathf.FloorToInt((cx - radius) / cell), x1 = Mathf.CeilToInt((cx + radius) / cell);
+            int y0 = Mathf.FloorToInt((cz - radius) / cell), y1 = Mathf.CeilToInt((cz + radius) / cell);
+            for (int y = Mathf.Max(0, y0); y <= Mathf.Min(th - 1, y1); y++)
+            {
+                float wz = (y + 0.5f) * cell;
+                for (int x = Mathf.Max(0, x0); x <= Mathf.Min(tw - 1, x1); x++)
+                {
+                    float wx = (x + 0.5f) * cell;
+                    float d = Mathf.Sqrt((wx - cx) * (wx - cx) + (wz - cz) * (wz - cz));
+                    float v = Mathf.Clamp01(1f - (d - radius * 0.55f) / (radius * 0.45f));
+                    int i = y * tw + x;
+                    if (v > mask[i]) mask[i] = v;
+                }
+            }
+        }
+
+        private static void SplatCapsule(float[] mask, int tw, int th, float cell,
+            float ax, float az, float bx, float bz, float radius)
+        {
+            float len = Mathf.Sqrt((bx - ax) * (bx - ax) + (bz - az) * (bz - az));
+            int steps = Mathf.Max(2, Mathf.CeilToInt(len / (cell * 0.5f)));
+            for (int s = 0; s <= steps; s++)
+            {
+                float t = (float)s / steps;
+                SplatDisc(mask, tw, th, cell, Mathf.Lerp(ax, bx, t), Mathf.Lerp(az, bz, t), radius);
+            }
+        }
+
+        private static float[] Blur(float[] src, int w, int h)
+        {
+            var dst = new float[src.Length];
+            for (int y = 0; y < h; y++)
+            {
+                for (int x = 0; x < w; x++)
+                {
+                    float sum = 0f;
+                    int n = 0;
+                    for (int dy = -1; dy <= 1; dy++)
+                    {
+                        int ny = y + dy;
+                        if (ny < 0 || ny >= h) continue;
+                        for (int dx = -1; dx <= 1; dx++)
+                        {
+                            int nx = x + dx;
+                            if (nx < 0 || nx >= w) continue;
+                            sum += src[ny * w + nx];
+                            n++;
+                        }
+                    }
+                    dst[y * w + x] = sum / Mathf.Max(1, n);
+                }
+            }
+            return dst;
         }
 
         // ---------------------------------------------------------------- декор
-        /// <summary>Деревья на пустой земле: рисуются до объектов и чуть темнее.</summary>
+        /// <summary>
+        /// Декор пустой земли: деревья, кусты, камни, трава и грядки. Как в SoQ,
+        /// каждый тайл получает несколько «мелочей», а лес — плотный частокол.
+        /// Плоские предметы (камни/трава/грядки) лежат на земле, остальные — стенди.
+        /// </summary>
         private void BuildDecor()
         {
             if (_map == null || _catalog == null || _decorRoot == null) return;
+            var flatMesh = BuildFlatMesh();
             foreach (var deco in _map.Decor)
             {
                 var def = _catalog.Get(deco.defId);
@@ -666,23 +1060,95 @@ namespace IronThrone.Unity.SoqMap
                 var sprite = _catalog.SpriteFor(def, region);
                 if (sprite == null) continue;
 
-                // небольшой разброс по высоте и повороту: ряд одинаковых деревьев выглядит штампом
+                // разброс: без него ряд одинаковых деревьев выглядит штампом
                 float jitter = SoqRng.Hash01(deco.x, deco.y, 91);
-                var mesh = BuildStandeeMesh(sprite, def.scale * (0.9f + jitter * 0.2f));
+                float jitter2 = SoqRng.Hash01(deco.x, deco.y, 137);
+                float scale = def.scale * (0.82f + jitter * 0.36f);
+                float px = (deco.x + 0.5f + (jitter - 0.5f) * 0.62f) * TileSize;
+                float pz = (deco.y + 0.5f + (jitter2 - 0.5f) * 0.62f) * TileSize;
+
+                // оттенок: у леса — темнее и холоднее, у луговых деревьев — светлее;
+                // плюс небольшой сдвиг в тёплый/холодный, чтобы роща не была одного цвета
+                float shade = 0.70f + SoqRng.Hash01(deco.x, deco.y, 211) * 0.30f;
+                float warm = SoqRng.Hash01(deco.x, deco.y, 307);
+                var tint = new Color(
+                    Mathf.Clamp01(shade * (0.94f + warm * 0.12f)),
+                    Mathf.Clamp01(shade * (1.0f + (1f - Mathf.Abs(warm - 0.5f) * 2f) * 0.04f)),
+                    Mathf.Clamp01(shade * (0.88f + (1f - warm) * 0.10f)),
+                    1f);
+                if (_map.RegionAt(deco.x, deco.y) != null)
+                {
+                    var rc = RegionColor(_map.RegionAt(deco.x, deco.y));
+                    tint = Color.Lerp(tint, new Color(tint.r * rc.r, tint.g * rc.g, tint.b * rc.b, 1f), 0.18f);
+                }
+                bool flat = def.flat;
+                Mesh mesh = flat ? flatMesh : BuildStandeeMesh(sprite, scale, tint);
                 if (mesh == null) continue;
 
                 var go = new GameObject("decor_" + deco.defId);
                 go.transform.parent = _decorRoot.transform;
-                go.transform.position = new Vector3(
-                    (deco.x + 0.5f + (jitter - 0.5f) * 0.25f) * TileSize,
-                    GroundY + 0.005f,
-                    (deco.y + 0.5f) * TileSize);
-                go.transform.rotation = Quaternion.Euler(0f, (jitter * 2f - 1f) * 8f, 0f);
-                var mf = go.AddComponent<MeshFilter>();
+                go.transform.position = new Vector3(px, GroundY + (flat ? 0.008f : 0.006f), pz);
+                go.transform.rotation = Quaternion.Euler(0f, (jitter * 2f - 1f) * 180f, 0f);
+                if (flat)
+                {
+                    float ppu = sprite.ppu > 0.5f ? sprite.ppu : Ppu;
+                    float w = sprite.w / ppu * scale * ObjectScale * 0.8f;
+                    float h = sprite.h / ppu * scale * ObjectScale * 0.8f;
+                    go.transform.localScale = new Vector3(Mathf.Max(0.3f, w), 1f, Mathf.Max(0.3f, h));
+                }
+                var mf = go.GetComponent<MeshFilter>();
+                if (mf == null) mf = go.AddComponent<MeshFilter>();
                 mf.sharedMesh = mesh;
                 var mr = go.AddComponent<MeshRenderer>();
-                mr.sharedMaterial = ObjectMaterial(sprite.atlas);
+                mr.sharedMaterial = flat ? FlatDecorMaterial(sprite) : ObjectMaterial(sprite.atlas);
+
+                // дерево без тени «парит» над землёй; дешёвый плоский блоб
+                // ставим только крупному декору, мелочь (трава, камни) не нужна
+                if (!flat)
+                {
+                    float ppuD = sprite.ppu > 0.5f ? sprite.ppu : Ppu;
+                    float footprint = sprite.w / ppuD * scale * ObjectScale;
+                    if (footprint >= TileSize * 0.35f)
+                        AttachShadow(px, pz + TileSize * 0.10f, footprint * 0.62f);
+                }
             }
+        }
+
+        /// <summary>Плоский квад на земле для камней, травы и грядок.</summary>
+        private Mesh BuildFlatMesh()
+        {
+            if (_flatMesh != null) return _flatMesh;
+            var mesh = new Mesh { name = "flat_decor" };
+            mesh.vertices = new[]
+            {
+                new Vector3(-0.5f, 0f, -0.5f), new Vector3(0.5f, 0f, -0.5f),
+                new Vector3(0.5f, 0f, 0.5f), new Vector3(-0.5f, 0f, 0.5f),
+            };
+            mesh.uv = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
+            mesh.triangles = new[] { 0, 2, 1, 0, 3, 2 };
+            mesh.RecalculateBounds();
+            _flatMesh = mesh;
+            return mesh;
+        }
+
+        /// <summary>Материал плоского декора: спрайт-лист, у которого UV подставлены в меш.</summary>
+        private Material FlatDecorMaterial(AdventureSprite sprite)
+        {
+            var mat = ObjectMaterial(sprite.atlas);
+            if (mat == null) return null;
+            // UV тайла кладём в меш отдельным материалом нельзя — поэтому масштабируем
+            // через _MainTex_ST: так один материал обслуживает все камни/траву атласа
+            var inst = new Material(mat);
+            _ownedMaterials.Add(inst);
+            float aw = SoqMapAssets.AtlasWidth(sprite.atlas);
+            float ah = SoqMapAssets.AtlasHeight(sprite.atlas);
+            if (aw > 0 && ah > 0)
+            {
+                inst.mainTextureScale = new Vector2(sprite.w / aw, sprite.h / ah);
+                inst.mainTextureOffset = new Vector2(sprite.x / aw, sprite.y / ah);
+            }
+            inst.SetFloat("_Cutoff", 0.35f);
+            return inst;
         }
 
         // ---------------------------------------------------------------- объекты
@@ -719,6 +1185,16 @@ namespace IronThrone.Unity.SoqMap
 
         private Mesh BuildStandeeMesh(AdventureSprite sprite, float scale)
         {
+            return BuildStandeeMesh(sprite, scale, Color.white);
+        }
+
+        /// <summary>
+        /// Наклонный стенди-квад. tint идёт в вертексный цвет и умножается в
+        /// шейдере, поэтому один материал атласа обслуживает все оттенки —
+        /// именно так деревья перестают выглядеть штампованными.
+        /// </summary>
+        private Mesh BuildStandeeMesh(AdventureSprite sprite, float scale, Color tint)
+        {
             float ppu = sprite.ppu > 0.5f ? sprite.ppu : Ppu;
             float w = sprite.w / ppu * Mathf.Max(0.1f, scale) * ObjectScale;
             float h = sprite.h / ppu * Mathf.Max(0.1f, scale) * ObjectScale;
@@ -748,11 +1224,8 @@ namespace IronThrone.Unity.SoqMap
                 new Vector2(u0, v0), new Vector2(u1, v0),
                 new Vector2(u1, v1), new Vector2(u0, v1),
             };
-            var colors = new[]
-            {
-                new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255),
-                new Color32(255, 255, 255, 255), new Color32(255, 255, 255, 255),
-            };
+            var c32 = (Color32)tint;
+            var colors = new[] { c32, c32, c32, c32 };
             var mesh = new Mesh
             {
                 name = "standee_" + sprite.name,
@@ -862,8 +1335,18 @@ namespace IronThrone.Unity.SoqMap
             _rig = _cam.gameObject.GetComponent<WorldMapCameraRig>();
             if (_rig == null) _rig = _cam.gameObject.AddComponent<WorldMapCameraRig>();
             _rig.Init(_cam, new Vector2(size, size));
-            // При открытии сцены карта должна быть видна целиком, а не «носом в тайл».
-            _rig.Fit(new Vector2(size, size));
+
+            // Открываем сцену так, как выглядит карта в самой SoQ: камера стоит
+            // над стартовым городом и видит ~8–10 тайлов, а не всю карту целиком.
+            // Вся карта — по клавише F (WorldMapCameraRig.Fit).
+            float cx = size * 0.5f, cz = size * 0.5f;
+            if (_map.Starts != null && _map.Starts.Count > 0)
+            {
+                var start = _map.Starts[0];
+                cx = (start.x + 0.5f) * TileSize;
+                cz = (start.y + 0.5f) * TileSize;
+            }
+            _rig.FocusOn(new Vector2(cx, cz), Mathf.Clamp(size * 0.17f, 26f, 44f));
         }
 
         // ---------------------------------------------------------------- утилиты
