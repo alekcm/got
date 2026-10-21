@@ -24,7 +24,7 @@ Shader "IronThrone/SoqMapGround"
         _DetailScale ("Fine repeats", Float) = 70
         _MacroStrength ("Macro strength", Range(0, 0.4)) = 0.10
         _DetailStrength ("Fine strength", Range(0, 0.3)) = 0.07
-        _ForestShade ("Forest darkening", Range(0, 0.5)) = 0.22
+        _ForestShade ("Forest darkening", Range(0, 0.5)) = 0.30
     }
     SubShader
     {
